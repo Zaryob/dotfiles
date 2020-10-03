@@ -1,0 +1,27 @@
+
+
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+#
+# The header is mandatory and the scope of the header is optional.
+# Types: build, ci, docs, feat, fix, perf, refactor, style, test
+#
+# Wrap longer lines to 72 characters.
+# The body should answer:
+#
+# * What problem is being solved?
+# * What is the solution to said problem?
+# * Are there any side effects or dependencies?
+#
+# The footer should contain a closing reference or issue link, if any.
+#
+# ---------------------------------------------------------------------
+#
+#      ` In case of fire
+#	 ` 1. git commit
+#	 ` 2. git push
+#	 ` 3. leave building
+#

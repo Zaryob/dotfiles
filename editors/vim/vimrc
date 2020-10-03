@@ -1,0 +1,149 @@
+set number
+syntax on
+
+
+" Color Schemes "
+colorscheme gruvbox
+
+set background=dark    " Setting dark mode
+
+nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+
+autocmd BufWritePre * :%s/\s\+$//e
+
+
+""" OPTIONS """
+
+" Idention Options "
+set autoindent
+set expandtab
+set shiftwidth=4
+set shiftround
+set smarttab
+set tabstop=4
+
+" Search Options "
+set hlsearch
+set ignorecase
+
+" Performance Options "
+
+" Text Rendering Options "
+
+set encoding=utf-8
+set wrap
+set scrolloff=1
+set sidescrolloff=5
+set title
+
+" User Interface Options "
+set laststatus=2
+set wildmenu
+set visualbell
+set textwidth=80
+
+" Folding Options "
+set foldmethod=indent " Use zo to open folded texts
+
+" Miscellaneous Options "
+set backspace=indent,eol,start
+set backupdir=${HOME}/.cache/vim
+set confirm
+set dir=${HOME}/.cache/vim
+set spell "For moving [s and ]s, for adding dictionary zg
+set history=1000
+set wildignore+=.pyc,.swp
+
+" Start Screen Hack "
+function! Start()
+    " Don't run if: we have commandline arguments, we don't have an empty
+    " buffer, if we've not invoked as vim or gvim, or if we'e start in insert mode
+    if argc() || line2byte('$') != -1 || v:progname !~? '^[-gmnq]\=vim\=x\=\%[\.exe]$' || &insertmode
+        return
+    endif
+
+    " Start a new buffer ...
+    enew
+
+    " ... and set some options for it
+    setlocal
+        \ bufhidden=wipe
+        \ buftype=nofile
+        \ nobuflisted
+        \ nocursorcolumn
+        \ nocursorline
+        \ nolist
+        \ nonumber
+        \ noswapfile
+        \ norelativenumber
+
+    " Now we can just write to the buffer, whatever you want.
+    " This is a new file in vim "
+
+    let myText  =   ['                                                  ']
+    call add(myText, '                        tS                        ')
+    call add(myText, '  . :88888888888888888t ;8%t  ;8888888888888888@. ')
+    call add(myText, '   8t@ S S S S S S S :t8X88@t;8%:              8 S')
+    call add(myText, '  ..t.@@8@8@8@8@8@8@XXt@888t88S:@8888888888888t SX')
+    call add(myText, '   ;t ;;t@@@@@@@@X;;: ;@@888X8% ;:;@@@@@8@@@8St.t8')
+    call add(myText, '  .;Xt8%:S@@8@@88:8;%@88888@8@8SStt@@@8@@@8S:X@S;:')
+    call add(myText, '   ... @%X@@@@@@8:88;8888X888@8%S8X@@@@@@8%@ ; :  ')
+    call add(myText, '       X%X@@8@@@8:8X;@88S8@8t88@@@@@@8@8X.XXX..   ')
+    call add(myText, '    .  X%X@@@@8@8;8Xt@8888t8888X@@@@8@X.@X@;;     ')
+    call add(myText, '      S8%S@8@@@@8:8@t@8@88XX8X@@@@@@8SS X X       ')
+    call add(myText, '       @SX@@@8@@8:8Xt88%8888S@@@@8@@ 8SX8@t       ')
+    call add(myText, '     : 8%S@8@@@@8;8@;@8@88X@@@8@@@.8%;X@@88.t     ')
+    call add(myText, '  . % SX%X@@@@8@8:8X.%88%@@@8@@8Xt 8t@8888X8:X.   ')
+    call add(myText, '  ; .888SS@8@@@@8;8.88@X@8@@@@@:8t%@88888@8S88tt  ')
+    call add(myText, ':.;8.X8@SX@@@8@@8:8X8S8@@@@8@;8tt8888888@8@8@X88%;')
+    call add(myText, '%.S@888@%X@@@@@@8.XS@@@@8@@@: 8t@88888X88%8888;@ t')
+    call add(myText, ' ;;XtS8@%S@8@@8@@X%@8@@@@;%X:S8888X88S8@88@8X%@.. ')
+    call add(myText, '  .t;8;8SX@@@@@@@@@@@@88S ;;tS88888@8888@8StX:;   ')
+    call add(myText, '    .SS8SS@@8@@8@@8@8@@ SX;S88@888S888@88X8.%     ')
+    call add(myText, '     . @SS8@@@@@@8@@@t8:;X8@8X88888888XSXX;.      ')
+    call add(myText, '       X%X@@@8@8@@@%%t8@:S88@888S888@@;t;.        ')
+    call add(myText, '       X%X@@@@@@@8:88:S8@@;@8Xt8XXSXX@@%          ')
+    call add(myText, '      S8%X@@8@@8S% X8S8.8t88@Xt;X@SX%88           ')
+    call add(myText, '       @%X@@@8St @@@88:8tS8X8t@;@8;@8             ')
+    call add(myText, '       X%X@@8t8S.XSXX.888@8S88:8@::t              ')
+    call add(myText, '       8::t;; 8:t;888.@S.8X@.@88.@                ')
+    call add(myText, '      88 ::::.t: .t;@8X888S@8tSS                  ')
+    call add(myText, '        ......    . S.8X@@X8 t                    ')
+    call add(myText, '                     ;%X888::                     ')
+    call add(myText, '                      .S:.t                       ')
+    call add(myText, '                                                  ')
+    call add(myText, '                                                  ')
+    call add(myText, '                VIM - Vi IMproved                 ')
+    call add(myText, '             by Bram Moolenaar et al.             ')
+    call add(myText, '                                                  ')
+    call add(myText, '    Vim is open source and freely distributable   ')
+    call add(myText, '                                                  ')
+    call add(myText, '           Help poor children in Uganda!          ')
+    call add(myText, '  type  :help iccf<Enter>       for information   ')
+    call add(myText, '                                                  ')
+    call add(myText, '  type  :q<Enter>               to exit           ')
+    call add(myText, '  type  :help<Enter>  or  <F1>  for on-line help  ')
+    call add(myText, '  type  :help version8<Enter>   for version info  ')
+    for i in myText
+      let bufstr = repeat(' ', float2nr(floor((winwidth('%')-50)/2)))
+      call append('$', bufstr . i)
+    endfor
+
+
+    " No modifications to this buffer
+    setlocal nomodifiable nomodified
+
+    " When we go to insert mode start a new buffer, and start insert
+    nnoremap <buffer><silent> e :enew<CR>
+    nnoremap <buffer><silent> i :enew <bar> startinsert<CR>
+    nnoremap <buffer><silent> o :enew <bar> startinsert<CR>
+endfun
+
+" Run after "doing all the startup stuff"
+autocmd VimEnter * call Start()

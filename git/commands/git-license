@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# vim: set ft=bash :
+
+# Open a Git remote in the browser
+
+declare -a LicenseArray=("MIT" "BSD" "GPLv2" "GPLv3" "Apache" "AGPLv3" "LGPLv2" "LGPLv3" "EPL" "CC0" )
+
+put_license()
+{
+    cp $HOME/.local/share/license/$1 $pwd
+}
+
+if_license()
+{
+    for License in ${LicenseArray[@]}; do
+
+        if  [[ $1 -eq $License ]]
+        then
+           put_license $1
+        else
+            echo "License \"$l\" not found. "
+            exit 1
+        fi
+    done
+}
+
+list()
+{
+    for val in ${LicenseArray[@]}; do
+       echo $val
+    done
+}
+
+if [[ -z "$1" ]]; then
+    echo -e "You must be give an license."
+fi
+while [ "$1" != "" ];
+do
+    case $1 in
+        -l | --list )           shift
+                                list
+                                ;;
+        -h | --help )           git help license
+                                exit
+                                ;;
+        * )                     if_license $1
+                                exit 1
+    esac
+    shift
+done
+
+
+

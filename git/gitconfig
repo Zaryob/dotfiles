@@ -1,0 +1,9 @@
+[user]
+	name = Suleyman Poyraz
+	email = zaryob.dev@gmail.com
+	signingkey = 9F7CD0DC93792047
+[commit]
+	gpgsign = true
+	template = ~/.gitmessage
+[core]
+	editor = vim

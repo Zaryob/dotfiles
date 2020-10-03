@@ -1,0 +1,57 @@
+!
+! Remember to refresh with: 'xrdb .Xdefaults' if you make any changes.
+! 
+
+!----------------------------!
+! Xterm setup
+!----------------------------!
+XTerm*termName: xterm-256color
+XTerm*utf8: 1
+XTerm*renderFont: true
+XTerm*faceName: Monospace:size=10:antialias=true
+XTerm*borderWidth: 0
+XTerm*autohint: true
+XTerm*locale: true
+XTerm*metaSendsEscape: true
+XTerm*backarrowKey: false
+XTerm*bellIsUrgent: false
+XTerm*cursorBlink: false
+XTerm*vt100.saveLines: 10000
+XTerm*selectToClipboard: true
+XTerm*ScrollKey: true
+
+! Normally, selected text is stored in PRIMARY, to be pasted with Shift+Insert
+! or by using the middle mouse button. With these settings you can use
+! CTRL+SHIFT+v/c and you can make Xterm copy to clipboard so that you can use
+! CTRL+v in GUI applications.
+XTerm*vt100.translations: #override \
+    Shift Ctrl <Key> c: copy-selection(CLIPBOARD) \n\
+    Shift Ctrl <Key> v: insert-selection(CLIPBOARD)
+
+! Fix backspace and delete key.
+XTerm*ttyModes: erase ^?
+XTerm*vt100.Translations: #override <Key>BackSpace: string(0x7f) \n\
+    <Key>Delete: string(0x1b) string("[3~")
+
+!----------------------------!
+! Color theme
+!----------------------------!
+XTerm*background: #142034
+XTerm*foreground: #aaaaaa
+XTerm*cursorColor: #9aedfe
+*.color0: #142034
+*.color8: #4f4b58
+*.color1: #ff5c57
+*.color9: #ff5c57
+*.color2: #5af78e
+*.color10: #5af78e
+*.color3: #f3f99d
+*.color11: #f3f99d
+*.color4: #57c7ff
+*.color12: #57c7ff
+*.color5: #ff6ac1
+*.color13: #ff6ac1
+*.color6: #9aedfe
+*.color14: #9aedfe
+*.color7: #eff0eb
+*.color15: #eff0eb
