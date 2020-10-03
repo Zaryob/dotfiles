@@ -4,6 +4,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     cd "$HOME/.dotfiles"    
     printf "\033[0;31m* Setting shells.\033[0m\n"
     ln -svf $HOME/.dotfiles/shell/aliases $HOME/.aliases
+    ln -svf $HOME/.dotfiles/shell/inputrc $HOME/.inputrc
     printf "\033[0;33m - Generating bash links\033[0m\n"
     ln -svf $HOME/.dotfiles/shell/bash/bash_logout $HOME/.bash_logout
     ln -svf $HOME/.dotfiles/shell/bash/bashrc $HOME/.bashrc
@@ -19,7 +20,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     [ -f $HOME/.cache/vim ] || rm -rf $HOME/.cache/vim
     mkdir -vp $HOME/.cache/vim
     mkdir -vp $HOME/.vim/pack/default/start
-    bash $HOME/.dotfiles/vim/gruvbox_ins.sh
+    bash $HOME/.dotfiles/editors/vim/gruvbox_ins.sh
     printf "\033[0;32m + Installed vim plugins\033[0m\n"
     printf "\033[0;33m - Generating vim links\033[0m\n"
     ln -svf $HOME/.dotfiles/editors/vim/vimrc $HOME/.vimrc
