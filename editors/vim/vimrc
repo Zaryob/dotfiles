@@ -49,7 +49,9 @@ set visualbell
 set textwidth=80
 
 " Folding Options "
-set foldmethod=indent " Use zo to open folded texts
+autocmd Syntax c,cpp,python,vim,xml,html,xhtml setlocal foldmethod=syntax
+autocmd Syntax c,cpp,python,vim,xml,html,xhtml,perl normal zM
+set foldnestmax=1
 
 " Miscellaneous Options "
 set backspace=indent,eol,start
@@ -73,6 +75,7 @@ function! Start()
 
     " ... and set some options for it
     setlocal
+        \ nofoldenable
         \ bufhidden=wipe
         \ buftype=nofile
         \ nobuflisted
