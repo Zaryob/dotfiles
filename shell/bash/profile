@@ -44,6 +44,10 @@ if [ -d "$HOME/.gitbin" ] ; then
 fi
 
 
+if [ -d "$HOME/.flutter" ] ; then
+    pathAppend "$HOME/.flutter/bin"
+fi
+
 # set if rust there
 if [ -d "$HOME/.cargo/" ] ; then
     pathAppend "$HOME/.cargo/bin"
