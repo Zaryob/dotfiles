@@ -94,16 +94,16 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1  ": Home"
+set $ws2  ": Browser"
+set $ws3  ": Development"
+set $ws4  ": Android Studio"
+set $ws5  ": Music"
+set $ws6  ": Minecraft"
+set $ws7  ": Zoom"
+set $ws8  ": Other 1"
+set $ws9  ": Other 2"
+set $ws10 ": Other 3"
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -128,6 +128,19 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
+
+# Specify some tools onto some workspaces
+assign [class="Chromium-browser"] $ws2
+assign [class="Firefox"] $ws2
+assign [class="Opera"] $ws2
+assign [class="jetbrains-toolbox"] $ws3
+assign [class="jetbrains-pycharm"] $ws3
+assign [class="jetbrains-clion"] $ws3
+assign [class="jetbrains-studio"] $ws4
+assign [class="Gnome-music"] $ws5
+assign [class="Rhythmbox"] $ws5
+assign [class="minecraft-launcher"] $ws6
+assign [class="zoom"] $ws7
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -196,7 +209,7 @@ bar {
 }
 
 bar {
-        # status_command i3status 
+        # status_command i3status
         status_command i3status -c $HOME/.config/i3/i3status_top.conf
         position top
         workspace_buttons no
@@ -276,7 +289,7 @@ exec_always feh --bg-scale $HOME/.wallpapers/harley-davidson.jpg
 exec --no-startup-id compton -f
 
 #### Starting Clipit Clipboard Manager  ####
-exec --no-startup-id clipit 
+exec --no-startup-id clipit
 
 
 # exec_always --no-startup-id $HOME/.config/polybar/launch.sh
