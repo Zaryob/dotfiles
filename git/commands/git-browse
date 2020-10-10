@@ -1,5 +1,5 @@
-#!/usr/bin/env zsh
-# vim: set ft=zsh :
+#!/usr/bin/env bash
+# vim: set ft=bash :
 
 # Open a Git remote in the browser
 
