@@ -97,13 +97,13 @@ bindsym $mod+a focus parent
 set $ws1  ": Home"
 set $ws2  ": Browser"
 set $ws3  ": Development"
-set $ws4  ": Android Studio"
+set $ws4  ": Android"
 set $ws5  ": Music"
 set $ws6  ": Minecraft"
 set $ws7  ": Zoom"
-set $ws8  ": Other 1"
-set $ws9  ": Other 2"
-set $ws10 ": Other 3"
+set $ws8  ": Game"
+set $ws9  ": Other 1"
+set $ws10 ": Other 2"
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -133,14 +133,17 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 assign [class="Chromium-browser"] $ws2
 assign [class="Firefox"] $ws2
 assign [class="Opera"] $ws2
+assign [class="Code"] $ws3
 assign [class="jetbrains-toolbox"] $ws3
 assign [class="jetbrains-pycharm"] $ws3
 assign [class="jetbrains-clion"] $ws3
+assign [class="jetbrains-goland"] $ws3
 assign [class="jetbrains-studio"] $ws4
 assign [class="Gnome-music"] $ws5
 assign [class="Rhythmbox"] $ws5
 assign [class="minecraft-launcher"] $ws6
 assign [class="zoom"] $ws7
+assign [class="Steam"] $ws8
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
