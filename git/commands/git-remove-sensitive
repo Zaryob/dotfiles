@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim: set ft=bash :
+
+# Remove sensitive data from git repository.
+function remove {
+    git filter-branch --force --index-filter \
+      "git rm --cached --ignore-unmatch $1" \
+      --prune-empty --tag-name-filter cat -- --all
+    echo "$1" >> .gitignore
+    git add .gitignore
+    git commit -m "Add YOUR-FILE-WITH-SENSITIVE-DATA to .gitignore"
+}
+
+if [[ -z "$1" ]]; then
+    echo -e "Error: no remote filename given."
+    exit 1
+else
+    remove $1
+fi
+

@@ -18,10 +18,9 @@
 #
 # The footer should contain a closing reference or issue link, if any.
 #
-# ---------------------------------------------------------------------
-#
 #      ` In case of fire
-#	 ` 1. git commit
-#	 ` 2. git push
-#	 ` 3. leave building
+#   	 ` 1. git commit
+#	     ` 2. git push
+#	     ` 3. leave building
 #
+# ----------------------------------------------
