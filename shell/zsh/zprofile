@@ -34,8 +34,12 @@ if [ -d "$HOME/bin" ] ; then
     pathAppend "$HOME/bin"
 fi
 
-if [ -d "$HOME/.flutter" ] ; then
-    pathAppend "$HOME/.flutter/bin"
+if [ -d "$HOME/flutter" ] ; then
+    pathAppend "$HOME/flutter/bin"
+fi
+
+if [ -d "$HOME/.local/go/bin" ] ; then
+    pathAppend "$HOME/.local/go/bin"
 fi
 
 # set PATH so it includes user's private local bin if it exists

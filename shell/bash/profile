@@ -1,4 +1,4 @@
-# ~/.zprofile: executed by the command interpreter for login shells.
+# ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
 # see /usr/share/doc/bash/examples/startup-files for examples.
@@ -34,6 +34,10 @@ if [ -d "$HOME/bin" ] ; then
     pathAppend "$HOME/bin"
 fi
 
+if [ -d "$HOME/.local/go/bin" ] ; then
+    pathAppend "$HOME/.local/go/bin"
+fi
+
 # set PATH so it includes user's private local bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
     pathAppend "$HOME/.local/bin"
@@ -43,9 +47,13 @@ if [ -d "$HOME/.gitbin" ] ; then
     pathAppend "$HOME/.gitbin"
 fi
 
+if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/platform-tools/"
+fi
 
-if [ -d "$HOME/.flutter" ] ; then
-    pathAppend "$HOME/.flutter/bin"
+
+if [ -d "$HOME/flutter" ] ; then
+    pathAppend "$HOME/flutter/bin"
 fi
 
 # set if rust there
