@@ -1,0 +1,2 @@
+  ! Allow sixel graphics. https://github.com/hackerb9/lsix
+  xterm*decTerminalID	:	vt340
