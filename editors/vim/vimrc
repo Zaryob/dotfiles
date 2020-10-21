@@ -62,6 +62,12 @@ set spell "For moving [s and ]s, for adding dictionary zg
 set history=1000
 set wildignore+=.pyc,.swp
 
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
 " Start Screen Hack "
 function! Start()
     " Don't run if: we have commandline arguments, we don't have an empty
