@@ -31,6 +31,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     cp -vf $HOME/.dotfiles/fonts/* $HOME/.fonts
     printf "\033[0;32m + Copied fonts\033[0m\n"
     printf "\033[0;33m - Setting i3wm up\033[0m\n"
+    ln -svf $HOME/.dotfiles/i3-themes/compton.conf $HOME/.config
     [ -f $HOME/.config/i3 ] || rm -rf $HOME/.config/i3
     [ -f $HOME/.config/clipit ] || rm -rf $HOME/.config/clipit
     ln -svf $HOME/.dotfiles/i3-themes/simplicity/config/clipit  $HOME/.dotfiles/i3-themes/simplicity/config/i3  $HOME/.config/
@@ -38,15 +39,13 @@ if [ ! -f "$HOME/.zaryob" ]; then
     printf "\033[0;32m + i3wm setted up\033[0m\n"
     printf "\033[0;33m - Initializing git \033[0m\n"
     mkdir -pv $HOME/.local/share/man/man1
-    cp -vf $HOME/.dotfiles/git/man/* $HOME/.local/share/man/man1
+    ln -svf $HOME/.dotfiles/git/man/ $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/commands $HOME/.gitbin
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
     printf "\033[0;32m + Initialized git \033[0m\n"
     printf "\033[0;33m - Initializing Xorg extras \033[0m\n"
-    [ -f $HOME/.wallpapers ] || rm -rf $HOME/.wallpapers
-    mkdir $HOME/.wallpapers
-    cp ./wallpapers/* $HOME/.wallpapers/
+    ln -svf ./wallpapers $HOME/.wallpapers
     ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
     ln -svf $HOME/.dotfiles/Xorg/xsession $HOME/.xsession
     ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
@@ -56,6 +55,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     printf "\033[0;33m - Initializing Extra Configs \033[0m\n"
     ln -svf $HOME/.dotfiles/extras/oomox $HOME/.config
     ln -svf $HOME/.dotfiles/extras/ncmpcpp $HOME/.config
+    ln -svf $HOME/.dotfiles/extras/nitrogen $HOME/.config
     ln -svf $HOME/.dotfiles/extras/kitty $HOME/.config
     ln -svf $HOME/.dotfiles/extras/neofetch $HOME/.config
     printf "\033[0;32m + Initialized Extra Configs \033[0m\n"
