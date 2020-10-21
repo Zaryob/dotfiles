@@ -38,7 +38,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     printf "\033[0;32m + i3wm setted up\033[0m\n"
     printf "\033[0;33m - Initializing git \033[0m\n"
     mkdir -pv $HOME/.local/share/man/man1
-    cp -vf $HOME/.dotfiles/git/man/man1/* $HOME/.local/share/man/man1
+    cp -vf $HOME/.dotfiles/git/man/* $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/commands $HOME/.gitbin
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
@@ -47,10 +47,18 @@ if [ ! -f "$HOME/.zaryob" ]; then
     [ -f $HOME/.wallpapers ] || rm -rf $HOME/.wallpapers
     mkdir $HOME/.wallpapers
     cp ./wallpapers/* $HOME/.wallpapers/
+    ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
     ln -svf $HOME/.dotfiles/Xorg/xsession $HOME/.xsession
+    ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
     ln -svf $HOME/.dotfiles/Xorg/Xdefaults $HOME/.Xdefaults
     ln -svf $HOME/.dotfiles/Xorg/Xresources $HOME/.Xresources
     printf "\033[0;32m + Initialized Xorg extras \033[0m\n"
+    printf "\033[0;33m - Initializing Extra Configs \033[0m\n"
+    ln -svf $HOME/.dotfiles/extras/oomox $HOME/.config
+    ln -svf $HOME/.dotfiles/extras/ncmpcpp $HOME/.config
+    ln -svf $HOME/.dotfiles/extras/kitty $HOME/.config
+    ln -svf $HOME/.dotfiles/extras/neofetch $HOME/.config
+    printf "\033[0;32m + Initialized Extra Configs \033[0m\n"
     printf "YOU CAN RUN OUT :-)\n"
     touch $HOME/.zaryob
 else
