@@ -1,0 +1,19 @@
+os: openSUSE
+version: Tumbleweed
+packages:
+	- package: 'i3'
+	- package: 'i3status'
+	- package: 'i3blocks'
+    - package: 'rofi'
+    - package: 'dunst'
+    - package: 'conky'
+	- package: 'clipit'
+	- package: 'brightnessctl'
+	- package: 'kitty'
+	- package: 'screengrab'
+	- package: 'pulseaudio'
+	- package: 'pavucontrol'
+	- package: 'xbindkeys'
+	- package: 'scrot'
+    - package: 'oomox'
+    - package: 'neofetch'

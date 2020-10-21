@@ -1,0 +1,267 @@
+# minimal i3 configurations
+# GRUVBOX theme colors are set at the end
+
+# Set mod keys (Mod1=<Alt>, Mod4=<Super>)
+set $mod Mod4
+
+# terminal
+bindsym $mod+Return exec --no-startup-id kitty
+# rofi
+bindsym $mod+d exec --no-startup-id rofi -show run
+# kill container
+bindsym $mod+Shift+q kill
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace
+bindsym $mod+Shift+r restart
+# exit i3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# kill xorg server
+bindsym $mod+Shift+Escape exec pkill -15 Xorg
+
+
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+scedilla focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+scedilla move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# workspace names / font-awesome
+set $ws1 ": "
+set $ws2 ": "
+set $ws3 ": "
+set $ws4 ": "
+set $ws5 ": "
+set $ws6 ": "
+set $ws7 ": "
+set $ws8 ": "
+set $ws9 ": "
+set $wsX ": "
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $wsX
+
+# move focused container to workspace
+bindsym $mod+Control+1 move container to workspace $ws1
+bindsym $mod+Control+2 move container to workspace $ws2
+bindsym $mod+Control+3 move container to workspace $ws3
+bindsym $mod+Control+4 move container to workspace $ws4
+bindsym $mod+Control+5 move container to workspace $ws5
+bindsym $mod+Control+6 move container to workspace $ws6
+bindsym $mod+Control+7 move container to workspace $ws7
+bindsym $mod+Control+8 move container to workspace $ws8
+bindsym $mod+Control+9 move container to workspace $ws9
+bindsym $mod+Control+0 move container to workspace $wsX
+
+
+# Specify some tools onto some workspaces
+assign [class="Chromium-browser"] $ws2
+assign [class="Firefox"] $ws2
+assign [class="Opera"] $ws2
+assign [class="Code"] $ws3
+assign [class="jetbrains-toolbox"] $ws3
+assign [class="jetbrains-pycharm"] $ws3
+assign [class="jetbrains-clion"] $ws3
+assign [class="jetbrains-goland"] $ws3
+assign [class="jetbrains-studio"] $ws4
+assign [class="Gnome-music"] $ws5
+assign [class="Rhythmbox"] $ws5
+assign [class="minecraft-launcher"] $ws6
+assign [class="zoom"] $ws7
+assign [class="Steam"] $ws8
+
+#######
+#THEME#
+#######
+
+# set primary gruvbox colorscheme colors
+set $bg #282828
+set $red #cc241d
+set $green #98971a
+set $yellow #d79921
+set $blue #458588
+set $purple #b16286
+set $aqua #689d68
+set $gray #a89984
+set $darkgray #1d2021
+
+# font used by i3 for titles and bars
+font pango:Hack 9
+
+#start of bar section
+bar {
+    position bottom
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+    colors {
+        # bar background color
+        background $bg
+        # text color used for blocks that do not have a color specified.
+        statusline $yellow
+        # workspaces section
+        #                    border  backgr. text
+        focused_workspace    $aqua $aqua $darkgray
+        inactive_workspace   $darkgray $darkgray $yellow
+        active_workspace     $darkgray $darkgray $yellow
+        urgent_workspace     $red $red $bg
+    }
+}
+#end of bar section
+
+#start of window title bars & borders section
+
+# green gruvbox
+# class                 border|backgr|text|indicator|child_border
+#client.focused          $green $green $darkgray $purple $darkgray
+#client.focused_inactive $darkgray $darkgray $yellow $purple $darkgray
+#client.unfocused        $darkgray $darkgray $yellow $purple $darkgray
+#client.urgent           $red $red $white $red $red
+
+# blue gruvbox
+# class                 border|backgr|text|indicator|child_border
+client.focused          $blue $blue $darkgray $purple $darkgray
+client.focused_inactive $darkgray $darkgray $yellow $purple $darkgray
+client.unfocused        $darkgray $darkgray $yellow $purple $darkgray
+client.urgent           $red $red $white $red $red
+
+#end of window title bars & borders section
+
+
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym scedilla resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# This is locking i3 with i3lock
+# bindsym $mod+shift+x exec i3lock
+bindsym $mod+shift+x exec "$HOME/.config/i3/scripts/lock.sh $HOME/.config/i3/additional-files/key.png"
+
+
+
+#### MEDIA KEY BINDINGS ####
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Screen brightness controls
+
+
+bindsym XF86MonBrightnessUp exec brightnessctl set +20
+bindsym XF86MonBrightnessDown exec brightnessctl set 20-
+
+# Radeon or AMG not working with xbackligth
+# bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+# bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+
+### GNOME POWER MANAGER based  backlight controller ###
+# Step up:
+# bindsym XF86MonBrightnessUp exec gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.gnome.SettingsDaemon.Power.Screen.StepUp
+
+# Step down:
+# bindsym XF86MonBrightnessDown exec gdbus call --session --dest org.gnome.SettingsDaemon.Power --object-path /org/gnome/SettingsDaemon/Power --method org.gnome.SettingsDaemon.Power.Screen.StepDown
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# ScreenGrabber
+# screenshot printscreen to ~/home
+bindsym Print exec screengrab
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+m move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+m scratchpad show
+
+# Show all scratchpad windows
+bindsym $mod+Shift+a [class=.*] scratchpad show
+
+
+#### COMPTON ####
+exec --no-startup-id compton -f
+
+#### Starting Clipit Clipboard Manager  ####
+exec --no-startup-id clipit
+
+
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
