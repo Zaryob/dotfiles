@@ -2,7 +2,6 @@ os: openSUSE
 version: Tumbleweed
 packages:
 	- package: 'i3'
-	- package: 'i3status'
 	- package: 'i3blocks'
     - package: 'rofi'
     - package: 'dunst'
@@ -15,5 +14,6 @@ packages:
 	- package: 'pavucontrol'
 	- package: 'xbindkeys'
 	- package: 'scrot'
+	- package: 'nitrogen'
     - package: 'oomox'
     - package: 'neofetch'
