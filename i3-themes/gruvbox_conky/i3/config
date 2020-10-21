@@ -262,6 +262,7 @@ exec --no-startup-id compton -f
 #### Starting Clipit Clipboard Manager  ####
 exec --no-startup-id clipit
 
-
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# Let's get our wallpaper.
+# You can run nitrogen from the console and set it up, afterwards use "--restore" to use it in i3.
+exec --no-startup-id "nitrogen --restore"
 
