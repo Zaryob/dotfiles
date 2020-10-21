@@ -49,6 +49,7 @@ if [ ! -f "$HOME/.zaryob" ]; then
     cp ./wallpapers/* $HOME/.wallpapers/
     ln -svf $HOME/.dotfiles/Xorg/xsession $HOME/.xsession
     ln -svf $HOME/.dotfiles/Xorg/Xdefaults $HOME/.Xdefaults
+    ln -svf $HOME/.dotfiles/Xorg/Xresources $HOME/.Xresources
     printf "\033[0;32m + Initialized Xorg extras \033[0m\n"
     printf "YOU CAN RUN OUT :-)\n"
     touch $HOME/.zaryob
