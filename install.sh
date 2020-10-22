@@ -30,6 +30,9 @@ if [ ! -f "$HOME/.zaryob" ]; then
     mkdir -v $HOME/.fonts
     cp -vf $HOME/.dotfiles/fonts/* $HOME/.fonts
     printf "\033[0;32m + Copied fonts\033[0m\n"
+#    printf "\033[0;33m - Setting conky up\033[0m\n"
+#    ln -svf $HOME/.dotfiles/conky/conkyrc $HOME/.conkyrc
+#    printf "\033[0;32m + Conky setted\033[0m\n"
     printf "\033[0;33m - Setting i3wm up\033[0m\n"
     ln -svf $HOME/.dotfiles/i3-themes/compton.conf $HOME/.config
     [ -f $HOME/.config/i3 ] || rm -rf $HOME/.config/i3
