@@ -134,6 +134,7 @@ assign [class="Chromium-browser"] $ws2
 assign [class="Firefox"] $ws2
 assign [class="Opera"] $ws2
 assign [class="Code"] $ws3
+assign [class="Eclipse"] $ws3
 assign [class="jetbrains-toolbox"] $ws3
 assign [class="jetbrains-pycharm"] $ws3
 assign [class="jetbrains-clion"] $ws3

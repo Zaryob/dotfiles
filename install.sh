@@ -50,7 +50,6 @@ if [ ! -f "$HOME/.zaryob" ]; then
     printf "\033[0;33m - Initializing Xorg extras \033[0m\n"
     ln -svf ./wallpapers $HOME/.wallpapers
     ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
-    ln -svf $HOME/.dotfiles/Xorg/xsession $HOME/.xsession
     ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
     ln -svf $HOME/.dotfiles/Xorg/Xdefaults $HOME/.Xdefaults
     ln -svf $HOME/.dotfiles/Xorg/Xresources $HOME/.Xresources

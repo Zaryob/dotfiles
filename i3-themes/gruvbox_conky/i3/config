@@ -118,6 +118,7 @@ assign [class="jetbrains-pycharm"] $ws3
 assign [class="jetbrains-clion"] $ws3
 assign [class="jetbrains-goland"] $ws3
 assign [class="jetbrains-studio"] $ws4
+assign [class="Eclipse"] $ws4
 assign [class="Gnome-music"] $ws5
 assign [class="Rhythmbox"] $ws5
 assign [class="minecraft-launcher"] $ws6
