@@ -48,7 +48,6 @@ if [ ! -f "$HOME/.zaryob" ]; then
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
     printf "\033[0;32m + Initialized git \033[0m\n"
     printf "\033[0;33m - Initializing Xorg extras \033[0m\n"
-    ln -svf ./wallpapers $HOME/.wallpapers
     ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
     ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
     ln -svf $HOME/.dotfiles/Xorg/Xdefaults $HOME/.Xdefaults
