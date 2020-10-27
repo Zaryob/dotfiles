@@ -9,7 +9,17 @@
 [url "ssh://git@bitbucket.org/"]
   insteadOf = https://bitbucket.org/
 [alias]
+    # Shows list of contributors of a repository.
     contributors = shortlog --summary --numbered --email
+    # Takes snapshot.
+    snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+    # Lists snapshots.
+    snapshots = !git stash list --grep snapshot
+    # Uncommits last commit go back before last commit, with files in uncommitted state
+    uncommit = reset --soft HEAD^
+    # Unstages last changes remove files from index (tracking)
+    unstage = reset HEAD
+
 [commit]
 	gpgsign = true
 	template = ~/.gitmessage
