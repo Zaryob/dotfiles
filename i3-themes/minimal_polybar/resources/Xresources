@@ -1,0 +1,71 @@
+! ^ The above lines are no comments!
+! Leave them as they are if a file ~/.extend.Xresources is being used on your system.
+! config can be added there or also here below.
+! For comments use "!"
+
+*background:            #272827
+*foreground:            #657b83
+*fading:                15
+*fadeColor:             black
+*cursorColor:           #16A085
+*pointerColorBackground:#2B2C2B
+*pointerColorForeground:#16A085
+
+URxvt.internalBorder: 6
+
+! Extra
+
+*.color254:     #3e646f
+*.color255:     #3e646f
+
+! Colors
+*.borderColor:  #1c1c22
+*.background:	#1c1c22
+*.foreground:	#b0aba8
+*.cursorColor:  #b0aba8
+
+! black
+*.color0:       #313131
+*.color8:       #434343
+
+! red
+*.color1:       #7e6565
+*.color9:       #807171
+
+! green
+*.color2:       #85aab6
+*.color10:      #3e646f
+
+! yellow
+*.color3:       #90a996
+*.color11:      #badbc2
+
+! blue
+*.color4:       #3e646f
+*.color12:      #5c828d
+
+! magenta
+*.color5:       #817f98
+*.color13:      #9b98b7
+
+! cyan
+*.color6:       #9aa7c0
+*.color14:      #b2b7c0
+
+! white
+
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+XTerm*background: #2b2b2b
+XTerm*foreground: #e7e7e7
+XTerm*pointerColor: #16A085
+XTerm*faceName: Fixed
+XTerm*faceSize: 11
+
