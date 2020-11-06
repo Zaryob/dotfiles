@@ -31,7 +31,10 @@ link_quality () {
 }
 
 quality () {
-  printf "$FORMAT_QUALITY" "$(link_quality)" "%"
+  if $(link_quality>0)
+  then
+    printf "$FORMAT_QUALITY" "$(link_quality)" "%"
+  fi
 }
 
 if grep -wq up "/sys/class/net/$INTERFACE/operstate"
