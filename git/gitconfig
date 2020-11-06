@@ -25,3 +25,5 @@
 	template = ~/.gitmessage
 [core]
 	editor = vim
+[pull]
+	rebase = false
