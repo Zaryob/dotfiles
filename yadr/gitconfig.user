@@ -1,0 +1,12 @@
+[user]
+  name = Suleyman Poyraz
+  email = zaryob.dev@gmail.com
+  signingkey = 9F7CD0DC93792047
+[url "ssh://git@github.com/Zaryob"]
+  insteadOf = https://github.com/Zaryob
+[url "ssh://git@gitlab.com/Zaryob"]
+  insteadOf = https://gitlab.com/Zaryob
+[url "ssh://git@bitbucket.org/Zaryob"]
+  insteadOf = https://bitbucket.org/Zaryob
+[commit]
+  gpgsign = true

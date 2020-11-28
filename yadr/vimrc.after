@@ -1,0 +1,5 @@
+" use login Shell instead of interactive shell
+if executable('zsh')
+  set shell=/usr/bin/zsh\ -l
+endif
+
