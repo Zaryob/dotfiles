@@ -10,3 +10,10 @@
   insteadOf = https://bitbucket.org/Zaryob
 [commit]
   gpgsign = true
+[sendemail]
+  ; setup for using git send-email; prompts for password
+  smtpuser = zaryob.dev@gmail.com
+  smtpserver = smtp.googlemail.com
+  smtpencryption = tls
+  smtpserverport = 587
+
