@@ -1,5 +1,6 @@
 let g:yadr_disable_solarized_enhancements = 1
 let g:yadr_using_unsolarized_terminal = 1
+let g:snipMate = { 'snippet_version' : 1 }
+
 let g:gruvbox_italic=1
 colorscheme gruvbox
-
