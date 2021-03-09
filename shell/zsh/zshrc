@@ -68,3 +68,21 @@ fi
 # added by travis gem
 [ ! -s /home/zaryob/.travis/travis.sh ] || source /home/zaryob/.travis/travis.sh
 
+
+shift-arrow() {
+  ((REGION_ACTIVE)) || zle set-mark-command
+  zle $1
+}
+shift-left()  shift-arrow backward-char
+shift-right() shift-arrow forward-char
+shift-up()    shift-arrow up-line-or-history
+shift-down()  shift-arrow down-line-or-history
+zle -N shift-left
+zle -N shift-right
+zle -N shift-up
+zle -N shift-down
+
+bindkey $terminfo[kLFT] shift-left
+bindkey $terminfo[kRIT] shift-right
+bindkey $terminfo[kri]  shift-up
+bindkey $terminfo[kind] shift-down
