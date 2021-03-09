@@ -1,12 +1,3 @@
-#
-# Powerline Double Magenta - Tmux Themepack
-# https://github.com/jimeh/tmux-themepack
-#
-# Inspired by vim-powerline: https://github.com/powerline/powerline
-#
-# Requires terminal to be using a powerline compatible font, find one here:
-# https://github.com/powerline/fonts
-#
 
 # Themepack format options
 set -goq @themepack-status-left-area-left-format "#S"
@@ -47,9 +38,9 @@ set -gqF @themepack-window-status-current-format "#{@themepack-window-status-cur
 set -gqF @themepack-window-status-format "#{@themepack-window-status-prefix}#{@themepack-window-status-format}#{@themepack-window-status-suffix}"
 
 # Powerline color options
-set -goq @powerline-color-main-1 colour125
-set -goq @powerline-color-main-2 colour127
-set -goq @powerline-color-main-3 colour129
+set -goq @powerline-color-main-1 colour130
+set -goq @powerline-color-main-2 colour166
+set -goq @powerline-color-main-3 colour130
 set -goq @powerline-color-black-1 black
 set -goq @powerline-color-grey-1 colour233
 set -goq @powerline-color-grey-2 colour235
@@ -157,4 +148,3 @@ set -gwF window-status-current-format "#{@theme-window-status-current-format}"
 set -gwF window-status-current-style "fg=#{@theme-window-status-current-fg},bg=#{@theme-window-status-current-bg}"
 set -gwF window-status-format "#{@theme-window-status-format}"
 set -gwF window-status-separator "#{@theme-window-status-separator}"
-
