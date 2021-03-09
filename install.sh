@@ -68,8 +68,10 @@ if [ ! -f "$HOME/.zaryob" ]; then
     ln -svf $HOME/.dotfiles/Xorg/Xresources $HOME/.Xresources
     printf "\033[0;32m + Initialized Xorg extras \033[0m\n"
     printf "\033[0;33m - Initializing Extra Configs \033[0m\n"
+    ln -svf $HOME/.dotfiles/extras/mc $HOME/.config
     ln -svf $HOME/.dotfiles/extras/oomox $HOME/.config
-    ln -svf $HOME/.dotfiles/extras/ncmpcpp $HOME/.config
+    ln -svf $HOME/.dotfiles/extras/ncmpcpp $HOME/.ncmpcpp
+    ln -svf $HOME/.dotfiles/extras/mpd $HOME/.mpd
     ln -svf $HOME/.dotfiles/extras/nitrogen $HOME/.config
     ln -svf $HOME/.dotfiles/extras/kitty $HOME/.config
     ln -svf $HOME/.dotfiles/extras/neofetch $HOME/.config
