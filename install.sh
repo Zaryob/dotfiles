@@ -22,6 +22,10 @@ if [ ! -f "$HOME/.zaryob" ]; then
     mkdir -vp $HOME/.vim/pack/default/start
     bash $HOME/.dotfiles/editors/vim/gruvbox_ins.sh
     printf "\033[0;32m + Installed vim plugins\033[0m\n"
+    printf "\033[0;33m - Installing emacs config\033[0m\n"
+    [ -f $HOME/.emacs.d ] || rm -rf $HOME/.emacs.d
+    ln -svf $HOME/.dotfiles/editors/emacs $HOME/.emacs.d
+    printf "\033[0;33m + emacs config made\033[0m\n"
     printf "\033[0;33m - Generating vim links\033[0m\n"
     ln -svf $HOME/.dotfiles/editors/vim/vimrc $HOME/.vimrc
     printf "\033[0;32m + Linked vim configs\033[0m\n"
