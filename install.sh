@@ -44,13 +44,19 @@ if [ ! -f "$HOME/.zaryob" ]; then
     ln -svf $HOME/.dotfiles/shell/tmux/tmux.conf $HOME/.tmux.conf
     ln -svf $HOME/.dotfiles/shell/tmux/tmux-themepack $HOME/.tmux-themepack
     printf "\033[0;32m + tmux setted up\033[0m\n"
+#    printf "\033[0;33m - Initializing fish \033[0m\n"
+#    [ -f $HOME/.config/fish ] || rm -rf $HOME/.config/fish
+#    [ -f $HOME/.local/share/fish/generated_completions ] || rm -rf $HOME/.local/share/fish/generated_completions
+#    ln -sv $HOME/.dotfiles/shell/fish  $HOME/.config/fish
+#    ln -sv $HOME/.dotfiles/share/fish_generated_scripts $HOME/.local/share/fish/generated_completions
+#    printf "\033[0;32m + fish setted up\033[0m\n"
+    printf "\033[0;33m - Initializing git \033[0m\n"
     mkdir -pv $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/man/ $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/commands $HOME/.gitbin
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
     printf "\033[0;32m + Initialized git \033[0m\n"
-    printf "\033[0;33m - Initializing git \033[0m\n"
     printf "\033[0;33m - Initializing Xorg extras \033[0m\n"
     ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
     ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
