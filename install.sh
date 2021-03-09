@@ -40,13 +40,17 @@ if [ ! -f "$HOME/.zaryob" ]; then
     ln -svf $HOME/.dotfiles/i3-themes/simplicity/config/clipit  $HOME/.dotfiles/i3-themes/simplicity/config/i3  $HOME/.config/
     ln -svf $HOME/.dotfiles/i3-themes/simplicity/fehbg $HOME/.fehbg
     printf "\033[0;32m + i3wm setted up\033[0m\n"
-    printf "\033[0;33m - Initializing git \033[0m\n"
+    printf "\033[0;33m - Initializing tmux \033[0m\n"
+    ln -svf $HOME/.dotfiles/tmux/tmux.conf $HOME/.tmux.conf
+    ln -svf $HOME/.dotfiles/tmux/tmux-themepack $HOME/.tmux-themepack
+    printf "\033[0;32m + tmux setted up\033[0m\n"
     mkdir -pv $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/man/ $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/commands $HOME/.gitbin
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
     printf "\033[0;32m + Initialized git \033[0m\n"
+    printf "\033[0;33m - Initializing git \033[0m\n"
     printf "\033[0;33m - Initializing Xorg extras \033[0m\n"
     ln -svf  $HOME/.dotfiles/Xorg/xinitrc $HOME/.xinitrc
     ln -svf $HOME/.dotfiles/Xorg/xserverrc $HOME/.xserverrc
