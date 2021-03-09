@@ -41,8 +41,8 @@ if [ ! -f "$HOME/.zaryob" ]; then
     ln -svf $HOME/.dotfiles/i3-themes/simplicity/fehbg $HOME/.fehbg
     printf "\033[0;32m + i3wm setted up\033[0m\n"
     printf "\033[0;33m - Initializing tmux \033[0m\n"
-    ln -svf $HOME/.dotfiles/tmux/tmux.conf $HOME/.tmux.conf
-    ln -svf $HOME/.dotfiles/tmux/tmux-themepack $HOME/.tmux-themepack
+    ln -svf $HOME/.dotfiles/shell/tmux/tmux.conf $HOME/.tmux.conf
+    ln -svf $HOME/.dotfiles/shell/tmux/tmux-themepack $HOME/.tmux-themepack
     printf "\033[0;32m + tmux setted up\033[0m\n"
     mkdir -pv $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/man/ $HOME/.local/share/man/man1
