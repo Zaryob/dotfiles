@@ -10,6 +10,7 @@
 failsafe="xterm -ls -T Failsafe -geometry 80x24-0-0"
 trap "exec $failsafe" EXIT SIGHUP SIGINT SIGPIPE SIGTERM SIGIO
 
+export WINDOWMANAGER="i3"
 #
 # Some bash (1 and 2) settings to avoid trouble on a
 # failed program call.

@@ -29,3 +29,9 @@
 	editor = vim
 [pull]
 	rebase = false
+[diff]
+	tool = vimdiff
+[merge]
+    summary = true
+    verbosity = 1
+	tool = vimdiff

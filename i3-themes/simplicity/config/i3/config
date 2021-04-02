@@ -30,7 +30,7 @@ font pango:Inconsolata XL 9
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Shift+t exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
