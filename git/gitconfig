@@ -11,6 +11,8 @@
 [alias]
     # Shows list of contributors of a repository.
     contributors = shortlog --summary --numbered --email
+    # Cached changes
+    ccached = diff --cached
     # Takes snapshot.
     snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
     # Lists snapshots.
