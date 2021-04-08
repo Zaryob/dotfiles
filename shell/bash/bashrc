@@ -92,8 +92,8 @@ elif [[ -d '/usr/local/share/examples/fzf/' ]]; then
     source /usr/local/share/examples/fzf/shell/key-bindings.bashi
 fi
 
-if [[ -d '~/.aliases' ]]; then
-	source ~/.aliases
+if [[ -e $HOME/.dotfiles/shell/aliases ]]; then
+    source $HOME/.dotfiles/shell/aliases
 fi
 
 # added by travis gem
