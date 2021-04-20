@@ -12,8 +12,8 @@
 # if running zsh
 if [ -n "$" ]; then
     # include .zshrc if it exists
-    if [ -f "$HOME/.zshrc" ]; then
-	. "$HOME/.zshrc"
+    if [ -f "$HOME/.bashrc" ]; then
+	. "$HOME/.bashrc"
     fi
 fi
 
