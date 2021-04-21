@@ -35,3 +35,5 @@
     summary = true
     verbosity = 1
 	tool = vimdiff
+[init]
+	defaultBranch = main
