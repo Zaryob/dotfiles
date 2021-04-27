@@ -33,8 +33,8 @@
              '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives 
 	     '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
-(add-to-list 'package-archives
-         '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
+;(add-to-list 'package-archives
+;         '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
 
 ; (add-to-list 'package-archives 
 ;             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
@@ -48,7 +48,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;;;;--- Install Needed Packages ---;;;;
+;;;- Install Needed Packages -;;;
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -57,15 +57,15 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;;;;--- Emacs Editor Configuration ---;;;;
+;;;- Emacs Editor Configuration -;;;
 
-;;;-- User Configuration --;;;
+;;;- User Configuration -;;;
 
 (setq user-full-name "Suleyman Poyraz"
       user-mail-address "zaryob.dev@gmail.com")
 
 
-;;;++ Emacs System Preferences ++;;;
+;;;- Emacs System Preferences -;;;
 
 ;; reduce garbage collection  frequency
 ;; default: 0.76MB
@@ -75,9 +75,8 @@
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
-;;;++ Emacs System Preferences ++;;;
 
-;;;++ Editor Preferences ++;;;
+;;;- Editor Preferences -;;;
 
 ;; disable the annoying bell ring
 ; (setq ring-bell-function 'ignore)
@@ -127,6 +126,25 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
-;;;-- End of Editor Preferences --;;;
+;;;- Theme Configurations -;;;
+(use-package powerline
+  :ensure nil
+  :load-path "~/.emacs.d/themes/powerline/")
+(powerline-default-theme)
+
+;(require 'powerline)
+;(powerline-default-theme)
 
 ;;;- Key Configurations -;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
