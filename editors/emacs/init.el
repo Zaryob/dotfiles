@@ -86,6 +86,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(setq package-check-signature nil)
 (unless (package-installed-p 'gnu-elpa-keyring-update)
   (setq package-check-signature nil)
   (package-refresh-contents)
@@ -169,6 +170,11 @@
   :load-path "~/.emacs.d/themes/powerline/")
 (powerline-default-theme)
 
+;;;- NeoTree -;;;
+;(add-to-list 'load-path "~/.emacs.d/additional/emacs-neotree/")
+;  (require 'neotree)
+;  (global-set-key [f8] 'neotree-toggle)
+
 ;;;- Packages For lsp-mode -;;;
 (use-package lsp-mode
   :init
@@ -180,17 +186,21 @@
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
+(use-package lsp-dart
+  :ensure t
+  :hook (dart-mode . lsp))
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-treemacs 
+	     :commands lsp-treemacs-errors-list)
 
 ;; optionally if you want to use debugger
-;; (use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+(use-package dap-mode)
+(use-package dap-dart) ; to load the dap adapter for your language
 
 ;; optional if you want which-key integration
 (use-package which-key
