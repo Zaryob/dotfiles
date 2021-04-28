@@ -24,4 +24,7 @@ site-lisp/adventur-mode
 /projectile.cache
 /transient/history.el
 /transient/values.el
+.dap-breakpoints
+.extension/
+.lsp-session-v1
 
