@@ -24,21 +24,52 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
+;;; Some notes for future:
+;;
+;; If you are living some problems follow that paths
+;;
+;; a) ELPA problem:
+;;  If error message is one of the bottom:
+;;  ```
+;;   Failed to download `elpa` 
+;;  ```
+;;  or
+;;  ```
+;;   Failed to verify signature archive-contents.sig:
+;;   No public key for 066DAFCB81E42C40 created at 2019-10-02T10:10:02+0100 using RSA
+;;   Command output:
+;;   gpg: Signature made Wed 02 Oct 2019 10:10:02 AM BST
+;;   gpg:                using RSA key C433554766D3DDC64221BFAA066DAFCB81E42C40
+;;   gpg: Can't check signature: No public key
+;;  ```
+;; Follow that:
+;;  1.  set package-check-signature to nil, e.g. M-: (setq package-check-signature nil) RET
+;;  2.  download the package gnu-elpa-keyring-update and run the function with the same name, e.g. M-x package-install RET gnu-elpa-keyring-update RET.
+;;  3.  reset package-check-signature to the default value allow-unsigned
+
+
+
 ;;; Code:
 
 ;; package repositories
 (require 'package)
+;; IMPORTANT: Just use for first initialize
+; (setq package-check-signature t)
 
+(add-to-list 'package-archives
+	     '("elpa" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives 
 	     '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
-;(add-to-list 'package-archives
-;         '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
 
-; (add-to-list 'package-archives 
-;             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
+(add-to-list 'package-archives 
+             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
 
+;; add gnutls algoritm 
+;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
@@ -48,11 +79,17 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+
 ;;;- Install Needed Packages -;;;
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(unless (package-installed-p 'gnu-elpa-keyring-update)
+  (setq package-check-signature nil)
+  (package-refresh-contents)
+  (package-install 'gnu-elpa-keyring-update))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -79,7 +116,7 @@
 ;;;- Editor Preferences -;;;
 
 ;; disable the annoying bell ring
-; (setq ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore)
 
 ;; disable startup screen
 ; (setq inhibit-startup-screen t)
@@ -132,8 +169,44 @@
   :load-path "~/.emacs.d/themes/powerline/")
 (powerline-default-theme)
 
-;(require 'powerline)
-;(powerline-default-theme)
+;;;- Packages For lsp-mode -;;;
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (dart-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+;; if you are helm user
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+;; (use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+;; optional if you want which-key integration
+(use-package which-key
+    :config
+    (which-key-mode))
+
+
+;; Optional packages
+(use-package projectile :ensure t) ;; project management
+(use-package yasnippet
+  :ensure t
+  :config (yas-global-mode)) ;; snipets
+(use-package company :ensure t) ;; Auto-complete
+
+;; Optional Flutter packages
+(use-package hover :ensure t) ;; run app from desktop without emulator
 
 ;;;- Key Configurations -;;;
 (custom-set-variables
@@ -141,7 +214,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(use-package)))
+ '(package-selected-packages '(lsp-dart lsp-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
