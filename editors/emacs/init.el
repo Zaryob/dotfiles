@@ -46,7 +46,45 @@
 ;;  1.  set package-check-signature to nil, e.g. M-: (setq package-check-signature nil) RET
 ;;  2.  download the package gnu-elpa-keyring-update and run the function with the same name, e.g. M-x package-install RET gnu-elpa-keyring-update RET.
 ;;  3.  reset package-check-signature to the default value allow-unsigned
-
+;;
+;; b) ‘spinner-1.7.3’ not installed:
+;;  If error message is that:
+;;  ```
+;;  Error (use-package): Failed to install lsp-mode: Package ‘spinner-1.7.3’ is unavailable
+;;  ```
+;;  This is related with elpa, Follow a)
+;;
+;; c) UTF-8 Related Probles
+;;  If you get error messages like:
+;;  ```
+;;  Eager macro-expansion failure: (error "Unknown key: :test-id.
+;;      Available keys: (:type :time :test-ıd :result :skipped :hidden)") [2 times]
+;;  File mode specification error: (error Unknown key: :test-id.
+;;      Available keys: (:type :time :test-ıd :result :skipped :hidden))
+;;  Error (use-package): dap-mode/:catch: Unknown key: :test-id.
+;;      Available keys: (:type :time :test-ıd :result :skipped :hidden)
+;;  Emergency (url): Unknown proxy directive: DIRECT [8 times]
+;;  Error (use-package): Failed to install dap-dart: Package ‘dap-dart-’ is unavailable
+;;  Error (use-package): Cannot load dap-dart
+;;  ```
+;;
+;;  This is related with local settings.
+;;    Run this macro in emacs:
+;;    ```
+;;    M-: (downcase "ID") RET
+;;    ```
+;;    If it gives string "id" there is no problem but wont give there is problem.
+;;  Follow that:
+;;     * set your emacs local to "English" and "utf-8":
+;;
+;;       (set-language-environment "English")
+;;       (set-locale-environment "en.UTF-8")
+;;       (prefer-coding-system 'utf-8)
+;;
+;;     * If it continues change your system language
+;;       $ localectl set-locale en-US.UTF-8
+;;
+;;  
 
 
 ;;; Code:
@@ -97,7 +135,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq package-check-signature nil)
+; (setq package-check-signature nil)
 (unless (package-installed-p 'gnu-elpa-keyring-update)
   (setq package-check-signature nil)
   (package-refresh-contents)
@@ -193,7 +231,9 @@
 
 (use-package lsp-dart
   :ensure t
-  :hook (dart-mode . lsp))
+  :hook
+  (dart-mode . lsp))
+
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
@@ -206,7 +246,25 @@
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)
-(use-package dap-dart) ; to load the dap adapter for your language
+;(use-package dap-dart) ; to load the dap adapter for your language
+;; Enabling only some features
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+
+(dap-mode 1)
+
+;; The modes below are optional
+
+(dap-ui-mode 1)
+;; enables mouse hover support
+(dap-tooltip-mode 1)
+;; use tooltips for mouse hover
+;; if it is not enabled `dap-mode' will use the minibuffer.
+(tooltip-mode 1)
+;; displays floating panel with debug buttons
+;; requies emacs 26+
+(dap-ui-controls-mode 1)
+
+
 
 ;; optional if you want which-key integration
 (use-package which-key
