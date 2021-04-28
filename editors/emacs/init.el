@@ -51,11 +51,22 @@
 
 ;;; Code:
 
+;; use utf-8 coding system for both config and shell
+(set-language-environment "English")
+(set-locale-environment "en.UTF-8")
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+
 ;; package repositories
 (require 'package)
-;; IMPORTANT: Just use for first initialize
-; (setq package-check-signature t)
 
+;; Add to load-path this directory containing local add-ons.
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;; Add online repositories
 (add-to-list 'package-archives
 	     '("elpa" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
@@ -158,12 +169,6 @@
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
 
-;; use utf-8 coding system for both config and shell
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-
 ;;;- Theme Configurations -;;;
 (use-package powerline
   :ensure nil
@@ -196,7 +201,8 @@
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs 
-	     :commands lsp-treemacs-errors-list)
+	     :commands lsp-treemacs-errors-list
+	     :bind (("<f8>"  . treemacs)))
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)

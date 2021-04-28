@@ -1,4 +1,5 @@
 auto-save-list
+.cache
 backups
 *~
 .places
