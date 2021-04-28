@@ -193,7 +193,6 @@
 ;; maximize the initial frame automatically
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
-
 ;; tab configuration
 (setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
 (setq-default tab-width 8)            ;; but maintain correct appearance
@@ -208,6 +207,16 @@
 (global-auto-revert-mode t)
 
 ;;;- Theme Configurations -;;;
+
+;;;- Toolbar colors -;;;
+(set-face-attribute 'tty-menu-disabled-face nil
+ :background "black" :foreground "lightgray")
+(set-face-attribute 'tty-menu-enabled-face  nil
+ :background "black" :foreground "white")
+(set-face-attribute 'tty-menu-selected-face nil
+ :background "black" :foreground "brightgreen")
+
+;;;- Powerline -;;;
 (use-package powerline
   :ensure nil
   :load-path "~/.emacs.d/themes/powerline/")
@@ -246,6 +255,7 @@
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)
+
 ;(use-package dap-dart) ; to load the dap adapter for your language
 ;; Enabling only some features
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
@@ -253,7 +263,6 @@
 (dap-mode 1)
 
 ;; The modes below are optional
-
 (dap-ui-mode 1)
 ;; enables mouse hover support
 (dap-tooltip-mode 1)
@@ -263,8 +272,6 @@
 ;; displays floating panel with debug buttons
 ;; requies emacs 26+
 (dap-ui-controls-mode 1)
-
-
 
 ;; optional if you want which-key integration
 (use-package which-key
@@ -288,10 +295,20 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(lsp-dart lsp-mode use-package)))
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(column-number-mode t)
+ '(custom-enabled-themes '(melancholy))
+ '(custom-safe-themes
+   '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
+ '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
+ '(org-agenda-loop-over-headlines-in-active-region nil)
+ '(package-selected-packages '(lsp-dart lsp-mode use-package))
+ '(show-paren-mode t)
+ '(size-indication-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Mensch for Powerline" :foundry "PfEd" :slant normal :weight normal :height 98 :width normal)))))
