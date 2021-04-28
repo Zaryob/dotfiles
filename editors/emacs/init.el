@@ -196,7 +196,9 @@
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs 
-	     :commands lsp-treemacs-errors-list)
+	     :commands lsp-treemacs-errors-list
+         :bind (("<f8>"  . treemacs))
+)
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)
