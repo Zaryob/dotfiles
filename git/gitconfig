@@ -21,21 +21,23 @@
     uncommit = reset --soft HEAD^
     # Unstages last changes remove files from index (tracking)
     unstage = reset HEAD
+    # Optimizes git repos and removes unrelated refs
+    optimize = gc --prune=now --aggressive
 
 [commit]
-	gpgsign = true
-	template = ~/.gitmessage
+    gpgsign = true
+    template = ~/.gitmessage
 [core]
-	editor = vim
+    editor = "emacs -nw"
 [pull]
-	rebase = false
+    rebase = false
 [diff]
-	tool = vimdiff
+    tool = "emacs -nw -f diff-mode"
 [merge]
     summary = true
     verbosity = 1
-	tool = vimdiff
+    tool = "emacs -nw -f diff-mode"
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [help]
-	autocorrect = 1
+    autocorrect = 1

@@ -63,6 +63,7 @@ list()
 
 if [[ -z "$1" ]]; then
     echo -e "You must be give an license."
+    exit 1
 fi
 while [ "$1" != "" ];
 do

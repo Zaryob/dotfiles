@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim: set ft=bash :
+
+# Ignore a file or directory in git repository
+
+function ignore(){
+    echo "$1" | tee $(echo "$(git rev-parse --show-toplevel)/.gitignore") -a | xargs -I % echo "\"%\" is ignored." 
+}
+
+if [[ -z "$1" ]]; then
+    echo -e "You must be give an directory or file."
+    exit 1
+else
+    for i in $*; do 
+        ignore $i 
+    done
+fi
