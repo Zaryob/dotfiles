@@ -84,8 +84,38 @@
 ;;     * If it continues change your system language
 ;;       $ localectl set-locale en-US.UTF-8
 ;;
-;;  
-
+;; d) Flutter server not working
+;;  This project uses `lsp-mode`. If running flutter project is not working with giving this type of error output
+;;   ```
+;;   internal/modules/cjs/loader.js:638
+;;       throw err;
+;;       ^
+;;
+;;   Error: Cannot find module '/home/zaryob/.emacs.d/.extension/vscode/Dart-Code.Dart-Code/3.19.2/extension/out/dist/debug.js'
+;;       at Function.Module._resolveFilename (internal/modules/cjs/loader.js:636:15)
+;;       at Function.Module._load (internal/modules/cjs/loader.js:562:25)
+;;       at Function.Module.runMain (internal/modules/cjs/loader.js:831:12)
+;;       at startup (internal/bootstrap/node.js:283:19)
+;;       at bootstrapNodeJSCore (internal/bootstrap/node.js:623:3)
+;; 
+;;   Process Flutter Run stderr finished
+;;   ```
+;;
+;;   Follow this steps:
+;;   * remove directory: `.emacs.d/.extension`
+;;   * Then open emacs and run command `dap-dart-setup`
+;;        `M-x RET dap-dart-setup RET`
+;;
+;; e) Dart Analyzer Server Error
+;;  If you are taking analysis_server based error like that:
+;;  ```
+;;    Could not find a command named "/home/zaryob/Android/flutter/bin/snapshots/analysis_server.dart.snapshot".
+;;  ```
+;;  And if you install dart-sdk with flutter this problem caused due to lack of snapshots in correct path. Just make that:
+;;  ```
+;;    ln -sv cache/dart-sdk/bin/snapshots/ snapshots
+;;  ```
+;;
 
 ;;; Code:
 
@@ -217,6 +247,7 @@
  :background "black" :foreground "brightgreen")
 
 ;;;- Powerline -;;;
+
 (use-package powerline
   :ensure nil
   :load-path "~/.emacs.d/themes/powerline/")
@@ -231,7 +262,7 @@
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-diagnostic-package :flymake)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (dart-mode . lsp)
          ;; if you want which-key integration
@@ -242,6 +273,18 @@
   :ensure t
   :hook
   (dart-mode . lsp))
+
+;; For java mode of lsp-mode
+(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+
+;; For python 
+;;(use-package lsp-python-ms
+;;  :ensure t
+;;  :hook (python-mode . (lambda ()
+;;                         (require 'lsp-python-ms)
+;;                         (lsp)))
+;;  :init
+;;  (setq lsp-python-ms-executable (executable-find "python-language-server")))
 
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
@@ -254,7 +297,10 @@
 	     :bind (("<f8>"  . treemacs)))
 
 ;; optionally if you want to use debugger
-(use-package dap-mode)
+(use-package dap-mode :after lsp-mode)
+(use-package dap-java :ensure nil)
+
+;; (setq lsp-java-java-path "/usr/lib/jvm/java")
 
 ;(use-package dap-dart) ; to load the dap adapter for your language
 ;; Enabling only some features
@@ -278,7 +324,6 @@
     :config
     (which-key-mode))
 
-
 ;; Optional packages
 (use-package projectile :ensure t) ;; project management
 (use-package yasnippet
@@ -288,6 +333,8 @@
 
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
+
+
 
 ;;;- Key Configurations -;;;
 (custom-set-variables

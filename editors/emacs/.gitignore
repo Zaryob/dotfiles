@@ -27,4 +27,6 @@ site-lisp/adventur-mode
 .dap-breakpoints
 .extension/
 .lsp-session-v1
+eclipse.jdt.ls/
+
 
