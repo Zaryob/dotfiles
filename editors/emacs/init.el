@@ -31,7 +31,7 @@
 ;; a) ELPA problem:
 ;;  If error message is one of the bottom:
 ;;  ```
-;;   Failed to download `elpa` 
+;;   Failed to download `elpa`
 ;;  ```
 ;;  or
 ;;  ```
@@ -123,6 +123,17 @@
 ;;   LSP :: jdtls has exited (exited abnormally with code 13)
 ;;   Server jdtls:14460/starting exited with status exit(check corresponding stderr buffer for details). Do you want to restart it? (y or n) n
 ;;  ```
+;;  Just follow this steps:
+;;    Delete workspace lsp-java-workspace-dir
+;;    Delete server installation from lsp-java-server-install-dir
+;;    Evaluating lsp-java--ls-command will give you the command that is used for starting JDT LS - you could then start it outside of emacs
+;;
+;; g) `lsp-java-spring-initializr` helm error
+;;  If you get helm error like that:
+;;  ```
+;;  error in process sentinel: apply: Symbol’s value as variable is void: helm-map error in process sentinel: Symbol’s value as variable is void: helm-map
+;;  ```
+;;  Just remove `~/.emacs.d/elpa/helm-*`
 ;;
 
 ;;; Code:
@@ -144,19 +155,19 @@
 
 ;; Add online repositories
 (add-to-list 'package-archives
-	     '("elpa" . "https://elpa.gnu.org/packages/") t)
+	         '("elpa" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives 
-	     '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
+(add-to-list 'package-archives
+	         '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
 
-(add-to-list 'package-archives 
+(add-to-list 'package-archives
              '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
 
 ;; add gnutls algoritm 
-;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+                                        ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
@@ -173,7 +184,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-; (setq package-check-signature nil)
+                                        ; (setq package-check-signature nil)
 (unless (package-installed-p 'gnu-elpa-keyring-update)
   (setq package-check-signature nil)
   (package-refresh-contents)
@@ -207,7 +218,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; disable startup screen
-; (setq inhibit-startup-screen t)
+                                        ; (setq inhibit-startup-screen t)
 
 ;; nice scrolling
 (setq scroll-margin 0
@@ -233,7 +244,7 @@
 
 ;; tab configuration
 (setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
-(setq-default tab-width 8)            ;; but maintain correct appearance
+(setq-default tab-width 4)            ;; but maintain correct appearance
 
 ;; newline at end of file
 (setq require-final-newline t)
@@ -244,15 +255,25 @@
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
 
+;; Longer whitespace, otherwise syntax highlighting is limited to default column
+(setq whitespace-line-column 1000) 
+
+;; Enable soft-wrap
+(global-visual-line-mode 1)
+
+;; Maintain a list of recent files opened
+(recentf-mode 1)            
+;(setq recentf-max-saved-items 50)
+
 ;;;- Theme Configurations -;;;
 
 ;;;- Toolbar colors -;;;
 (set-face-attribute 'tty-menu-disabled-face nil
- :background "black" :foreground "lightgray")
+                    :background "black" :foreground "lightgray")
 (set-face-attribute 'tty-menu-enabled-face  nil
- :background "black" :foreground "white")
+                    :background "black" :foreground "white")
 (set-face-attribute 'tty-menu-selected-face nil
- :background "black" :foreground "brightgreen")
+                    :background "black" :foreground "brightgreen")
 
 ;;;- Powerline -;;;
 
@@ -261,20 +282,35 @@
   :load-path "~/.emacs.d/themes/powerline/")
 (powerline-default-theme)
 
-;;;- NeoTree -;;;
-;(add-to-list 'load-path "~/.emacs.d/additional/emacs-neotree/")
-;  (require 'neotree)
-;  (global-set-key [f8] 'neotree-toggle)
-
 ;;;- Packages For lsp-mode -;;;
+
+;; optional if you want which-key integration
+(use-package which-key
+  :config
+  (which-key-mode))
+
 (use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-diagnostic-package :flymake)
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (dart-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
+  :ensure t
+  :hook (
+		 (lsp-mode . lsp-enable-which-key-integration)
+		 (java-mode . #'lsp-deferred)
+		 (dart-mode . lsp)
+		 )
+  :init (setq 
+		 lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
+		 lsp-enable-file-watchers nil
+		 read-process-output-max (* 1024 1024)  ; 1 mb
+		 lsp-completion-provider :capf
+		 lsp-idle-delay 0.500
+		 lsp-diagnostic-package :flymake)
+  :config 
+  (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
+  (with-eval-after-load 'lsp-intelephense
+	(setf 
+	 (lsp--client-multi-root 
+	  (gethash 'iph lsp-clients))
+	 nil))
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
   :commands lsp)
 
 (use-package lsp-dart
@@ -283,8 +319,17 @@
   (dart-mode . lsp))
 
 ;; For java mode of lsp-mode
-(use-package lsp-java :config (add-hook 'java-mode-hook 'lsp))
+(use-package lsp-java 
+  :ensure t
+  :config (add-hook 'java-mode-hook 'lsp))
 
+(setq lsp-java-configuration-runtimes '[(:name "JavaSE-1.8"
+						                       :path "/usr/lib/jvm/java-1.8.0/")
+					                    (:name "JavaSE-11"
+						                       :path "/usr/lib/jvm/java-11-openjdk/"
+						                       :default t)
+                                        (:name "JavaSE-16"  ; Java latest
+						                       :path "/usr/lib/jvm/java-16-openjdk/")])
 ;; For python 
 ;;(use-package lsp-python-ms
 ;;  :ensure t
@@ -296,53 +341,73 @@
 
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
+
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs 
-	     :commands lsp-treemacs-errors-list
-	     :bind (("<f8>"  . treemacs)))
+  :commands lsp-treemacs-errors-list
+  :bind (:map lsp-mode-map
+			  ("<M-f8>" . lsp-treemacs-errors-list)   
+			  ("<f8>"  . treemacs)))
 
 ;; optionally if you want to use debugger
-(use-package dap-mode :after lsp-mode)
+(use-package dap-mode 
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :config
+  (require 'dap-java)
+  (setq dap-auto-configure-features '(sessions locals controls tooltip))
+  ;; enables mouse hover support
+  (setq dap-tooltip-mode 1)
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode' will use the minibuffer.
+  ;; displays floating panel with debug buttons
+  ;; requies emacs 26+
+  (setq dap-ui-controls-mode t)
+  (setq dap-tooltip-mode t)
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode' will use the minibuffer.
+  (setq tooltip-mode t)
+  ;; displays floating panel with debug buttons
+  ;; requies emacs 26+
+  (setq dap-ui-controls-mode t)
+  :bind (:map lsp-mode-map
+			  ("<f5>" . dap-debug)
+			  ("M-<f5>" . dap-hydra))
+  :hook (
+		 (dap-mode . dap-ui-mode)
+		 (dap-session-created . (lambda (&_rest) (dap-hydra)))
+		 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))
+	     )
+  )
+
 (use-package dap-java :ensure nil)
 
-;; (setq lsp-java-java-path "/usr/lib/jvm/java")
-
-;(use-package dap-dart) ; to load the dap adapter for your language
-;; Enabling only some features
-(setq dap-auto-configure-features '(sessions locals controls tooltip))
-
-(dap-mode 1)
-
-;; The modes below are optional
-(dap-ui-mode 1)
-;; enables mouse hover support
-(dap-tooltip-mode 1)
-;; use tooltips for mouse hover
-;; if it is not enabled `dap-mode' will use the minibuffer.
-(tooltip-mode 1)
-;; displays floating panel with debug buttons
-;; requies emacs 26+
-(dap-ui-controls-mode 1)
-
-;; optional if you want which-key integration
-(use-package which-key
-    :config
-    (which-key-mode))
 
 ;; Optional packages
-(use-package projectile :ensure t) ;; project management
-(use-package yasnippet
-  :ensure t
-  :config (yas-global-mode)) ;; snipets
-(use-package company :ensure t) ;; Auto-complete
+(use-package projectile 
+  :ensure t 
+  :after (lsp-mode)
+  :init (projectile-mode t)
+  :config (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)) ;; project management
+
+
+(use-package company 
+  :ensure t 
+  :after (lsp-mode)) ;; Auto-complete
+
+;; Flycheck checks for errors at runtime in code
+(use-package flycheck 
+  :ensure t 
+  :init (global-flycheck-mode)
+  :after (lsp-mode))
 
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
-
-
 
 ;;;- Key Configurations -;;;
 (custom-set-variables
@@ -357,6 +422,7 @@
  '(custom-safe-themes
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
+ '(electric-pair-mode t)
  '(org-agenda-loop-over-headlines-in-active-region nil)
  '(package-selected-packages '(lsp-dart lsp-mode use-package))
  '(show-paren-mode t)
@@ -367,3 +433,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Mensch for Powerline" :foundry "PfEd" :slant normal :weight normal :height 98 :width normal)))))
+;;; init.el ends here
