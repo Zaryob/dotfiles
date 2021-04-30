@@ -116,6 +116,14 @@
 ;;    ln -sv cache/dart-sdk/bin/snapshots/ snapshots
 ;;  ```
 ;;
+;;
+;; f) Java Language Server Error
+;;  If you are living error caused due to jdtls server like that:
+;;  ```
+;;   LSP :: jdtls has exited (exited abnormally with code 13)
+;;   Server jdtls:14460/starting exited with status exit(check corresponding stderr buffer for details). Do you want to restart it? (y or n) n
+;;  ```
+;;
 
 ;;; Code:
 

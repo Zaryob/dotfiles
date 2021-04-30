@@ -9,9 +9,9 @@
 #umask 022
 
 
-# if running zsh
+# if running bash
 if [ -n "$" ]; then
-    # include .zshrc if it exists
+    # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
     fi
@@ -48,21 +48,17 @@ if [ -d "$HOME/.gitbin" ] ; then
 fi
 
 if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
-    pathAppend "$HOME/Android/Sdk/platform-tools/"
+    pathAppend "$HOME/Android/Sdk/platform-tools"
 fi
 
 # Flutter Setup
-if [[ -e $HOME/Android/flutter/bin/ ]]; then
-    pathAppend "$HOME/Android/flutter/bin/"
-fi
-
-# Dart Setup with Flutter
-if [[ -e $HOME/Android/flutter/bin/cache/dart-sdk/bin/ ]]; then
-    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin/"
+if [ -d "$HOME/Android/flutter/" ] ; then
+    pathAppend "$HOME/Android/flutter/bin"
+    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin"
 fi
 
 # Flutter Setup while installed individually
-if [ -d "$HOME/flutter" ] ; then
+if [ -d "$HOME/flutter/" ] ; then
     pathAppend "$HOME/flutter/bin"
 fi
 
