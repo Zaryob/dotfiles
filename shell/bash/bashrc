@@ -192,9 +192,6 @@ fi
 #alias ll='ls -l'
 #alias la='ls -A'
 #alias l='ls -CF'
-if [[ -e $HOME/Android/flutter/bin/ ]]; then
-    export PATH=$PATH:$HOME/Android/flutter/bin/
-fi
 
 if [[ -f /opt/ros/noetic/setup.bash ]]; then
     source /opt/ros/noetic/setup.bash

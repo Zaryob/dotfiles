@@ -34,6 +34,22 @@ if [ -d "$HOME/bin" ] ; then
     pathAppend "$HOME/bin"
 fi
 
+
+if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/platform-tools/"
+fi
+
+# Flutter Setup
+if [[ -e $HOME/Android/flutter/bin/ ]]; then
+    pathAppend "$HOME/Android/flutter/bin/"
+fi
+
+# Dart Setup with Flutter
+if [[ -e $HOME/Android/flutter/bin/cache/dart-sdk/bin/ ]]; then
+    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin/"
+fi
+
+# Flutter Setup while installed individually
 if [ -d "$HOME/flutter" ] ; then
     pathAppend "$HOME/flutter/bin"
 fi
