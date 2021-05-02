@@ -263,7 +263,8 @@
 
 ;; Maintain a list of recent files opened
 (recentf-mode 1)            
-;(setq recentf-max-saved-items 50)
+(setq recentf-max-saved-items 50)
+
 
 ;;;- Theme Configurations -;;;
 
@@ -279,8 +280,44 @@
 
 (use-package powerline
   :ensure nil
-  :load-path "~/.emacs.d/themes/powerline/")
+  :load-path "~/.emacs.d/themes/separators/powerline/")
 (powerline-default-theme)
+
+;;;- Special modes -;;;
+
+;; c++ mode
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
+
+;; html mode
+(add-to-list 'auto-mode-alist '("\\.css$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.cfm$" . html-mode))
+
+;; css-mode
+(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
+
+;; js-mode
+                                        ;(require 'js)
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.es$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.es6$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . js-mode))
+
+;; json mode
+(add-hook 'json-mode-hook #'flycheck-mode)
+
+;; yaml mode
+(use-package yaml-mode
+  :mode ("\\.yml$" . yaml-mode))
+
+;; php mode 
+
+; (use-package php-mode
+;   :defer t
+;   :hook (php-mode . (lambda () (progn
+; 							     (setq indent-tabs-mode t)
+; 							     (setq lsp-ui-doc-enable t)))))
 
 ;;;- Packages For lsp-mode -;;;
 
@@ -342,8 +379,9 @@
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
 
+
 ;; if you are helm user
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+                                        ; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -417,14 +455,17 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(column-number-mode t)
  '(custom-enabled-themes '(melancholy))
  '(custom-safe-themes
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
  '(electric-pair-mode t)
+ '(inhibit-startup-screen t)
  '(org-agenda-loop-over-headlines-in-active-region nil)
- '(package-selected-packages '(lsp-dart lsp-mode use-package))
+ '(package-selected-packages '(php-mode lsp-dart lsp-mode use-package))
  '(show-paren-mode t)
  '(size-indication-mode t))
 (custom-set-faces
