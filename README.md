@@ -48,6 +48,4 @@ I'm using various systems including FreeBSD and Illumos. I gonna upload some pre
 
 ### emacs
 ![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-04-28_20-11.jpg?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-04-28_20-17.jpg?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-04-28_20-14.png?raw=true)
 ![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-05-11_11-54.png?raw=true)
