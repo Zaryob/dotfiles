@@ -3,11 +3,11 @@
 	email = zaryob.dev@gmail.com
 	signingkey = 9F7CD0DC93792047
 [url "ssh://git@github.com/Zaryob"]
-  insteadOf = https://github.com/Zaryob
+    insteadOf = https://github.com/Zaryob
 [url "ssh://git@gitlab.com/Zaryob"]
-  insteadOf = https://gitlab.com/Zaryob
+    insteadOf = https://gitlab.com/Zaryob
 [url "ssh://git@bitbucket.org/Zaryob"]
-  insteadOf = https://bitbucket.org/Zaryob
+    insteadOf = https://bitbucket.org/Zaryob
 [alias]
     # Shows list of contributors of a repository.
     contributors = shortlog --summary --numbered --email
@@ -31,13 +31,27 @@
     editor = "emacs -nw"
 [pull]
     rebase = false
+[init]
+	defaultBranch = main
+[help]
+    autocorrect = 1
 [diff]
-    tool = "emacs -nw -f diff-mode"
+	tool = ediff
+
 [merge]
     summary = true
     verbosity = 1
-    tool = "emacs -nw -f diff-mode"
-[init]
-    defaultBranch = main
-[help]
-    autocorrect = 1
+    tool = ediff
+
+[mergetool "ediff"]
+    cmd = emacs -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+
+
+[mergetool "ediffclient"]
+    cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+
+[difftool "ediff"]
+    cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+[difftool "ediffclient"]
+    cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+          

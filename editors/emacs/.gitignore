@@ -28,5 +28,4 @@ site-lisp/adventur-mode
 .extension/
 .lsp-session-v1
 eclipse.jdt.ls/
-
-
+request/
