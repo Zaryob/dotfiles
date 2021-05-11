@@ -2,6 +2,8 @@
 # vim: set ft=bash :
 
 # Remove sensitive data from git repository.
+set -e
+
 function remove {
     git filter-branch --force --index-filter \
       "git rm -r --cached --ignore-unmatch $1" \

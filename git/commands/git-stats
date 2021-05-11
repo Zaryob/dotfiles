@@ -2,6 +2,7 @@
 # vim: set ft=bash :
 
 # Summarize information about the current git repository
+set -e
 NUMBER_OF_COMMITS=`git rev-list --all | wc -l`
 NUMBER_OF_OBJECTS=`git count-objects -v | grep in-pack | cut -f 2 -d ':'`
 NUMBER_OF_FILES=`git ls-files | wc -l | tr -d ' '`

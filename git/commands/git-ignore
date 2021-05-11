@@ -2,6 +2,7 @@
 # vim: set ft=bash :
 
 # Ignore a file or directory in git repository
+set -e
 
 function ignore(){
     echo "$1" | tee $(echo "$(git rev-parse --show-toplevel)/.gitignore") -a | xargs -I % echo "\"%\" is ignored." 

@@ -3,6 +3,8 @@
 
 # Open a Git remote in the browser
 
+set -e
+
 declare -a LicenseArray=("MIT" "BSD" "GPLv2" "GPLv3" "Apache" "AGPLv3" "LGPLv2" "LGPLv3" "EPL" "CC0" "WTFPL")
 
 put_license()
