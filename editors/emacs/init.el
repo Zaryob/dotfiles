@@ -313,11 +313,11 @@
 
 ;; php mode 
 
-; (use-package php-mode
-;   :defer t
-;   :hook (php-mode . (lambda () (progn
-; 							     (setq indent-tabs-mode t)
-; 							     (setq lsp-ui-doc-enable t)))))
+(use-package php-mode
+  :defer t
+  :hook (php-mode . (lambda () (progn
+ 							     (setq indent-tabs-mode t)
+ 							     (setq lsp-ui-doc-enable t)))))
 
 ;;;- Packages For lsp-mode -;;;
 
