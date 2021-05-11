@@ -3,6 +3,8 @@
 
 # Open a Git remote in the browser
 
+set -e
+
 function open_tool {
     if command -v xdg-open > /dev/null 2>&1; then
         echo 'xdg-open'
