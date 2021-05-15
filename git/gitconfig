@@ -28,7 +28,7 @@
     gpgsign = true
     template = ~/.gitmessage
 [core]
-    editor = "emacs -nw"
+    editor = "emacs -nw -Q"
 [pull]
     rebase = false
 [init]
