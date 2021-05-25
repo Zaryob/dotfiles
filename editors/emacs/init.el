@@ -162,12 +162,11 @@
 	         '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
-
 (add-to-list 'package-archives
              '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
 
 ;; add gnutls algoritm 
-                                        ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
@@ -218,7 +217,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; disable startup screen
-                                        ; (setq inhibit-startup-screen t)
+(setq inhibit-startup-screen t)
 
 ;; nice scrolling
 (setq scroll-margin 0
@@ -234,6 +233,7 @@
 ;; mode line settings
 (setq line-number-mode t)
 (setq column-number-mode t)
+(setq show-paren-mode t)
 (setq size-indication-mode t)
 
 ;; enable y/n answers
@@ -367,6 +367,7 @@
 						                       :default t)
                                         (:name "JavaSE-16"  ; Java latest
 						                       :path "/usr/lib/jvm/java-16-openjdk/")])
+
 ;; For python 
 ;;(use-package lsp-python-ms
 ;;  :ensure t
@@ -457,7 +458,6 @@
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
- '(column-number-mode t)
  '(custom-enabled-themes '(melancholy))
  '(custom-safe-themes
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
