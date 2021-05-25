@@ -483,6 +483,27 @@
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
 
+(global-set-key (kbd "<f6>") 'lsp-mode)
+
+;; Git Gutter
+(use-package git-gutter
+  :ensure t
+  :config
+  (set-face-background 'git-gutter:modified "purple") ;; background color
+  (set-face-foreground 'git-gutter:added "green")
+  (set-face-foreground 'git-gutter:deleted "red")
+  (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+  (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk) ;; Jump to next/previous hunk
+  (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk) ;; Stage current hunk
+  (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk) ;; Revert current hunk
+  (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk) ;; Mark current hunk
+  :hook (global-git-gutter-mode t))
+(global-set-key (kbd "C-x C-g") 'git-gutter-mode)  ;; If you enable git-gutter-mode for some modes
+
+(use-package git-timemachine)
+
+
 ;;;- Key Configurations -;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -498,11 +519,12 @@
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
  '(electric-pair-mode t)
- '(inhibit-startup-screen t)
+ '(git-gutter:added-sign "++")
+ '(git-gutter:deleted-sign "--")
+ '(git-gutter:modified-sign "**")
  '(org-agenda-loop-over-headlines-in-active-region nil)
- '(package-selected-packages '(php-mode lsp-dart lsp-mode use-package))
- '(show-paren-mode t)
- '(size-indication-mode t))
+ '(package-selected-packages
+   '(git-timemachine yasnippet-snippets yaml-mode which-key use-package projectile popup php-mode lsp-ui lsp-java lsp-ivy lsp-dart hover gnu-elpa-keyring-update git-gutter git-gutter+ flycheck company async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
