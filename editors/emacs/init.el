@@ -265,6 +265,41 @@
 (recentf-mode 1)            
 (setq recentf-max-saved-items 50)
 
+;;;- Key Configurations -;;;
+
+(global-set-key (kbd "C-S-d" ) 'kill-whole-line)
+
+;; duplicates line with Ctrl-Shift-D
+(defun duplicate-line ()
+   (interactive)
+   (save-mark-and-excursion
+     (beginning-of-line)
+     (insert (thing-at-point 'line t))))
+
+(global-set-key (kbd "C-S-k") 'duplicate-line)
+
+;; moves current line one line down
+(defun move-line-down ()
+   (interactive)
+   (let ((col (current-column)))
+     (save-excursion
+       (forward-line)
+       (transpose-lines 1))
+     (forward-line)
+     (move-to-column col)))
+(global-set-key (kbd "C-S-j") 'move-line-down)
+
+;; moves current line one line up
+(defun move-line-up ()
+   (interactive)
+   (let ((col (current-column)))
+     (save-excursion
+       (forward-line)
+       (transpose-lines -1))
+     (forward-line -1)
+     (move-to-column col)))
+
+(global-set-key (kbd "C-S-l") 'move-line-up)
 
 ;;;- Theme Configurations -;;;
 
