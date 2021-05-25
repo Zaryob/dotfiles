@@ -29,3 +29,4 @@ site-lisp/adventur-mode
 .lsp-session-v1
 eclipse.jdt.ls/
 request/
+eshell/
