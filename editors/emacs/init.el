@@ -424,8 +424,9 @@
 (use-package lsp-treemacs 
   :commands lsp-treemacs-errors-list
   :bind (:map lsp-mode-map
-			  ("<M-f8>" . lsp-treemacs-errors-list)   
-			  ("<f8>"  . treemacs)))
+			  ("<M-f8>" . lsp-treemacs-symbols)
+              ("<f8>"  . treemacs)
+              ("<M-f7>" . lsp-treemacs-errors-list)))
 
 ;; optionally if you want to use debugger
 (use-package dap-mode 
@@ -451,7 +452,7 @@
   (setq dap-ui-controls-mode t)
   :bind (:map lsp-mode-map
 			  ("<f5>" . dap-debug)
-			  ("M-<f5>" . dap-hydra))
+			  ("<M-f5>" . dap-hydra))
   :hook (
 		 (dap-mode . dap-ui-mode)
 		 (dap-session-created . (lambda (&_rest) (dap-hydra)))
@@ -483,7 +484,17 @@
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
 
-(global-set-key (kbd "<f6>") 'lsp-mode)
+(defun emacs-lsp-company ()
+  "Turn on a good company like mode."
+  (interactive)
+  (lsp-mode)
+  (company-mode)
+  (display-line-numbers-mode))
+
+(global-set-key (kbd "<f6>")  'company-mode)
+(global-set-key (kbd "<f7>") 'display-line-numbers-mode)
+(global-set-key (kbd "<M-f6>") 'emacs-lsp-company)
+
 
 ;; Git Gutter
 (use-package git-gutter
