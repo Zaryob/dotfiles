@@ -423,10 +423,13 @@
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs 
   :commands lsp-treemacs-errors-list
-  :bind (:map lsp-mode-map
+  :bind (
+	 :map lsp-mode-map
 			  ("<M-f8>" . lsp-treemacs-symbols)
-              ("<f8>"  . treemacs)
-              ("<M-f7>" . lsp-treemacs-errors-list)))
+			  ("<f8>"  . treemacs)
+			  ("<M-f7>" . lsp-treemacs-errors-list)
+	)
+)
 
 ;; optionally if you want to use debugger
 (use-package dap-mode 
