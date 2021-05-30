@@ -1,0 +1,19 @@
+emerge --sync
+rm -rf $(portageq pkgdir)/* # Clean up portage dir
+emerge -av linux-headers glibc binutils gcc-config libtool gcc
+gcc-config <new gcc release>
+source /etc/profile
+emerge -avb glibc binutils gcc libtool
+emerge -avbke system
+emerge -avbke world
+fixpackages
+emerge -avuDN world
+eselect python update
+python-updater -- -av
+perl-cleaner --all -- -av
+emerge -a --depclean
+revdep-rebuild -i -- -av
+dispatch-conf
+glsa-check -vp affected # You can have affected packages in slots after update
+emaint --check all
+
