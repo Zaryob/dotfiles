@@ -427,7 +427,7 @@
 	 :map lsp-mode-map
 			  ("<M-f8>" . lsp-treemacs-symbols)
 			  ("<f8>"  . treemacs)
-			  ("<M-f7>" . lsp-treemacs-errors-list)
+			  ("<f7>" . lsp-treemacs-errors-list)
 	)
 )
 
@@ -487,17 +487,21 @@
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
 
-(defun emacs-lsp-company ()
+(defun emacs-company-mode ()
   "Turn on a good company like mode."
+  (interactive)
+  (company-mode)
+  (display-line-numbers-mode))
+
+(defun emacs-lsp-company ()
+  "Turn on a good company like mode with lsp-mode."
   (interactive)
   (lsp-mode)
   (company-mode)
   (display-line-numbers-mode))
 
-(global-set-key (kbd "<f6>")  'company-mode)
-(global-set-key (kbd "<f7>") 'display-line-numbers-mode)
+(global-set-key (kbd "<f6>")  'emacs-company-mode)
 (global-set-key (kbd "<M-f6>") 'emacs-lsp-company)
-
 
 ;; Git Gutter
 (use-package git-gutter
