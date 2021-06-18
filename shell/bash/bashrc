@@ -172,19 +172,6 @@ fi
 # should be on the output of commands, not on the prompt
 #force_color_prompt=yes
 
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
-fi
-
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -198,18 +185,28 @@ if [[ -f /opt/ros/noetic/setup.bash ]]; then
 fi
 
 # >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/zaryob/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+# !! Contents within this block are managed by 'conda init' !!"
+if [ -d "$HOME/miniconda" ]; then
+__conda_home="miniconda3"
+elif  [ -d "$HOME/anaconda3" ]; then
+__conda_home="anaconda3"
 else
-    if [ -f "/home/zaryob/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/zaryob/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/zaryob/miniconda3/bin:$PATH"
-    fi
+__conda_home="None"
 fi
-unset __conda_setup
+if [[ __conda_home != "None" ]]; then
+    __conda_setup="$("$HOME/$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$HOME/$__conda_home/etc/profile.d/conda.sh" ]; then
+            . "$HOME/$__conda_home/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/$__conda_home/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+fi
+
 # <<< conda initialize <<<
 
 

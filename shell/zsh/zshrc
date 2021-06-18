@@ -124,3 +124,35 @@ bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
 
 
+if [[ -f /opt/ros/noetic/setup.bash ]]; then
+    source /opt/ros/noetic/setup.bash
+fi
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!"
+
+if [ -d "$HOME/miniconda" ]; then
+__conda_home="miniconda3"
+elif  [ -d "$HOME/anaconda3" ]; then
+__conda_home="anaconda3"
+else
+__conda_home="None"
+fi
+
+if [[ __conda_home != "None" ]]; then
+    __conda_setup="$("$HOME/$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$HOME/$__conda_home/etc/profile.d/conda.sh" ]; then
+            . "$HOME/$__conda_home/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/$__conda_home/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+fi
+
+# <<< conda initialize <<<
+
