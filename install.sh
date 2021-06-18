@@ -17,7 +17,7 @@
 : "${SIG_QUIT=3}"
 : "${SIG_KILL=9}"
 : "${SIG_TERM=15}"
-    
+
 dotfile_install_parts () {
   if ([[ $1 -eq "Emacs" ]] || [[ $1 -eq "Vim" ]]) && [[ ! -d $HOME/.fonts ]]
   then
@@ -26,7 +26,7 @@ dotfile_install_parts () {
     mkdir -v $HOME/.fonts
     cp -vf $HOME/.dotfiles/fonts/* $HOME/.fonts
     printf "\033[0;32m + Copied fonts\033[0m\n"
-  fi  
+  fi
   if ([[ $1 -eq "Bash" ]] || [[ $1 -eq "Zsh" ]] ||  [[ $1 -eq "Fish" ]]) && [[ ! -L $HOME/.aliases ]]
   then
     printf "\033[0;31m* Setting shells.\033[0m\n"
@@ -64,16 +64,16 @@ dotfile_install_parts () {
     ln -svf $HOME/.dotfiles/shell/zsh/zshrc $HOME/.zshrc
     ln -svf $HOME/.dotfiles/shell/zsh/zlogout $HOME/.zlogout
     ln -svf $HOME/.dotfiles/shell/zsh/zprofile $HOME/.zprofile
-    printf "\033[0;32m + Linked zsh configs\033[0m\n"  
+    printf "\033[0;32m + Linked zsh configs\033[0m\n"
     ;;
-  "Fish")
-    printf "\033[0;33m - Initializing fish \033[0m\n"
-    [ -f $HOME/.config/fish ] || rm -rf $HOME/.config/fish
-    [ -f $HOME/.local/share/fish/generated_completions ] || rm -rf $HOME/.local/share/fish/generated_completions
-    ln -sv $HOME/.dotfiles/shell/fish  $HOME/.config/fish
-    ln -sv $HOME/.dotfiles/share/fish_generated_scripts $HOME/.local/share/fish/generated_completions
-    printf "\033[0;32m + fish setted up\033[0m\n"
-    ;;
+#  "Fish")
+#    printf "\033[0;33m - Initializing fish \033[0m\n"
+#    [ -f $HOME/.config/fish ] || rm -rf $HOME/.config/fish
+#    [ -f $HOME/.local/share/fish/generated_completions ] || rm -rf $HOME/.local/share/fish/generated_completions
+#    ln -sv $HOME/.dotfiles/shell/fish  $HOME/.config/fish
+#    ln -sv $HOME/.dotfiles/share/fish_generated_scripts $HOME/.local/share/fish/generated_completions
+#    printf "\033[0;32m + fish setted up\033[0m\n"
+#    ;;
   "Tmux")
     printf "\033[0;33m - Initializing tmux \033[0m\n"
     ln -svf $HOME/.dotfiles/shell/tmux/tmux.conf $HOME/.tmux.conf
@@ -88,7 +88,7 @@ dotfile_install_parts () {
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
     ln -svf $HOME/.dotfiles/git/share/license $HOME/.local/share/license
-    printf "\033[0;32m + Initialized git \033[0m\n"  
+    printf "\033[0;32m + Initialized git \033[0m\n"
     ;;
   *)
     echo "Return code was $returncode";;
@@ -131,7 +131,7 @@ Press \Zb\ZrSPACE\Zn to toggle an option on/off. \n\n\
             for word in `cat "$tempfile"`; do
                 dotfile_install_parts $word
             done
-            
+
             echo "Result: `cat "$tempfile"`"
             ;;
         $DIALOG_CANCEL)
