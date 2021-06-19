@@ -161,9 +161,7 @@
 	         '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
-;(add-to-list 'package-archives
-;             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
-
+                                       
 ;; add gnutls algoritm 
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 
@@ -180,9 +178,9 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package))
+  (package-install 'use-package)) 
+;; (setq package-check-signature nil)
 
-                                        ; (setq package-check-signature nil)
 (unless (package-installed-p 'gnu-elpa-keyring-update)
   (setq package-check-signature nil)
   (package-refresh-contents)
@@ -269,33 +267,33 @@
 
 ;; duplicates line with Ctrl-Shift-D
 (defun duplicate-line ()
-   (interactive)
-   (save-mark-and-excursion
-     (beginning-of-line)
-     (insert (thing-at-point 'line t))))
+  (interactive)
+  (save-mark-and-excursion
+    (beginning-of-line)
+    (insert (thing-at-point 'line t))))
 
 (global-set-key (kbd "C-S-k") 'duplicate-line)
 
 ;; moves current line one line down
 (defun move-line-down ()
-   (interactive)
-   (let ((col (current-column)))
-     (save-excursion
-       (forward-line)
-       (transpose-lines 1))
-     (forward-line)
-     (move-to-column col)))
+  (interactive)
+  (let ((col (current-column)))
+    (save-excursion
+      (forward-line)
+      (transpose-lines 1))
+    (forward-line)
+    (move-to-column col)))
 (global-set-key (kbd "C-S-j") 'move-line-down)
 
 ;; moves current line one line up
 (defun move-line-up ()
-   (interactive)
-   (let ((col (current-column)))
-     (save-excursion
-       (forward-line)
-       (transpose-lines -1))
-     (forward-line -1)
-     (move-to-column col)))
+  (interactive)
+  (let ((col (current-column)))
+    (save-excursion
+      (forward-line)
+      (transpose-lines -1))
+    (forward-line -1)
+    (move-to-column col)))
 
 (global-set-key (kbd "C-S-l") 'move-line-up)
 
@@ -366,13 +364,14 @@
 						                       :path "/usr/lib/jvm/java-16-openjdk/")])
 
 ;; For python 
-;;(use-package lsp-python-ms
-;;  :ensure t
-;;  :hook (python-mode . (lambda ()
-;;                         (require 'lsp-python-ms)
-;;                         (lsp)))
-;;  :init
-;;  (setq lsp-python-ms-executable (executable-find "python-language-server")))
+(cond ( (eq system-type 'darwin)
+        (use-package lsp-python-ms
+          :ensure t
+          :hook (python-mode . (lambda ()
+                                 (require 'lsp-python-ms)
+                                 (lsp)))
+          :init
+          (setq lsp-python-ms-executable (executable-find "python-language-server")))))
 
 ;; optionally
 (use-package lsp-ui :commands lsp-ui-mode)
@@ -386,11 +385,11 @@
 (use-package lsp-treemacs 
   :commands lsp-treemacs-errors-list
   :bind (
-	 :map lsp-mode-map
-			  ("<M-f8>" . lsp-treemacs-symbols)
-			  ("<f8>" . lsp-treemacs-errors-list)
-	)
-)
+	     :map lsp-mode-map
+		 ("<M-f8>" . lsp-treemacs-symbols)
+		 ("<f8>" . lsp-treemacs-errors-list)
+	     )
+  )
 
 ;; optionally if you want to use debugger
 (use-package dap-mode 
