@@ -364,7 +364,7 @@
 						                       :path "/usr/lib/jvm/java-16-openjdk/")])
 
 ;; For python 
-(cond ( (eq system-type 'darwin)
+(cond ( (eq system-type 'windows-nt)
         (use-package lsp-python-ms
           :ensure t
           :hook (python-mode . (lambda ()
