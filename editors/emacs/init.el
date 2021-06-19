@@ -54,8 +54,7 @@
 ;;  ```
 ;;  This is related with elpa, Follow a)
 ;;
-;; c) UTF-8 Related Probles
-;;  If you get error messages like:
+;; c) UTF-8 Related Probles;;  If you get error messages like:
 ;;  ```
 ;;  Eager macro-expansion failure: (error "Unknown key: :test-id.
 ;;      Available keys: (:type :time :test-ıd :result :skipped :hidden)") [2 times]
@@ -162,8 +161,8 @@
 	         '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
-(add-to-list 'package-archives
-             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
+;(add-to-list 'package-archives
+;             '("marmalade" . "https://marmalade-repo.org/packages/") t) ; Marmale Repository
 
 ;; add gnutls algoritm 
 ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
@@ -198,7 +197,6 @@
 
 (setq user-full-name "Suleyman Poyraz"
       user-mail-address "zaryob.dev@gmail.com")
-
 
 ;;;- Emacs System Preferences -;;;
 
@@ -318,42 +316,6 @@
   :load-path "~/.emacs.d/themes/separators/powerline/")
 (powerline-default-theme)
 
-;;;- Special modes -;;;
-
-;; c++ mode
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
-
-;; html mode
-(add-to-list 'auto-mode-alist '("\\.css$" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.cfm$" . html-mode))
-
-;; css-mode
-(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
-(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
-
-;; js-mode
-                                        ;(require 'js)
-(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
-(add-to-list 'auto-mode-alist '("\\.es$" . js-mode))
-(add-to-list 'auto-mode-alist '("\\.es6$" . js-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . js-mode))
-
-;; json mode
-(add-hook 'json-mode-hook #'flycheck-mode)
-
-;; yaml mode
-(use-package yaml-mode
-  :mode ("\\.yml$" . yaml-mode))
-
-;; php mode 
-
-(use-package php-mode
-  :defer t
-  :hook (php-mode . (lambda () (progn
- 							     (setq indent-tabs-mode t)
- 							     (setq lsp-ui-doc-enable t)))))
-
 ;;;- Packages For lsp-mode -;;;
 
 ;; optional if you want which-key integration
@@ -426,8 +388,7 @@
   :bind (
 	 :map lsp-mode-map
 			  ("<M-f8>" . lsp-treemacs-symbols)
-			  ("<f8>"  . treemacs)
-			  ("<f7>" . lsp-treemacs-errors-list)
+			  ("<f8>" . lsp-treemacs-errors-list)
 	)
 )
 
@@ -454,8 +415,8 @@
   ;; requies emacs 26+
   (setq dap-ui-controls-mode t)
   :bind (:map lsp-mode-map
-			  ("<f5>" . dap-debug)
-			  ("<M-f5>" . dap-hydra))
+			  ("<f6>" . dap-debug)
+			  ("<M-f6>" . dap-hydra))
   :hook (
 		 (dap-mode . dap-ui-mode)
 		 (dap-session-created . (lambda (&_rest) (dap-hydra)))
@@ -487,21 +448,53 @@
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
 
+;;;- File specific modes -;;;
+
+;; c++ mode
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
+
+;; html mode
+(add-to-list 'auto-mode-alist '("\\.css$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.cfm$" . html-mode))
+
+;; css-mode
+(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
+
+;; js-mode
+                                        ;(require 'js)
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.es$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.es6$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . js-mode))
+
+;; json mode
+(add-hook 'json-mode-hook #'flycheck-mode)
+
+;; yaml mode
+(use-package yaml-mode
+  :mode ("\\.yml$" . yaml-mode))
+
+;; php mode 
+
+(use-package php-mode
+  :defer t
+  :hook (php-mode . (lambda () (progn
+ 							     (setq indent-tabs-mode t)
+ 							     (setq lsp-ui-doc-enable t)))))
+
+;; Add to mode
+
+;; Mode setting function for company-mode and display-line-numbers-mode
 (defun emacs-company-mode ()
   "Turn on a good company like mode."
   (interactive)
+  (global-set-key (kbd "<f5>") '(. treemacs)) 
   (company-mode)
   (display-line-numbers-mode))
 
-(defun emacs-lsp-company ()
-  "Turn on a good company like mode with lsp-mode."
-  (interactive)
-  (lsp-mode)
-  (company-mode)
-  (display-line-numbers-mode))
-
-(global-set-key (kbd "<f6>")  'emacs-company-mode)
-(global-set-key (kbd "<M-f6>") 'emacs-lsp-company)
+(add-hook 'prog-mode-hook 'emacs-company-mode)
 
 ;; Git Gutter
 (use-package git-gutter
@@ -517,7 +510,7 @@
   (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk) ;; Revert current hunk
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk) ;; Mark current hunk
   :hook (global-git-gutter-mode t))
-(global-set-key (kbd "C-x C-g") 'git-gutter-mode)  ;; If you enable git-gutter-mode for some modes
+(global-set-key (kbd "C-x g") 'git-gutter-mode)  ;; If you enable git-gutter-mode for some modes
 
 (use-package git-timemachine)
 
@@ -536,7 +529,6 @@
  '(custom-safe-themes
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
- '(delete-selection-mode nil)
  '(electric-pair-mode t)
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
