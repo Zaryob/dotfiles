@@ -528,6 +528,7 @@
  '(custom-safe-themes
    '("46b1ca9d15e7a6fdb6e3f8c94035f26d2827cc97fd05e32f4f3592d6cff7e894" default))
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
+ '(delete-selection-mode nil)
  '(electric-pair-mode t)
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
