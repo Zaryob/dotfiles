@@ -136,6 +136,8 @@ if [ -d "$HOME/miniconda" ]; then
 __conda_home="miniconda3"
 elif  [ -d "$HOME/anaconda3" ]; then
 __conda_home="anaconda3"
+elif  [ -d "$HOME/mambaforge" ]; then
+__conda_home="mambaforge"
 else
 __conda_home="None"
 fi

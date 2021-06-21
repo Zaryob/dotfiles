@@ -163,23 +163,6 @@ fi
 # added by travis gem
 [ ! -s /home/zaryob/.travis/travis.sh ] || source /home/zaryob/.travis/travis.sh
 
-
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
 if [[ -f /opt/ros/noetic/setup.bash ]]; then
     source /opt/ros/noetic/setup.bash
 fi
@@ -190,6 +173,8 @@ if [ -d "$HOME/miniconda" ]; then
 __conda_home="miniconda3"
 elif  [ -d "$HOME/anaconda3" ]; then
 __conda_home="anaconda3"
+elif  [ -d "$HOME/mambaforge" ]; then
+__conda_home="mambaforge"
 else
 __conda_home="None"
 fi
