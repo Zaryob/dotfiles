@@ -49,6 +49,11 @@ if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
     pathAppend "$HOME/Android/Sdk/platform-tools"
 fi
 
+if [ -d "$HOME/Android/Sdk/cmdline-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/cmdline-tools/bin"
+fi
+
+
 # Flutter Setup
 if [ -d "$HOME/Android/flutter/" ] ; then
     pathAppend "$HOME/Android/flutter/bin"
