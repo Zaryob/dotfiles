@@ -322,6 +322,11 @@
   :config
   (which-key-mode))
 
+(use-package quickrun
+  :ensure t
+  :bind ("C-c r" . quickrun))
+
+
 (use-package lsp-mode
   :ensure t
   :hook (
