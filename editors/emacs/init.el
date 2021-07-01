@@ -360,16 +360,36 @@
 (use-package lsp-java
   :ensure t
   :config (add-hook 'java-mode-hook 'lsp))
+                                        ;(setenv "JAVA_HOME" "/usr/lib64/jvm/java")
+                                        ;(setq lsp-java-java-path
+                                        ;"/usr/lib64/jvm/java/bin/java"))
 
-(setq lsp-java-configuration-runtimes '[(:name "JavaSE-1.8"
-						                       :path "/usr/lib/jvm/java-1.8.0/")
-					                    (:name "JavaSE-11"
-						                       :path "/usr/lib/jvm/java-11-openjdk/"
-						                       :default t)
-                                        (:name "JavaSE-16"  ; Java latest
-						                       :path "/usr/lib/jvm/java-16-openjdk/")])
+(if (file-directory-p "/usr/lib64/jvm/")                               ; if-part
+    (setq zinit-java-dir "/usr/lib64/jvm") ; then-part
+  (setq zinit-java-dir "/usr/lib64/jvm")) ; else-part
 
-;; For python 
+(setq lsp-java-configuration-runtimes '[
+                                        (if (file-directory-p "%s/java-1.8.0/" zinit-java-dir)
+                                            (:name "JavaSE-1.8"
+						                           :path "%s/java-1.8.0/"
+                                                   zinit-java-dir))
+                                        (if (file-directory-p "%s/java-11-openjdk/" zinit-java-dir)
+                                            (:name "JavaSE-11"
+                                                   :path "/usr/lib/jvm/java-11-openjdk/"
+                                                   :default
+                                                   t))
+
+                                        (if (file-directory-p "%s/java-16-openjdk/" zinit-java-dir)
+                                            (:name "JavaSE-16"  ; Java latest
+						                           :path "%s/java-16-openjdk/"
+                                                   zinit-java-dir))
+                                        ])
+
+;; current VSCode defaults
+(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+
+
+;; For python
 (cond ( (eq system-type 'windows-nt)
         (use-package lsp-python-ms
           :ensure t
