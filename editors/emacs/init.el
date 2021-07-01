@@ -364,7 +364,7 @@
                                         ;(setq lsp-java-java-path
                                         ;"/usr/lib64/jvm/java/bin/java"))
 
-(if (file-directory-p "/usr/lib64/jvm/")                               ; if-part
+(if (file-directory-p "/usr/lib64/jvm/")  ; if-part
     (setq zinit-java-dir "/usr/lib64/jvm") ; then-part
   (setq zinit-java-dir "/usr/lib64/jvm")) ; else-part
 
