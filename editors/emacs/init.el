@@ -96,7 +96,7 @@
 ;;       at Function.Module.runMain (internal/modules/cjs/loader.js:831:12)
 ;;       at startup (internal/bootstrap/node.js:283:19)
 ;;       at bootstrapNodeJSCore (internal/bootstrap/node.js:623:3)
-;; 
+;;
 ;;   Process Flutter Run stderr finished
 ;;   ```
 ;;
@@ -123,6 +123,7 @@
 ;;   Server jdtls:14460/starting exited with status exit(check corresponding stderr buffer for details). Do you want to restart it? (y or n) n
 ;;  ```
 ;;  Just follow this steps:
+;;    Ensure you are using java-11
 ;;    Delete workspace lsp-java-workspace-dir
 ;;    Delete server installation from lsp-java-server-install-dir
 ;;    Evaluating lsp-java--ls-command will give you the command that is used for starting JDT LS - you could then start it outside of emacs
@@ -161,9 +162,9 @@
 	         '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
-                                       
-;; add gnutls algoritm 
-;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+
+;; add gnutls algoritm
+                                        ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
@@ -178,7 +179,7 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)) 
+  (package-install 'use-package))
 ;; (setq package-check-signature nil)
 
 (unless (package-installed-p 'gnu-elpa-keyring-update)
@@ -252,13 +253,13 @@
 (global-auto-revert-mode t)
 
 ;; Longer whitespace, otherwise syntax highlighting is limited to default column
-(setq whitespace-line-column 1000) 
+(setq whitespace-line-column 1000)
 
 ;; Enable soft-wrap
 (global-visual-line-mode 1)
 
 ;; Maintain a list of recent files opened
-(recentf-mode 1)            
+(recentf-mode 1)
 (setq recentf-max-saved-items 50)
 
 ;;;- Key Configurations -;;;
@@ -325,21 +326,21 @@
   :ensure t
   :hook (
 		 (lsp-mode . lsp-enable-which-key-integration)
-		 (java-mode . #'lsp-deferred)
+         (java-mode . lsp)
 		 (dart-mode . lsp)
 		 )
-  :init (setq 
+  :init (setq
 		 lsp-keymap-prefix "C-c l"              ; this is for which-key integration documentation, need to use lsp-mode-map
 		 lsp-enable-file-watchers nil
 		 read-process-output-max (* 1024 1024)  ; 1 mb
 		 lsp-completion-provider :capf
 		 lsp-idle-delay 0.500
 		 lsp-diagnostic-package :flymake)
-  :config 
+  :config
   (setq lsp-intelephense-multi-root nil) ; don't scan unnecessary projects
   (with-eval-after-load 'lsp-intelephense
-	(setf 
-	 (lsp--client-multi-root 
+	(setf
+	 (lsp--client-multi-root
 	  (gethash 'iph lsp-clients))
 	 nil))
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
@@ -351,7 +352,7 @@
   (dart-mode . lsp))
 
 ;; For java mode of lsp-mode
-(use-package lsp-java 
+(use-package lsp-java
   :ensure t
   :config (add-hook 'java-mode-hook 'lsp))
 
@@ -382,7 +383,7 @@
 
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs 
+(use-package lsp-treemacs
   :commands lsp-treemacs-errors-list
   :bind (
 	     :map lsp-mode-map
@@ -392,7 +393,7 @@
   )
 
 ;; optionally if you want to use debugger
-(use-package dap-mode 
+(use-package dap-mode
   :ensure t
   :after (lsp-mode)
   :functions dap-hydra/nil
@@ -427,20 +428,20 @@
 
 
 ;; Optional packages
-(use-package projectile 
-  :ensure t 
+(use-package projectile
+  :ensure t
   :after (lsp-mode)
   :init (projectile-mode t)
   :config (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)) ;; project management
 
 
-(use-package company 
-  :ensure t 
+(use-package company
+  :ensure t
   :after (lsp-mode)) ;; Auto-complete
 
 ;; Flycheck checks for errors at runtime in code
-(use-package flycheck 
-  :ensure t 
+(use-package flycheck
+  :ensure t
   :init (global-flycheck-mode)
   :after (lsp-mode))
 
@@ -475,7 +476,7 @@
 (use-package yaml-mode
   :mode ("\\.yml$" . yaml-mode))
 
-;; php mode 
+;; php mode
 
 (use-package php-mode
   :defer t
@@ -489,7 +490,7 @@
 (defun emacs-company-mode ()
   "Turn on a good company like mode."
   (interactive)
-  (global-set-key (kbd "<f5>") '(. treemacs)) 
+  (global-set-key (kbd "<f5>") '(. treemacs))
   (company-mode)
   (display-line-numbers-mode))
 
