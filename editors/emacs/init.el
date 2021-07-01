@@ -380,8 +380,17 @@
           (setq lsp-python-ms-executable (executable-find "python-language-server")))))
 
 ;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
-
+;;(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :ensure t
+  :after (lsp-mode)
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references))
+  :init (setq lsp-ui-doc-delay 1.5
+              lsp-ui-doc-position 'bottom
+	          lsp-ui-doc-max-width 100
+              ))
 
 ;; if you are helm user
                                         ; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
