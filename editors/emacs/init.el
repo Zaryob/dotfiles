@@ -349,7 +349,7 @@
 	  (gethash 'iph lsp-clients))
 	 nil))
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  :commands lsp)
+  :commands (lsp lsp-deferred))
 
 (use-package lsp-dart
   :ensure t
