@@ -9,7 +9,7 @@ declare -a LicenseArray=("MIT" "BSD" "GPLv2" "GPLv3" "Apache" "AGPLv3" "LGPLv2" 
 
 put_license()
 {
-    cp $HOME/.dotfiles/share/license/$1 $(pwd)/LICENSE
+    cp $HOME/.dotfiles/git/share/license/$1 $(pwd)/LICENSE
 }
 
 read_license()
@@ -18,9 +18,9 @@ read_license()
 
         if  [[ $1 -eq $License ]]
         then
-            if [[ -f $HOME/.dotfiles/share/license/$1 ]]
+            if [[ -f $HOME/.dotfiles/git/share/license/$1 ]]
             then
-                less $HOME/.dotfiles/share/license/$1
+                less $HOME/.dotfiles/git/share/license/$1
                 exit 0
             else
                 echo "License file \"$1\" not exists."
@@ -40,7 +40,7 @@ if_license()
 
         if  [[ $1 -eq $License ]]
         then
-            if [[ -f $HOME/.dotfiles/share/license/$1 ]]
+            if [[ -f $HOME/.dotfiles/git/share/license/$1 ]]
             then
                 put_license $1
                 echo "Your repository licensed with \"$1\" license agreement."

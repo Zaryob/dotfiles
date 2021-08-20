@@ -76,8 +76,8 @@ if [ -d "$HOME/.ghcup/" ] ; then
 fi
 
 # special man files.
-if [ -d "$HOME/.local/man/" ] ; then
-    MANPATH=$MANPATH:$HOME/.local/man
+if [ -d "$HOME/.local/share/man" ] ; then
+    MANPATH=$MANPATH:$HOME/.local/share/man
 fi
 
 # Query terminal size; useful for serial lines.

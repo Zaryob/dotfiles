@@ -82,8 +82,8 @@ dotfile_install_parts () {
     ;;
   "Git")
     printf "\033[0;33m - Initializing git \033[0m\n"
-    mkdir -pv $HOME/.local/share/man/man1
-    ln -svf $HOME/.dotfiles/git/man/ $HOME/.local/share/man/man1
+    mkdir -pv $HOME/.local/share/man
+    ln -svf $HOME/.dotfiles/git/share/man $HOME/.local/share/man/man1
     ln -svf $HOME/.dotfiles/git/commands $HOME/.gitbin
     ln -svf $HOME/.dotfiles/git/gitconfig $HOME/.gitconfig
     ln -svf $HOME/.dotfiles/git/gitmessage $HOME/.gitmessage
