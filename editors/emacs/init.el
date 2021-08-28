@@ -272,7 +272,6 @@
   (save-mark-and-excursion
     (beginning-of-line)
     (insert (thing-at-point 'line t))))
-
 (global-set-key (kbd "C-S-k") 'duplicate-line)
 
 ;; moves current line one line down
@@ -293,10 +292,10 @@
     (save-excursion
       (forward-line)
       (transpose-lines -1))
-    (forward-line -1)
+    (forward-line)
     (move-to-column col)))
-
 (global-set-key (kbd "C-S-l") 'move-line-up)
+
 
 ;;;- Theme Configurations -;;;
 
