@@ -19,15 +19,18 @@
 : "${SIG_TERM=15}"
 
 dotfile_install_parts () {
-  if ([ $1 = "Emacs" ]) && [ ! -f  $HOME/.emacs.d/submodules/emms-player/emms-auto.el ]
+  if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && ([ ! "$(ls -A $HOME/.dotfiles/editors/emacs/submodules/emms-player/)" ]  ||  [ ! "$(ls -A $HOME/.dotfiles/editors/vim/pack/default/start/gruvbox/)" ])
   then
-    cd $HOME/.emacs.d/submodules/emms-player/
+    git submodule update --init --recursive --depth=1
+  fi
+  if ([ $1 = "Emacs" ]) && [ ! -f  $HOME/.dotfiles/editors/emacs/submodules/emms-player/emms-auto.el ]
+  then
+    cd $HOME/.dotfiles/editors/emacs/submodules/emms-player/
     make emms-auto.el
     cd $HOME/.dotfiles/
   fi
   if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && [ ! -d $HOME/.fonts ]
   then
-    git submodule update --init --recursive --depth=1
     printf "\033[0;33m - Copying fonts\033[0m\n"
     [ -f $HOME/.fonts ] || rm -rf $HOME/.fonts
     mkdir -v $HOME/.fonts
@@ -111,7 +114,6 @@ if [ ! -f "$HOME/.zaryob" ]; then
     echo "Installing Zaryob's dotfiles."
     git clone --depth=1 https://github.com/Zaryob/dotfiles.git "$HOME/.dotfiles"
     cd "$HOME/.dotfiles"
-
     tempfile=`(tempfile) 2>/dev/null` || tempfile=/tmp/test$$
     trap "rm -f $tempfile" 0 $SIG_NONE $SIG_HUP $SIG_INT $SIG_QUIT $SIG_TERM
 
