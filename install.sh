@@ -19,7 +19,7 @@
 : "${SIG_TERM=15}"
 
 dotfile_install_parts () {
-  if ([[ $1 -eq "Emacs" ]] || [[ $1 -eq "Vim" ]]) && [[ ! -d $HOME/.fonts ]]
+  if ([ $1 -eq "Emacs" ] || [ $1 -eq "Vim" ]) && [ ! -d $HOME/.fonts ]
   then
     printf "\033[0;33m - Copying fonts\033[0m\n"
     [ -f $HOME/.fonts ] || rm -rf $HOME/.fonts
@@ -27,7 +27,7 @@ dotfile_install_parts () {
     cp -vf $HOME/.dotfiles/fonts/* $HOME/.fonts
     printf "\033[0;32m + Copied fonts\033[0m\n"
   fi
-  if ([[ $1 -eq "Bash" ]] || [[ $1 -eq "Zsh" ]] ||  [[ $1 -eq "Fish" ]]) && [[ ! -L $HOME/.aliases ]]
+  if ([ $1 -eq "Bash" ] || [ $1 -eq "Zsh" ] ||  [ $1 -eq "Fish" ]) && [ ! -L $HOME/.aliases ]
   then
     printf "\033[0;31m* Setting shells.\033[0m\n"
     ln -svf $HOME/.dotfiles/shell/aliases $HOME/.aliases
