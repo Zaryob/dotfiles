@@ -1,0 +1,6 @@
+[submodule "editors/vim/pack/default/start/gruvbox"]
+	path = editors/vim/pack/default/start/gruvbox
+	url = https://github.com/morhetz/gruvbox.git
+[submodule "editors/emacs/submodules/emms-player"]
+	path = editors/emacs/submodules/emms-player
+	url = https://git.savannah.gnu.org/git/emms.git

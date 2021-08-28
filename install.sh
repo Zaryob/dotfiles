@@ -21,6 +21,7 @@
 dotfile_install_parts () {
   if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && [ ! -d $HOME/.fonts ]
   then
+    git submodule update --init --recursive --depth=1
     printf "\033[0;33m - Copying fonts\033[0m\n"
     [ -f $HOME/.fonts ] || rm -rf $HOME/.fonts
     mkdir -v $HOME/.fonts
@@ -46,7 +47,7 @@ dotfile_install_parts () {
     [ -f $HOME/.cache/vim ] || rm -rf $HOME/.cache/vim
     mkdir -vp $HOME/.cache/vim
     mkdir -vp $HOME/.vim/pack/default/start
-    bash $HOME/.dotfiles/editors/vim/gruvbox_ins.sh
+    ln -svf $HOME/.dotfiles/editors/vim/pack/default/start/gruvbox $HOME/.vim/pack/default/start/gruvbox
     printf "\033[0;32m + Installed vim plugins\033[0m\n"
     printf "\033[0;33m - Generating vim links\033[0m\n"
     ln -svf $HOME/.dotfiles/editors/vim/vimrc $HOME/.vimrc
