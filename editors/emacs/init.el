@@ -276,6 +276,7 @@
 
 ;; moves current line one line down
 (defun move-line-down ()
+  "Move down the current line."
   (interactive)
   (let ((col (current-column)))
     (save-excursion
@@ -287,12 +288,13 @@
 
 ;; moves current line one line up
 (defun move-line-up ()
+  "Move up the current line."
   (interactive)
   (let ((col (current-column)))
     (save-excursion
-      (forward-line)
-      (transpose-lines -1))
-    (forward-line)
+      (transpose-lines 1)
+      (forward-line -1))
+    (forward-line -2)
     (move-to-column col)))
 (global-set-key (kbd "C-S-l") 'move-line-up)
 
