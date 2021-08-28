@@ -562,6 +562,25 @@
   (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
+;;;- EMMS -;;;
+;(use-package emms
+;  :ensure t
+;  :config
+;  (setq emms-source-file-default-directory "~/Music/"))
+(add-to-list 'load-path "~/.emacs.d/submodules/emms-player/")
+(require 'emms-setup)
+(emms-all)
+(emms-default-players)
+(require 'emms-player-simple)
+(require 'emms-source-file)
+(require 'emms-source-playlist)
+(setq emms-player-list '(emms-player-mpg321
+                         emms-player-ogg123
+                         emms-player-mplayer))
+(setq emms-info-asynchronously nil)
+(setq emms-playlist-buffer-name "*Music Player*")
+
+
 ;;;- Key Configurations -;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

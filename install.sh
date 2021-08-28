@@ -19,6 +19,12 @@
 : "${SIG_TERM=15}"
 
 dotfile_install_parts () {
+  if ([ $1 = "Emacs" ]) && [ ! -f  $HOME/.emacs.d/submodules/emms-player/emms-auto.el ]
+  then
+    cd $HOME/.emacs.d/submodules/emms-player/
+    make emms-auto.el
+    cd $HOME/.dotfiles/
+  fi
   if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && [ ! -d $HOME/.fonts ]
   then
     git submodule update --init --recursive --depth=1
