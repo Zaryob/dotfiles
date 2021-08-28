@@ -565,10 +565,6 @@
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
 ;;;- EMMS -;;;
-;(use-package emms
-;  :ensure t
-;  :config
-;  (setq emms-source-file-default-directory "~/Music/"))
 (add-to-list 'load-path "~/.emacs.d/submodules/emms-player/")
 (require 'emms-setup)
 (emms-all)
@@ -576,12 +572,33 @@
 (require 'emms-player-simple)
 (require 'emms-source-file)
 (require 'emms-source-playlist)
+(require 'emms-volume)
+
+(setq emms-volume-change-function 'emms-volume-pulse-change)
+(setq emms-playlist-buffer-name "*Music Player*")
+(setq emms-browser-covers 'emms-browser-cache-thumbnail-async)
 (setq emms-player-list '(emms-player-mpg321
                          emms-player-ogg123
                          emms-player-mplayer))
-(setq emms-info-asynchronously nil)
-(setq emms-playlist-buffer-name "*Music Player*")
 
+(emms-player-for '(*track* (type . file)
+                  (name . "myfile.pls")))
+(setq emms-info-asynchronously nil)
+
+(setq emms-playlist-default-major-mode 'emms-playlist-mode)
+(if (file-directory-p "~/Music")  ; if-part
+    (setq emms-source-file-default-directory "~/Music/") ; then-part
+  (if (file-directory-p "~/Müzik")  ; if-part
+      (setq emms-source-file-default-directory "~/Müzik/")
+    (setq emms-source-file-default-directory "~/") ; then-part
+  )
+) ; else-part
+
+
+(global-set-key (kbd "<C-XF86Tools>") 'emms-browser)
+(global-set-key (kbd "<C-XF86AudioPlay>") 'emms-pause)
+(global-set-key (kbd "<C-XF86AudioNext>") 'emms-next)
+(global-set-key (kbd "<C-XF86AudioPrev>") 'emms-previous)
 
 ;;;- Key Configurations -;;;
 (custom-set-variables
@@ -599,6 +616,7 @@
  '(custom-theme-directory "~/.emacs.d/themes/color-themes/")
  '(delete-selection-mode nil)
  '(electric-pair-mode t)
+ '(emms-browser-default-browse-type 'info-artist)
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "**")
