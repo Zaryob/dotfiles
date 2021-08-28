@@ -460,7 +460,7 @@
 (use-package dap-java :ensure nil)
 
 
-;; Optional packages
+;;;- Optional packages for lsp-mode -;;;
 (use-package projectile
   :ensure t
   :after (lsp-mode)
@@ -517,6 +517,8 @@
  							     (setq indent-tabs-mode t)
  							     (setq lsp-ui-doc-enable t)))))
 
+
+
 ;; Add to mode
 
 ;; Mode setting function for company-mode and display-line-numbers-mode
@@ -529,7 +531,7 @@
 
 (add-hook 'prog-mode-hook 'emacs-company-mode)
 
-;; Git Gutter
+;;;- Git Gutter -;;;
 (use-package git-gutter
   :ensure t
   :config
@@ -545,8 +547,20 @@
   :hook (global-git-gutter-mode t))
 (global-set-key (kbd "C-x g") 'git-gutter-mode)  ;; If you enable git-gutter-mode for some modes
 
+;;;- Git Timemachine -;;;
 (use-package git-timemachine)
 
+;;;- Multiple lines -;;;
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-M->") 'mc/unmark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-M-<") 'mc/unmark-previous-like-this)
+  (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
 ;;;- Key Configurations -;;;
 (custom-set-variables
