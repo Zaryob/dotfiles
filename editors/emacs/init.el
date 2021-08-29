@@ -164,7 +164,8 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
 
 ;; add gnutls algoritm
-                                        ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
