@@ -29,6 +29,9 @@
     template = ~/.gitmessage
 [core]
     editor = "emacs -nw -Q"
+            abbrev = 12
+[pretty]
+        fixes = Fixes: %h (\"%s\")
 [pull]
     rebase = false
 [init]
@@ -54,4 +57,4 @@
     cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 [difftool "ediffclient"]
     cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
-          
+
