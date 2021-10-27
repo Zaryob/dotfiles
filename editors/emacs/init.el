@@ -133,6 +133,7 @@
 ;;  ```
 ;;  error in process sentinel: apply: Symbol’s value as variable is void: helm-map error in process sentinel: Symbol’s value as variable is void: helm-map
 ;;  ```
+
 ;;  Just remove `~/.emacs.d/elpa/helm-*`
 ;;
 
@@ -164,7 +165,7 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/") t) ; Melpa stable
 
 ;; add gnutls algoritm
-;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
+                                        ;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS0.3")
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; keep the installed packages in .emacs.d
@@ -360,35 +361,53 @@
 
 ;; For java mode of lsp-mode
 (use-package lsp-java
-  :ensure t
-  :config (add-hook 'java-mode-hook 'lsp))
-                                        ;(setenv "JAVA_HOME" "/usr/lib64/jvm/java")
-                                        ;(setq lsp-java-java-path
-                                        ;"/usr/lib64/jvm/java/bin/java"))
+   :ensure t
+   :config (add-hook 'java-mode-hook 'lsp))
 
 (if (file-directory-p "/usr/lib64/jvm/")  ; if-part
     (setq zinit-java-dir "/usr/lib64/jvm") ; then-part
-  (setq zinit-java-dir "/usr/lib64/jvm")) ; else-part
+  (setq zinit-java-dir "/usr/lib/jvm")) ; else-part
 
-(setq lsp-java-configuration-runtimes '[
-                                        (if (file-directory-p "%s/java-1.8.0/" zinit-java-dir)
-                                            (:name "JavaSE-1.8"
-						                           :path "%s/java-1.8.0/"
-                                                   zinit-java-dir))
-                                        (if (file-directory-p "%s/java-11-openjdk/" zinit-java-dir)
-                                            (:name "JavaSE-11"
-                                                   :path "/usr/lib/jvm/java-11-openjdk/"
-                                                   :default
-                                                   t))
 
-                                        (if (file-directory-p "%s/java-16-openjdk/" zinit-java-dir)
-                                            (:name "JavaSE-16"  ; Java latest
-						                           :path "%s/java-16-openjdk/"
-                                                   zinit-java-dir))
-                                        ])
-
-;; current VSCode defaults
-(setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m"))
+(use-package lsp-java
+  :defer t
+  :init
+  ;; (setenv "JAVA_HOME" java-home)
+  ;; (setenv "M2_HOME" m2-home)
+  ;; (setenv "PATH" (format "/bin:/usr/bin:/usr/local/bin:%s/bin:%s/bin:%s/bin" (expand-file-name "~")  java-home m2-home))
+  (setq
+        lsp-java-vmargs  '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx2G" "-Xms100m")
+        ;; lsp-java-java-path "/usr/bin/java"
+        ;; lsp-java-configuration-runtimes '[
+        ;;                          (if (file-directory-p (format "%s/java-1.8.0/" zinit-java-dir))
+        ;;                               (:name "OpenJDK-1.8 (Java8)"
+        ;;                                     :path (format "%s/java-1.8.0/" zinit-java-dir)))
+        ;;                          (if (file-directory-p (format "%s/java-8-openjdk/" zinit-java-dir))
+        ;;                               (:name "JavaSE-11"
+        ;;                                     :path (format "%s/java-11-openjdk/"  zinit-java-dir)
+        ;;                                     :default
+        ;;                                     t))
+        ;;                          (if (file-directory-p (format "%s/java-16-openjdk/" zinit-java-dir))
+        ;;                               (:name "JavaSE-16"  ; Java latest
+        ;;                                     :path (format "%s/java-16-openjdk/" zinit-java-dir)))
+        ;; ]
+        lsp-java-save-action-organize-imports nil
+        lsp-java-maven-download-sources t
+        lsp-java-autobuild-enabled nil
+        lsp-java-import-gradle-enabled nil
+        lsp-inhibit-message nil
+        lsp-java-format-on-type-enabled nil
+        lsp-java-completion-guess-arguments t
+        lsp-java-completion-overwrite nil
+        c-basic-offset 2
+        tab-width 2)
+  :hook ((java-mode . lsp))
+  :bind (("C-c j b" . lsp-java-build-project)
+         ("C-c j o" . lsp-java-organize-imports)
+         ("C-c j g g" . lsp-java-generate-getters-and-setters)
+         ("C-c j g s" . lsp-java-generate-to-string)
+         ("C-c j g e" . lsp-java-generate-equals-and-hash-code)
+         ("C-c j u" . lsp-java-update-project-configuration)))
 
 
 ;; For python
@@ -413,9 +432,6 @@
               lsp-ui-doc-position 'bottom
 	          lsp-ui-doc-max-width 100
               ))
-
-;; if you are helm user
-                                        ; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -458,10 +474,10 @@
 		 (dap-session-created . (lambda (&_rest) (dap-hydra)))
 		 (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))
 	     )
+
   )
 
 (use-package dap-java :ensure nil)
-
 
 ;;;- Optional packages for lsp-mode -;;;
 (use-package projectile
@@ -484,6 +500,10 @@
 ;; Optional Flutter packages
 (use-package hover :ensure t) ;; run app from desktop without emulator
 
+(use-package yasnippet
+  :ensure t
+  :init (yas-global-mode t)
+  :after (lsp-mode))
 ;;;- File specific modes -;;;
 
 ;; c++ mode
@@ -499,11 +519,13 @@
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 
 ;; js-mode
-                                        ;(require 'js)
 (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
 (add-to-list 'auto-mode-alist '("\\.es$" . js-mode))
 (add-to-list 'auto-mode-alist '("\\.es6$" . js-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . js-mode))
+
+;; java-mode
+(add-to-list 'auto-mode-alist '("\\.java$" . java-mode))
 
 ;; json mode
 (add-hook 'json-mode-hook #'flycheck-mode)
@@ -521,8 +543,6 @@
  							     (setq lsp-ui-doc-enable t)))))
 
 
-
-;; Add to mode
 
 ;; Mode setting function for company-mode and display-line-numbers-mode
 (defun emacs-company-mode ()
@@ -583,7 +603,7 @@
                          emms-player-mplayer))
 
 (emms-player-for '(*track* (type . file)
-                  (name . "myfile.pls")))
+                           (name . "myfile.pls")))
 (setq emms-info-asynchronously nil)
 
 (setq emms-playlist-default-major-mode 'emms-playlist-mode)
@@ -592,8 +612,8 @@
   (if (file-directory-p "~/Müzik")  ; if-part
       (setq emms-source-file-default-directory "~/Müzik/")
     (setq emms-source-file-default-directory "~/") ; then-part
-  )
-) ; else-part
+    )
+  ) ; else-part
 
 
 (global-set-key (kbd "<C-XF86Tools>") 'emms-browser)
@@ -602,6 +622,15 @@
 (global-set-key (kbd "<C-XF86AudioPrev>") 'emms-previous)
 
 ;;;- Key Configurations -;;;
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Mensch for Powerline" :foundry "PfEd" :slant normal :weight normal :height 98 :width normal)))))
+
+;;; init.el ends here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -623,11 +652,4 @@
  '(git-gutter:modified-sign "**")
  '(org-agenda-loop-over-headlines-in-active-region nil)
  '(package-selected-packages
-   '(git-timemachine yasnippet-snippets yaml-mode which-key use-package projectile popup php-mode lsp-ui lsp-java lsp-ivy lsp-dart hover gnu-elpa-keyring-update git-gutter git-gutter+ flycheck company async)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Mensch for Powerline" :foundry "PfEd" :slant normal :weight normal :height 98 :width normal)))))
-;;; init.el ends here
+   '(git-timemachine yasnippet-snippets yaml-mode which-key use-package projectile popup php-mode lsp-ui lsp-ivy lsp-dart lsp-java hover gnu-elpa-keyring-update git-gutter git-gutter+ flycheck company async)))
