@@ -204,7 +204,9 @@ __conda_home="mambaforge"
 else
 __conda_home="None"
 fi
-if [[ __conda_home != "None" ]]; then
+if [[ $__conda_home == "None" ]]; then
+    unset __conda_home
+else
     __conda_setup="$("$HOME/$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
         eval "$__conda_setup"
