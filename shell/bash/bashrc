@@ -168,14 +168,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 [ ! -s /home/zaryob/.travis/travis.sh ] || source /home/zaryob/.travis/travis.sh
 
 
-# if running bash
-if [ -n "$" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
-fi
-
 pathAppend() {
   # Only adds to the path if it's not already there
   if ! echo $PATH | egrep -q "(^|:)$1($|:)" ; then
