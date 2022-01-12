@@ -122,3 +122,100 @@ for key  kcap seq        widget (
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
+
+
+pathAppend() {
+  # Only adds to the path if it's not already there
+  if ! echo $PATH | egrep -q "(^|:)$1($|:)" ; then
+    PATH=$PATH:$1
+  fi
+}
+
+# Remove duplicate entries from PATH:
+PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    pathAppend "$HOME/bin"
+fi
+
+if [ -d "$HOME/.local/go/bin" ] ; then
+    pathAppend "$HOME/.local/go/bin"
+fi
+
+# set PATH so it includes user's private local bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    pathAppend "$HOME/.local/bin"
+fi
+
+if [ -d "$HOME/.gitbin" ] ; then
+    pathAppend "$HOME/.gitbin"
+fi
+
+if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/platform-tools"
+fi
+
+if [ -d "$HOME/Android/Sdk/cmdline-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/cmdline-tools/bin"
+fi
+
+
+# Flutter Setup
+if [ -d "$HOME/Android/flutter/" ] ; then
+    pathAppend "$HOME/Android/flutter/bin"
+    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin"
+fi
+
+# Flutter Setup while installed individually
+if [ -d "$HOME/flutter/" ] ; then
+    pathAppend "$HOME/flutter/bin"
+fi
+
+# set if rust there
+if [ -d "$HOME/.cargo/" ] ; then
+    pathAppend "$HOME/.cargo/bin"
+fi
+
+# set if haskell there
+if [ -d "$HOME/.ghcup/" ] ; then
+    pathAppend "$HOME/.ghcup/bin"
+fi
+
+# special man files.
+if [ -d "$HOME/.local/share/man" ] ; then
+    MANPATH=$MANPATH:$HOME/.local/share/man
+fi
+
+# Query terminal size; useful for serial lines.
+if [ -x /usr/bin/resizewin ] ; then /usr/bin/resizewin -z ; fi
+
+# Display a random cookie on each login.
+if [ -x /usr/bin/fortune ] ; then /usr/bin/fortune freebsd-tips ; fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!"
+if [ -d "$HOME/miniconda" ]; then
+__conda_home="miniconda3"
+elif  [ -d "$HOME/anaconda3" ]; then
+__conda_home="anaconda3"
+elif  [ -d "$HOME/mambaforge" ]; then
+__conda_home="mambaforge"
+else
+__conda_home="None"
+fi
+if [[ __conda_home != "None" ]]; then
+    __conda_setup="$("$HOME/$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$HOME/$__conda_home/etc/profile.d/conda.sh" ]; then
+            . "$HOME/$__conda_home/etc/profile.d/conda.sh"
+        else
+            export PATH="$HOME/$__conda_home/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+fi
+
+# <<< conda initialize <<<
