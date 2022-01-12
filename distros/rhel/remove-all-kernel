@@ -1,2 +1,0 @@
-dnf remove $(dnf repoquery --installonly --latest-limit=-1 )
-

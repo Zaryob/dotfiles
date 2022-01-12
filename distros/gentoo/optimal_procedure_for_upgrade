@@ -1,7 +1,0 @@
-emerge --sync
-emerge -uDav --tree world
-emerge -av --depclean
-revdep-rebuild -v -- --ask
-dispatch-conf
-glsa-check -t all
-glsa-check -f all

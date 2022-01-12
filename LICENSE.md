@@ -1,8 +1,8 @@
 # Do what the fuck you want to public license
 
-Version 0, September 
+Version 0, September
 
-Copyright (C) 2020 Suleyman Poyraz <zaryob.dev@gmail.com>
+Copyright (C) 2020-2022 Suleyman Poyraz <zaryob.dev@gmail.com>
 
 Everyone is permitted to copy and distribute verbatim or modified
 copies of this license document, and changing it is allowed as long

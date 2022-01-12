@@ -1,19 +1,19 @@
 [user]
-  name = Suleyman Poyraz
-  email = zaryob.dev@gmail.com
-  signingkey = 9F7CD0DC93792047
+	name = Suleyman Poyraz
+	email = zaryob.dev@gmail.com
+	signingkey = 9F7CD0DC93792047
 [url "ssh://git@github.com/Zaryob"]
-  insteadOf = https://github.com/Zaryob
+	insteadOf = https://github.com/Zaryob
 [url "ssh://git@gitlab.com/Zaryob"]
-  insteadOf = https://gitlab.com/Zaryob
+	insteadOf = https://gitlab.com/Zaryob
 [url "ssh://git@bitbucket.org/Zaryob"]
-  insteadOf = https://bitbucket.org/Zaryob
+	insteadOf = https://bitbucket.org/Zaryob
 [commit]
-  gpgsign = true
+	gpgsign = true
 [sendemail]
-  ; setup for using git send-email; prompts for password
-  smtpuser = zaryob.dev@gmail.com
-  smtpserver = smtp.googlemail.com
-  smtpencryption = tls
-  smtpserverport = 587
+	; setup for using git send-email; prompts for password
+	smtpuser = zaryob.dev@gmail.com
+	smtpserver = smtp.googlemail.com
+	smtpencryption = tls
+	smtpserverport = 587
 

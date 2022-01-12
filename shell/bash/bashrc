@@ -160,12 +160,12 @@ if [[ -e $HOME/.dotfiles/shell/aliases ]]; then
     source $HOME/.dotfiles/shell/aliases
 fi
 
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 # added by travis gem
 [ ! -s /home/zaryob/.travis/travis.sh ] || source /home/zaryob/.travis/travis.sh
-
-if [[ -f /opt/ros/noetic/setup.bash ]]; then
-    source /opt/ros/noetic/setup.bash
-fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!"

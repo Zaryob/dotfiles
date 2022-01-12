@@ -21,31 +21,15 @@ I use a simple black and white xdm config for my own. It needs to configure file
 
 ## For yadr and skwp dotfiles
 
-There are such config files that I use them with [skwp's Dotfiles](https://github.com/skwp/dotfiles) which is most 
+There are such config files that I use them with [skwp's Dotfiles](https://github.com/skwp/dotfiles) which is most
 beautiful dotfiles config for zsh/vim dotfiles to use it with MacOS X or other Unix programs.
 
 ## Services and Scripts
 
 I'm using very expreimental stuff comes with third party support like OpenZFS for Root, etc. That's why I need some
-extra stuff for extraordinary reasons (like service problem of `zpool` in openSUSE). I generally fix it with such kind 
+extra stuff for extraordinary reasons (like service problem of `zpool` in openSUSE). I generally fix it with such kind
 of Services and scripts.
 
 ## Other systems
 
 I'm using various systems including FreeBSD and Illumos. I gonna upload some pretty fixed that I use in that repository.
-
-
-## ScreenShots
-
-### i3wm
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-09_23-01.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-09_23-10.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-09_23-12.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-09_23-43.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-10_00-22.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-10_00-37.png?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-03-10_00-44.png?raw=true)
-
-### emacs
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-04-28_20-11.jpg?raw=true)
-![Screenshots](https://github.com/Zaryob/dotfiles/blob/main/screenshots/2021-05-11_11-54.png?raw=true)

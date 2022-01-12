@@ -1,4 +1,4 @@
-# ~/.zprofile: executed by the command interpreter for login shells.
+# ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
 # see /usr/share/doc/bash/examples/startup-files for examples.
@@ -9,11 +9,11 @@
 #umask 022
 
 
-# if running zsh
+# if running bash
 if [ -n "$" ]; then
-    # include .zshrc if it exists
-    if [ -f "$HOME/.zshrc" ]; then
-	. "$HOME/.zshrc"
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+	. "$HOME/.bashrc"
     fi
 fi
 
@@ -27,35 +27,9 @@ pathAppend() {
 # Remove duplicate entries from PATH:
 PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
 
-
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     pathAppend "$HOME/bin"
-fi
-
-
-if [ -d "$HOME/Android/Sdk/cmdline-tools/" ] ; then
-    pathAppend "$HOME/Android/Sdk/cmdline-tools/bin"
-fi
-
-if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
-    pathAppend "$HOME/Android/Sdk/platform-tools/"
-fi
-
-# Flutter Setup
-if [[ -e $HOME/Android/flutter/bin/ ]]; then
-    pathAppend "$HOME/Android/flutter/bin/"
-fi
-
-# Dart Setup with Flutter
-if [[ -e $HOME/Android/flutter/bin/cache/dart-sdk/bin/ ]]; then
-    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin/"
-fi
-
-# Flutter Setup while installed individually
-if [ -d "$HOME/flutter" ] ; then
-    pathAppend "$HOME/flutter/bin"
 fi
 
 if [ -d "$HOME/.local/go/bin" ] ; then
@@ -71,6 +45,25 @@ if [ -d "$HOME/.gitbin" ] ; then
     pathAppend "$HOME/.gitbin"
 fi
 
+if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/platform-tools"
+fi
+
+if [ -d "$HOME/Android/Sdk/cmdline-tools/" ] ; then
+    pathAppend "$HOME/Android/Sdk/cmdline-tools/bin"
+fi
+
+
+# Flutter Setup
+if [ -d "$HOME/Android/flutter/" ] ; then
+    pathAppend "$HOME/Android/flutter/bin"
+    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin"
+fi
+
+# Flutter Setup while installed individually
+if [ -d "$HOME/flutter/" ] ; then
+    pathAppend "$HOME/flutter/bin"
+fi
 
 # set if rust there
 if [ -d "$HOME/.cargo/" ] ; then
@@ -83,8 +76,8 @@ if [ -d "$HOME/.ghcup/" ] ; then
 fi
 
 # special man files.
-if [ -d "$HOME/.local/man/" ] ; then
-    MANPATH=$MANPATH:$HOME/.local/man
+if [ -d "$HOME/.local/share/man" ] ; then
+    MANPATH=$MANPATH:$HOME/.local/share/man
 fi
 
 # Query terminal size; useful for serial lines.

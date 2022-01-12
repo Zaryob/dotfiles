@@ -123,12 +123,6 @@ bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
 
-
-if [[ -f /opt/ros/noetic/setup.bash ]]; then
-    source /opt/ros/noetic/setup.bash
-fi
-
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!"
 

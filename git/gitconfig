@@ -3,58 +3,58 @@
 	email = zaryob.dev@gmail.com
 	signingkey = 9F7CD0DC93792047
 [url "ssh://git@github.com/Zaryob"]
-    insteadOf = https://github.com/Zaryob
+	insteadOf = https://github.com/Zaryob
 [url "ssh://git@gitlab.com/Zaryob"]
-    insteadOf = https://gitlab.com/Zaryob
+	insteadOf = https://gitlab.com/Zaryob
 [url "ssh://git@bitbucket.org/Zaryob"]
-    insteadOf = https://bitbucket.org/Zaryob
+	insteadOf = https://bitbucket.org/Zaryob
 [alias]
-    # Shows list of contributors of a repository.
-    contributors = shortlog --summary --numbered --email
-    # Cached changes
-    ccached = diff --cached
-    # Takes snapshot.
-    snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-    # Lists snapshots.
-    snapshots = !git stash list --grep snapshot
-    # Uncommits last commit go back before last commit, with files in uncommitted state
-    uncommit = reset --soft HEAD^
-    # Unstages last changes remove files from index (tracking)
-    unstage = reset HEAD
-    # Optimizes git repos and removes unrelated refs
-    optimize = gc --prune=now --aggressive
+	# Shows list of contributors of a repository.
+	contributors = shortlog --summary --numbered --email
+	# Cached changes
+	ccached = diff --cached
+	# Takes snapshot.
+	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+	# Lists snapshots.
+	snapshots = !git stash list --grep snapshot
+	# Uncommits last commit go back before last commit, with files in uncommitted state
+	uncommit = reset --soft HEAD^
+	# Unstages last changes remove files from index (tracking)
+	unstage = reset HEAD
+	# Optimizes git repos and removes unrelated refs
+	optimize = gc --prune=now --aggressive
 
 [commit]
-    gpgsign = true
-    template = ~/.gitmessage
+	gpgsign = true
+	template = ~/.gitmessage
 [core]
-    editor = "emacs -nw -Q"
-            abbrev = 12
+	editor = "emacs -nw -Q"
+	abbrev = 12
 [pretty]
-        fixes = Fixes: %h (\"%s\")
+	fixes = Fixes: %h (\"%s\")
 [pull]
-    rebase = false
+	rebase = false
 [init]
 	defaultBranch = main
 [help]
-    autocorrect = 1
+	autocorrect = 1
 [diff]
 	tool = ediff
 
 [merge]
-    summary = true
-    verbosity = 1
-    tool = ediff
+	summary = true
+	verbosity = 1
+	tool = ediff
 
 [mergetool "ediff"]
-    cmd = emacs -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 
 
 [mergetool "ediffclient"]
-    cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+	cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 
 [difftool "ediff"]
-    cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 [difftool "ediffclient"]
-    cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 
