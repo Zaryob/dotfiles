@@ -48,13 +48,18 @@
 
 [mergetool "ediff"]
 	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
-
+	trustExitCode = true
 
 [mergetool "ediffclient"]
 	cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+	trustExitCode = true
 
 [difftool "ediff"]
 	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	trustExitCode = true
+
 [difftool "ediffclient"]
 	cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	trustExitCode = true
+
 
