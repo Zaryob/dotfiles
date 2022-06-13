@@ -62,6 +62,12 @@ dotfile_install_parts () {
     ln -svf $HOME/.dotfiles/editors/vim/vimrc $HOME/.vimrc
     printf "\033[0;32m + Linked vim configs\033[0m\n"
     ;;
+  "SSH")
+    printf "\033[0;33m - Adding ssh config\033[0m\n"
+    [ ! -d $HOME/.ssh ] || mkdir $HOME/.ssh
+    cp $HOME/.dotfiles/ssh/config $HOME/.ssh
+    printf "\033[0;32m + Added ssh config\033[0m\n"
+    ;;
   "Bash")
     printf "\033[0;33m - Generating bash links\033[0m\n"
     ln -svf $HOME/.dotfiles/shell/bash/bash_logout $HOME/.bash_logout
@@ -120,6 +126,7 @@ Press \Zb\ZrSPACE\Zn to toggle an option on/off. \n\n\
             "Emacs"      "Editor: \Z1Emacs\Zn configs."                    ON  "emacs" \
             "Vim"        "Editor: \Z2Vim\Zn config"                        off "vim" \
             "Git"        "General git config for email and name specific"  off "git" \
+            "SSH"        "SSH"                                             off "ssh" \
             "Bash"       "Bourne Agains SHell"                             off "bash" \
             "Zsh"        "ZSH"                                             off "zsh" \
             "Fish"       "Fish"                                            off "fish" \
