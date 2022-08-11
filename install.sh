@@ -1,5 +1,11 @@
 #! /bin/sh
 
+if ! command -v dialog &> /dev/null
+then
+    echo "<dialog> could not be found"
+    exit
+fi
+
 ## DIALOG variables
 : "${DIALOG=dialog}"
 
