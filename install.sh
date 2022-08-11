@@ -25,7 +25,7 @@ fi
 : "${SIG_TERM=15}"
 
 dotfile_install_parts () {
-  if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && ([ ! "$(ls -A $HOME/.dotfiles/editors/emacs/submodules/emms-player/)" ]  ||  [ ! "$(ls -A $HOME/.dotfiles/editors/vim/pack/default/start/gruvbox/)" ])
+  if ([ $1 = "Emacs" ] || [ $1 = "Vim" ]) && ([ ! "$(ls -A $HOME/.dotfiles/editors/emacs/submodules/emms-player/)" ] )
   then
     git submodule update --init --recursive --depth=1
   fi
@@ -55,18 +55,6 @@ dotfile_install_parts () {
     [ -f $HOME/.emacs.d ] || rm -rf $HOME/.emacs.d
     ln -svf $HOME/.dotfiles/editors/emacs $HOME/.emacs.d
     printf "\033[0;33m + emacs config made\033[0m\n"
-    ;;
-  "Vim")
-    printf "\033[0;33m - Installing vim plugins\033[0m\n"
-    [ -f $HOME/.vim ] || rm -rf $HOME/.vim
-    [ -f $HOME/.cache/vim ] || rm -rf $HOME/.cache/vim
-    mkdir -vp $HOME/.cache/vim
-    mkdir -vp $HOME/.vim/pack/default/start
-    ln -svf $HOME/.dotfiles/editors/vim/pack/default/start/gruvbox $HOME/.vim/pack/default/start/gruvbox
-    printf "\033[0;32m + Installed vim plugins\033[0m\n"
-    printf "\033[0;33m - Generating vim links\033[0m\n"
-    ln -svf $HOME/.dotfiles/editors/vim/vimrc $HOME/.vimrc
-    printf "\033[0;32m + Linked vim configs\033[0m\n"
     ;;
   "SSH")
     printf "\033[0;33m - Adding ssh config\033[0m\n"
