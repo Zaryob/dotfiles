@@ -76,12 +76,6 @@ dotfile_install_parts () {
     ln -svf $HOME/.dotfiles/shell/zsh/zprofile $HOME/.zprofile
     printf "\033[0;32m + Linked zsh configs\033[0m\n"
     ;;
-  "Tmux")
-    printf "\033[0;33m - Initializing tmux \033[0m\n"
-    ln -svf $HOME/.dotfiles/shell/tmux/tmux.conf $HOME/.tmux.conf
-    ln -svf $HOME/.dotfiles/shell/tmux/tmux-themepack $HOME/.tmux-themepack
-    printf "\033[0;32m + tmux setted up\033[0m\n"
-    ;;
   "Git")
     printf "\033[0;33m - Initializing git \033[0m\n"
     mkdir -pv $HOME/.local/share/man
@@ -122,9 +116,7 @@ Press \Zb\ZrSPACE\Zn to toggle an option on/off. \n\n\
             "Git"        "General git config for email and name specific"  off "git" \
             "SSH"        "SSH"                                             off "ssh" \
             "Bash"       "Bourne Agains SHell"                             off "bash" \
-            "Zsh"        "ZSH"                                             off "zsh" \
-            "Fish"       "Fish"                                            off "fish" \
-            "Tmux"       "Tmux shell environment "                         off "tmux"  2> $tempfile
+            "Zsh"        "ZSH"                                             off "zsh"  2> $tempfile
 
     returncode=$?
 

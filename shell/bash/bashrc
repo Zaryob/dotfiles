@@ -103,14 +103,25 @@ fi
 # unset color_prompt force_color_prompt
 
 
-# Advanced prompt.
+function parse_git_branch () {
+    if [ ! -z "$( git branch 2>/dev/null | grep '^*' | colrm 1 2 )" ]
+    then
+        echo ":$( git branch 2>/dev/null | grep '^*' | colrm 1 2 )"
+    fi
+}
+
+function parse_conda_env () {
+    if [ ! -z "$CONDA_DEFAULT_ENV" ]
+    then
+        echo -e "\e[1;34m< \e[0;33mconda: \e[1;33m$(basename "$CONDA_DEFAULT_ENV")\e[1;34m > "
+    fi
+}
+
 if [ "$color_prompt" = yes ]; then
-   PS1="\[\e[0;34m\]┌─[\[\e[1;33m● \h\e[0;34m\]]─[\[\e[1;36m\u\e[0;34m\]]─[\e[00;1m\\w:\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\e[0;34m]─\[$(tput sgr0)\]\[\033[38;5;7m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\]\[\033[38;5;7m\]]\[$(tput sgr0)\]\[\033[38;5;15m\]$_EXIT_STATUS_STR: \$\[\e[0;34m\]\n\[\e[0;34m\]└─╼ \[\e[1;35m\]>> \[\e[00;00m\]"
+   PS1="\[\e[0;34m\]┌─[\[\e[1;33m● \h\e[0;34m\]]─[\[\e[1;36m\u\e[0;34m\]]─[\e[00;1m\\w\$(parse_git_branch)\e[0;34m]─\[$(tput sgr0)\]\[\033[38;5;7m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\A\[$(tput sgr0)\]\[\033[38;5;7m\]]\[$(tput sgr0)\]\[\033[38;5;15m\]$_EXIT_STATUS_STR: \$\[\e[0;34m\]\n\[\e[0;34m\]└─╼ \$(parse_conda_env)\[\e[1;35m\]>> \[\e[00;00m\]"
 else
    PS1="┌─[● \h]─[\u]─[\w:\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)]]─\[$(tput sgr0)\][\[$(tput sgr0)\]\A\[$(tput sgr0)\]]\[$(tput sgr0)\]$_EXIT_STATUS_STR: \$\n└─╼ >> "
 fi
-unset color_prompt force_color_prompt
-
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -237,33 +248,34 @@ if [ -x /usr/bin/resizewin ] ; then /usr/bin/resizewin -z ; fi
 # Display a random cookie on each login.
 if [ -x /usr/bin/fortune ] ; then /usr/bin/fortune freebsd-tips ; fi
 
+### CONDA ###
+Installations="$HOME/Installations/"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!"
-if [ -d "$HOME/miniconda" ]; then
-__conda_home="miniconda3"
-elif  [ -d "$HOME/anaconda3" ]; then
-__conda_home="anaconda3"
-elif  [ -d "$HOME/mambaforge" ]; then
-__conda_home="mambaforge"
+if [ -d "$Installations/miniconda" ]; then
+__conda_home="$Installations/miniconda3"
+elif  [ -d "$Installations/anaconda3" ]; then
+__conda_home="$Installations/anaconda3"
+elif  [ -d "$Installations/mambaforge" ]; then
+__conda_home="$Installations/mambaforge"
 else
 __conda_home="None"
 fi
-if [ $__conda_home == "None" ]; then
+if [[ $__conda_home == "None" ]]; then
     unset __conda_home
 else
-    __conda_setup="$("$HOME/$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
+    __conda_setup="$("$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
         eval "$__conda_setup"
     else
-        if [ -f "$HOME/$__conda_home/etc/profile.d/conda.sh" ]; then
-            . "$HOME/$__conda_home/etc/profile.d/conda.sh"
+        if [ -f "$__conda_home/etc/profile.d/conda.sh" ]; then
+            . "$__conda_home/etc/profile.d/conda.sh"
         else
-            export PATH="$HOME/$__conda_home/bin:$PATH"
+            export PATH="$__conda_home/bin:$PATH"
         fi
     fi
     unset __conda_setup
 fi
-
+unset Installations
 # <<< conda initialize <<<
-
-
