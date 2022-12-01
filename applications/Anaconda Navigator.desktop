@@ -1,0 +1,21 @@
+[Desktop Entry]
+Comment[en_GB]=Anaconda Launcher
+Comment=Anaconda Launcher
+Exec=bash -c 'source ~/Installations/anaconda3/bin/activate root && anaconda-navigator'
+GenericName[en_GB]=
+GenericName=
+Icon=pythonbackend
+MimeType=
+Name[en_GB]=Anaconda Navigator
+Name=Anaconda Navigator
+NoDisplay=false
+OnlyShowIn=KDE;
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
