@@ -1,35 +1,41 @@
 # dotfiles
 
-Dotfiles are configuration files of UNIX/LINUX applications. This are configurations of *zaryob*
+Personal UNIX/Linux configuration files by Zaryob. These are historical, machine-specific settings, not a supported general-purpose desktop distribution.
 
+## Review and install selected files
 
-## i3wm Installation
+Clone the repository and inspect the settings before using them. In particular, Git identity, SSH hosts, editor packages and shell paths are personal configuration.
 
-It would be destroy your .config files on your home.
-
+```sh
+git clone https://github.com/Zaryob/dotfiles.git
+cd dotfiles
+less install.sh
+sh install.sh --dry-run bash git
+sh install.sh --apply bash git
 ```
-sh -c "`curl -fsSL https://raw.githubusercontent.com/Zaryob/dotfiles/main/install.sh`"
+
+The installer defaults to a dry run. Select one or more of `bash`, `zsh`, `git`, `ssh`, `emacs`. It links the current checkout; it downloads nothing and does not initialize submodules or build editor packages.
+
+Existing destinations, including broken symbolic links, are moved to `~/.dotfiles-backups/<UTC timestamp>-<process id>/` before replacement. Already-correct links are left alone. Symlinked destination parents are rejected. The script validates all selected sources before making changes.
+
+To restore a backed-up file, stop the affected application, remove only the installed link after inspecting it, and move the saved file back to its original path. Keep the checkout while its links are in use. Backups are private (`umask 077`); no automatic cleanup deletes them.
+
+For an isolated trial, create a temporary directory yourself and pass `--target /path/to/trial`. This changes the link destination only; configuration contents may still refer to your real home and must not be executed as part of a trial.
+
+## Scope and verification
+
+The installation script uses POSIX shell, `readlink`, `mv`, `ln` and ordinary directory tools. It is tested with temporary target directories; this does not verify every configuration on Linux, macOS, FreeBSD or illumos. There is no supported OS/version matrix yet.
+
+The old interactive installer and its automatic cloning are retained in Git history. Fonts, i3/XDM system configuration, editor submodule setup and service scripts require manual review; the current installer does not modify `/etc`, install packages or run system services.
+
+Run installer regression checks without changing your home:
+
+```sh
+sh tests/install_test.sh
 ```
 
-## Extra Programs
+## Other configurations and attribution
 
-neofetch and ncmcpp (and also mpd) added. You can use them up
+The collection includes neofetch, ncmpcpp/mpd, XDM and experimental system/service settings. Some editor/shell files are intended for use with [skwp's dotfiles](https://github.com/skwp/dotfiles); original upstream credit and submodule references remain in the repository.
 
-## XDM
-
-I use a simple black and white xdm config for my own. It needs to configure files under `/etc/X11/xdm`.
-
-## For yadr and skwp dotfiles
-
-There are such config files that I use them with [skwp's Dotfiles](https://github.com/skwp/dotfiles) which is most
-beautiful dotfiles config for zsh/vim dotfiles to use it with MacOS X or other Unix programs.
-
-## Services and Scripts
-
-I'm using very expreimental stuff comes with third party support like OpenZFS for Root, etc. That's why I need some
-extra stuff for extraordinary reasons (like service problem of `zpool` in openSUSE). I generally fix it with such kind
-of Services and scripts.
-
-## Other systems
-
-I'm using various systems including FreeBSD and Illumos. I gonna upload some pretty fixed that I use in that repository.
+[License](LICENSE.md)
