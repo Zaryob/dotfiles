@@ -1,0 +1,5 @@
+channels:
+  - defaults
+# Base stays inactive; the shell prompt shows the active env itself.
+auto_activate: false
+changeps1: false

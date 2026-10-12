@@ -1,33 +1,23 @@
-# make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# Aliases shared by bash and zsh.
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
-# ble color support of ls and also add handy aliases.
-# enable color support of ls and also add handy aliases
-
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+if ls --color=auto -d . >/dev/null 2>&1; then
+    # GNU coreutils
+    if command -v dircolors >/dev/null 2>&1; then
+        if [ -r ~/.dircolors ]; then eval "$(dircolors -b ~/.dircolors)"; else eval "$(dircolors -b)"; fi
+    fi
     alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+else
+    # BSD / macOS
+    export CLICOLOR=1
 fi
+alias grep='grep --color=auto'
+alias ll='ls -lh'
+alias la='ls -lhA'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
 
+case "$(uname -s)" in
+    Darwin) alias o='open' ;;
+    *) command -v xdg-open >/dev/null 2>&1 && alias o='xdg-open' ;;
+esac

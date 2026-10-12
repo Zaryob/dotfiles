@@ -31,31 +31,46 @@ repo=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
 plan=".dotfiles|$repo"
 add() { plan="$plan
 $1|$repo/$2"; }
+# Move an obsolete file out of the way (to the backup) without linking anything.
+retire() { plan="$plan
+$1|-"; }
 for component in $components; do
     case "$component" in
         bash)
-            add .bash_logout shell/bash/bash_logout
+            add .bash_profile shell/bash/bash_profile
             add .bashrc shell/bash/bashrc
-            add .profile shell/bash/profile ;;
+            add .bash_logout shell/bash/bash_logout ;;
         zsh)
+            add .zprofile shell/zsh/zprofile
             add .zshrc shell/zsh/zshrc
             add .zlogout shell/zsh/zlogout
-            add .zprofile shell/zsh/zprofile ;;
+            retire .zshenv ;;
         git)
             add .gitconfig git/gitconfig
             add .gitmessage git/gitmessage
-            add .gitbin git/commands ;;
+            retire .gitbin
+            retire .config/git/ignore ;;
         ssh) add .ssh/config ssh/config ;;
-        emacs) add .emacs.d editors/emacs ;;
+        emacs)
+            add .emacs.d editors/emacs
+            # These would take precedence over, or belong to, the previous setup.
+            retire .emacs
+            retire .emacs.el
+            retire .spacemacs
+            retire .spacemacs.env ;;
     esac
 done
 case " $components " in
-    *" bash "*|*" zsh "*) add .aliases shell/aliases; add .inputrc shell/inputrc ;;
+    *" bash "*|*" zsh "*)
+        add .profile shell/sh/profile
+        add .aliases shell/aliases
+        add .inputrc shell/inputrc
+        add .condarc tools/conda/condarc ;;
 esac
 
 # Validate the whole plan before changing any destination.
 printf '%s\n' "$plan" | while IFS='|' read -r relative source; do
-    [ -e "$source" ] || { echo "Missing source: $source" >&2; exit 1; }
+    [ "$source" = - ] || [ -e "$source" ] || { echo "Missing source: $source" >&2; exit 1; }
     parent=$(dirname "$target/$relative")
     while [ "$parent" != "$target" ]; do
         [ ! -L "$parent" ] || { echo "Refusing symlinked destination parent: $parent" >&2; exit 1; }
@@ -69,6 +84,16 @@ backup="$target/.dotfiles-backups/$(date -u +%Y%m%dT%H%M%SZ)-$$"
 [ ! -e "$target/.dotfiles-backups" ] || [ -d "$target/.dotfiles-backups" ] || exit 1
 printf '%s\n' "$plan" | while IFS='|' read -r relative source; do
     destination="$target/$relative"
+    if [ "$source" = - ]; then
+        if [ -e "$destination" ] || [ -L "$destination" ]; then
+            echo "Retire: $destination -> $backup/$relative"
+            if [ "$mode" = apply ]; then
+                mkdir -p "$(dirname "$backup/$relative")"
+                mv "$destination" "$backup/$relative"
+            fi
+        fi
+        continue
+    fi
     if [ -L "$destination" ] && [ "$(readlink "$destination")" = "$source" ]; then
         echo "Already linked: $destination"
         continue

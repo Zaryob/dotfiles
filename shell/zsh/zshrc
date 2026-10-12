@@ -5,239 +5,100 @@
 #  /_,_|___/_| |_|_|  \___|
 #
 
-#--------------------#
-# Bootstraping
-#--------------------#
+[[ -o interactive ]] || return
 
-# If not running interactively, don't do anything.
-if [[ $- != *i* ]] ; then
-    return
+DOTFILES=${DOTFILES:-$HOME/.dotfiles}
+# Also needed for non-login shells (Linux terminals); safe to repeat.
+source "$DOTFILES/shell/env.sh"
+typeset -U path manpath
+
+#--------------------#
+# History
+#--------------------#
+HISTFILE=${HISTFILE:-$HOME/.zsh_history}
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history share_history hist_ignore_dups hist_ignore_space \
+       hist_expire_dups_first hist_verify
+
+setopt auto_cd interactive_comments no_beep
+
+#--------------------#
+# Completion
+#--------------------#
+zsh_cache=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+[[ -d $zsh_cache ]] || mkdir -p "$zsh_cache"
+[[ -n ${HOMEBREW_PREFIX:-} ]] && fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+autoload -Uz compinit
+# Full security check at most once a day; otherwise reuse the dump.
+stale_dump=("$zsh_cache"/zcompdump(N.mh+24))
+if (( ${#stale_dump} )) || [[ ! -s $zsh_cache/zcompdump ]]; then
+    compinit -d "$zsh_cache/zcompdump"
+else
+    compinit -C -d "$zsh_cache/zcompdump"
 fi
+unset stale_dump
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$zsh_cache/compcache"
+unset zsh_cache
 
 #--------------------#
-# Basic setup
+# Prompt
 #--------------------#
-
-# I prefer less to more.
-export PAGER=less
-export MANPAGER=less
-
-# I prefer to set both EDITOR and VISUAL to Vim or Neovim.
-export EDITOR=vim
-export VISUAL=vim
-
-# Don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# For setting history length see HISTSIZE and HISTFILESIZE in bash(1).
-HISTSIZE=10000
-HISTFILESIZE=2000
-
-
-# Uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [[ -n $force_color_prompt ]]; then
-    if [[ -x /usr/bin/tput ]] && tput setaf 1 >&/dev/null; then
-        # We have color support; assume it's compliant with Ecma-48
-        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-        # a case would tend to support setf rather than setaf.)
-            color_prompt=yes
-    else
-            color_prompt=
-    fi
-fi
-
-git_prompt() {
- ref=$(git symbolic-ref HEAD | cut -d'/' -f3)
- echo $ref
-}
-
-function parse_git_branch () {
-    if [ ! -z "$( git branch 2>/dev/null | grep '^*' | colrm 1 2 )" ]
-    then
-        echo ":$( git branch 2>/dev/null | grep '^*' | colrm 1 2 )"
-    fi
-}
-
-function parse_conda_env () {
-    if [ ! -z "$CONDA_DEFAULT_ENV" ]
-    then
-        echo "%{$fg[blue]%}<%{$reset_color%} %{$fg[yellow]%}conda%{$reset_color%}: %{$fg_bold[yellow]%}$(basename "$CONDA_DEFAULT_ENV")%{$reset_color%}%{$fg[blue]%} > "
-    fi
-}
-## Simple no color commands
-#PROMPT=$'%n@%m %~ $ '
-#PROMPT=$'┌─[● %m]─[%n]─[%~]─[%T]: $\n└─╼ >> '
-
-## Old prompts
-#PROMPT=$'\e[01;31m%n\e[0m\e[01;33m@\e[0m\e[01;36m%M\e[0m \e[01;33m%~\e[0m \e[01;35m$\e[0m '
-#PROMPT=$'\e[0;34m\┌─[\e[1;33m● %M\e[0;34m]─[\e[1;36m%n\e[0;34m]─[\e[1;37m%~:'$(git_prompt)%$']\e[0;34m]─[\e[1;33m%T\e[0;34m\]\e[0m: $\n\e[0;34m└─╼ \e[1;35m>> \e[00;00m'
-
-autoload -U colors && colors
-
+source "$DOTFILES/shell/functions.sh"
+autoload -Uz colors && colors
 setopt prompt_subst
 
-#PROMPT="%{$fg_bold[red]%}%n%{$reset_color%}%{$fg_bold[yellow]%}@%{$reset_color%}%{$fg_bold[blue]%}%m%{$reset_color%} %{$fg_bold[yellow]%}%~ %{$reset_color%}%$ "
-export PROMPT='%{$fg[blue]%}┌─[%{$reset_color%}%{$fg_bold[yellow]%}● %m%{$reset_color%}%{$fg[blue]%}]─[%{$reset_color%}%{$fg_bold[green]%}%n%{$reset_color%}%{$fg[blue]%}]─[%{$reset_color%}%{$fg_bold[white]%}%~%{$reset_color%}$(parse_git_branch)%{$fg[blue]%}]─%{$reset_color%}[%{$fg_bold[yellow]%}%T%{$reset_color%}]: $'$'\n''%{$fg[blue]%}└─╼ %{$reset_color%}$(parse_conda_env)%{$fg_bold[magenta]%}>> %{$reset_color%} '
-
-
-# Uncomment if you want to try an advanced prompt.
-#--------------------#
-# Plugins
-#--------------------#
-
-if [[ -d '~/.aliases' ]]; then
-	source ~/.aliases
-fi
-
-# added by travis gem
-[ ! -s /home/zaryob/.travis/travis.sh ] || source /home/zaryob/.travis/travis.sh
-
-#
-#-------------------#
-#   Keys Binds
-#-------------------#
-# shift-arrow() {
-#   ((REGION_ACTIVE)) || zle set-mark-command
-#   zle $1
-# }
-# shift-left()  shift-arrow backward-char
-# shift-right() shift-arrow forward-char
-# shift-up()    shift-arrow up-line-or-history
-# shift-down()  shift-arrow down-line-or-history
-# zle -N shift-left
-# zle -N shift-right
-# zle -N shift-up
-# zle -N shift-down
-
-# bindkey $terminfo[kLFT] shift-left
-# bindkey $terminfo[kRIT] shift-right
-# bindkey $terminfo[kri]  shift-up
-# bindkey $terminfo[kind] shift-down
-
-shift-arrow() {
-  ((REGION_ACTIVE)) || zle set-mark-command
-  zle $1
+prompt_git() {
+    local branch=$(git_branch)
+    [[ -n $branch ]] && print -n ":$branch"
 }
-for key  kcap seq        widget (
+prompt_conda() {
+    local env=$(conda_env)
+    [[ -n $env ]] && print -n "%F{blue}<%f %F{yellow}conda%f: %B%F{yellow}$env%f%b %F{blue}>%f "
+}
+# ┌─[● host]─[user]─[dir:branch]─[time]: $
+# └─╼ <conda: env> >>
+PROMPT='%F{blue}┌─[%f%B%F{yellow}● %m%f%b%F{blue}]─[%f%B%F{green}%n%f%b%F{blue}]─[%f%B%~%b$(prompt_git)%F{blue}]─%f[%B%F{yellow}%T%f%b]%(?..%F{red} %?%f): $'$'\n''%F{blue}└─╼ %f$(prompt_conda)%B%F{magenta}>>%f%b '
+
+#--------------------#
+# Key bindings
+#--------------------#
+bindkey -e
+# Shift+arrows select text.
+shift-arrow() {
+    ((REGION_ACTIVE)) || zle set-mark-command
+    zle $1
+}
+for key kcap seq widget (
     left  LFT $'\e[1;2D' backward-char
     right RIT $'\e[1;2C' forward-char
     up    ri  $'\e[1;2A' up-line-or-history
     down  ind $'\e[1;2B' down-line-or-history
-  ) {
-  functions[shift-$key]="shift-arrow $widget"
-  zle -N shift-$key
-  bindkey ${terminfo[k$kcap]-$seq} shift-$key
+) {
+    functions[shift-$key]="shift-arrow $widget"
+    zle -N shift-$key
+    bindkey ${terminfo[k$kcap]-$seq} shift-$key
 }
+unset key kcap seq widget
+bindkey '^[[H'  beginning-of-line
+bindkey '^[[F'  end-of-line
+bindkey '^[[3~' delete-char
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
 
-# Home-End-Del Keys fixed
-bindkey  "^[[H"   beginning-of-line
-bindkey  "^[[F"   end-of-line
-bindkey  "^[[3~"  delete-char
-
-
-pathAppend() {
-  # Only adds to the path if it's not already there
-  if ! echo $PATH | egrep -q "(^|:)$1($|:)" ; then
-    PATH=$PATH:$1
-  fi
-}
-
-# Remove duplicate entries from PATH:
-PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    pathAppend "$HOME/bin"
+#--------------------#
+# Extras
+#--------------------#
+[[ -r ~/.aliases ]] && source ~/.aliases
+conda_init
+if command -v fzf >/dev/null && fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
 fi
-
-if [ -d "$HOME/.local/go/bin" ] ; then
-    pathAppend "$HOME/.local/go/bin"
-fi
-
-# set PATH so it includes user's private local bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    pathAppend "$HOME/.local/bin"
-fi
-
-if [ -d "$HOME/.gitbin" ] ; then
-    pathAppend "$HOME/.gitbin"
-fi
-
-if [ -d "$HOME/Android/Sdk/platform-tools/" ] ; then
-    pathAppend "$HOME/Android/Sdk/platform-tools"
-fi
-
-if [ -d "$HOME/Android/Sdk/cmdline-tools/" ] ; then
-    pathAppend "$HOME/Android/Sdk/cmdline-tools/bin"
-fi
-
-
-# Flutter Setup
-if [ -d "$HOME/Android/flutter/" ] ; then
-    pathAppend "$HOME/Android/flutter/bin"
-    pathAppend "$HOME/Android/flutter/bin/cache/dart-sdk/bin"
-fi
-
-# Flutter Setup while installed individually
-if [ -d "$HOME/flutter/" ] ; then
-    pathAppend "$HOME/flutter/bin"
-fi
-
-# set if rust there
-if [ -d "$HOME/.cargo/" ] ; then
-    pathAppend "$HOME/.cargo/bin"
-fi
-
-# set if haskell there
-if [ -d "$HOME/.ghcup/" ] ; then
-    pathAppend "$HOME/.ghcup/bin"
-fi
-
-# special man files.
-if [ -d "$HOME/.local/share/man" ] ; then
-    MANPATH=$MANPATH:$HOME/.local/share/man
-fi
-
-# Query terminal size; useful for serial lines.
-if [ -x /usr/bin/resizewin ] ; then /usr/bin/resizewin -z ; fi
-
-# Display a random cookie on each login.
-if [ -x /usr/bin/fortune ] ; then /usr/bin/fortune freebsd-tips ; fi
-
-
-### CONDA ###
-Installations="$HOME/Installations/"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!"
-if [ -d "$Installations/miniconda" ]; then
-__conda_home="$Installations/miniconda3"
-elif  [ -d "$Installations/anaconda3" ]; then
-__conda_home="$Installations/anaconda3"
-elif  [ -d "$Installations/mambaforge" ]; then
-__conda_home="$Installations/mambaforge"
-else
-__conda_home="None"
-fi
-if [[ $__conda_home == "None" ]]; then
-    unset __conda_home
-else
-    __conda_setup="$("$__conda_home/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__conda_setup"
-    else
-        if [ -f "$__conda_home/etc/profile.d/conda.sh" ]; then
-            . "$__conda_home/etc/profile.d/conda.sh"
-        else
-            export PATH="$__conda_home/bin:$PATH"
-        fi
-    fi
-    unset __conda_setup
-fi
-unset Installations
-# <<< conda initialize <<<
+[[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
+true

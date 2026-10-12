@@ -1,0 +1,2 @@
+# ~/.profile: login environment for sh-compatible shells and Linux desktop sessions.
+. "${DOTFILES:-$HOME/.dotfiles}/shell/env.sh"
