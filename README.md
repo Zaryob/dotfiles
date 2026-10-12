@@ -46,7 +46,7 @@ Language servers for Emacs:
 - Python: `pipx install basedpyright`
 - Rust: `rustup component add rust-analyzer`
 
-Emacs builds tree-sitter grammars on first use and asks first. This needs git and a C compiler.
+Emacs 31 builds tree-sitter grammars on first use and asks first. This needs git and a C compiler. Emacs 30 (for example Debian stable) can't do this automatically: run `M-x dotfiles-install-grammars` once and restart. Until then, files open in the classic modes.
 
 ## Layout
 

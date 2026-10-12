@@ -11,6 +11,9 @@
 
 ;;; Code:
 
+(defconst dotfiles-treesit-auto (>= emacs-major-version 31)
+  "Non-nil when Emacs remaps modes and installs grammars by itself.")
+
 (setopt treesit-enabled-modes '(c-ts-mode c++-ts-mode c-or-c++-ts-mode
                                 python-ts-mode rust-ts-mode cmake-ts-mode)
         treesit-auto-install-grammar 'ask
@@ -18,14 +21,43 @@
         c-ts-mode-indent-offset 4
         c-ts-mode-indent-style 'k&r)
 
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-(add-to-list 'auto-mode-alist '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
+;; Emacs 30 (e.g. Debian stable) has neither option above: give it grammar
+;; sources (ABI 14 tags) and use a tree-sitter mode only once its grammar is
+;; installed.  Install grammars there with M-x dotfiles-install-grammars.
+(unless dotfiles-treesit-auto
+  (setq treesit-language-source-alist
+        '((c      "https://github.com/tree-sitter/tree-sitter-c" "v0.23.4")
+          (cpp    "https://github.com/tree-sitter/tree-sitter-cpp" "v0.23.4")
+          (python "https://github.com/tree-sitter/tree-sitter-python" "v0.23.6")
+          (rust   "https://github.com/tree-sitter/tree-sitter-rust" "v0.23.2")
+          (cmake  "https://github.com/uyha/tree-sitter-cmake" "v0.4.1")))
+  (pcase-dolist (`(,mode ,ts-mode ,lang)
+                 '((c-mode        c-ts-mode        c)
+                   (c++-mode      c++-ts-mode      cpp)
+                   (c-or-c++-mode c-or-c++-ts-mode cpp)
+                   (python-mode   python-ts-mode   python)))
+    (when (treesit-language-available-p lang)
+      (add-to-list 'major-mode-remap-alist (cons mode ts-mode))))
+
+  (defun dotfiles-install-grammars ()
+    "Install the tree-sitter grammars this configuration uses."
+    (interactive)
+    (dolist (lang (mapcar #'car treesit-language-source-alist))
+      (unless (treesit-language-available-p lang)
+        (treesit-install-language-grammar lang)))
+    (message "Grammars installed; restart Emacs to use the tree-sitter modes.")))
+
+(when (or dotfiles-treesit-auto (treesit-language-available-p 'rust))
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode)))
+(when (or dotfiles-treesit-auto (treesit-language-available-p 'cmake))
+  (add-to-list 'auto-mode-alist '("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode)))
 
 (defvar dotfiles-language-servers
-  '((c-ts-mode      "clangd")
-    (c++-ts-mode    "clangd")
-    (python-ts-mode "basedpyright-langserver" "pyright-langserver" "pylsp")
-    (rust-ts-mode   "rust-analyzer"))
+  (let ((c '("clangd"))
+        (python '("basedpyright-langserver" "pyright-langserver" "pylsp")))
+    `((c-ts-mode . ,c) (c++-ts-mode . ,c) (c-mode . ,c) (c++-mode . ,c)
+      (python-ts-mode . ,python) (python-mode . ,python)
+      (rust-ts-mode "rust-analyzer")))
   "Executables eglot can use for each mode, in the order eglot tries them.")
 
 (defun dotfiles-eglot-maybe ()
@@ -38,7 +70,8 @@
 
 (use-package eglot
   :ensure nil
-  :hook ((c-ts-mode c++-ts-mode python-ts-mode rust-ts-mode) . dotfiles-eglot-maybe)
+  :hook ((c-ts-mode c++-ts-mode python-ts-mode rust-ts-mode
+          c-mode c++-mode python-mode) . dotfiles-eglot-maybe)
   :bind (:map eglot-mode-map
               ("C-c l r" . eglot-rename)
               ("C-c l a" . eglot-code-actions)

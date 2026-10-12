@@ -24,6 +24,8 @@
           ("melpa"  . "https://melpa.org/packages/"))
         package-archive-priorities '(("gnu" . 3) ("nongnu" . 2) ("melpa" . 1))
         use-package-always-ensure t)
+;; Emacs 30 only applies `use-package-always-ensure' once this is loaded.
+(require 'use-package-ensure)
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :noerror :nomessage)
