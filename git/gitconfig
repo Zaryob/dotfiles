@@ -27,6 +27,8 @@
 	lg = log --graph --format='%C(auto)%h%d %s %C(dim)(%ar) %C(blue)<%an>%C(reset)'
 	# Same, across all branches.
 	lga = lg --all
+	# Removes a single commit from the current branch's history: git drop <commit>
+	drop = "!f() { [ $# -eq 1 ] || { echo 'usage: git drop <commit>' >&2; return 2; }; c=$(git rev-parse --verify --quiet \"$1^{commit}\") || { echo \"git drop: unknown commit: $1\" >&2; return 1; }; git merge-base --is-ancestor \"$c\" HEAD || { echo \"git drop: $1 is not on the current branch\" >&2; return 1; }; git rev-parse --verify --quiet \"$c^\" >/dev/null || { echo 'git drop: cannot drop the root commit' >&2; return 1; }; git rebase --autostash --rebase-merges --onto \"$c^\" \"$c\"; }; f"
 
 [tag]
 	forceSignAnnotated = true
