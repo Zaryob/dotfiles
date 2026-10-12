@@ -1,0 +1,27 @@
+#!/bin/sh
+# List the staged files under the commit template, as comments so they
+# stay out of the final message. Only for commits started from the
+# template: -m, -F, --amend, merges and squashes are left alone.
+
+msg_file="$1"
+source="${2:-}"
+
+if [ "$source" = template ]; then
+    files=$(git diff --cached --name-only)
+    template=$(git config --path commit.template)
+    if [ -n "$files" ] && [ -r "$template" ]; then
+        # Git has already written its own comments below the template;
+        # put the list between the two.
+        lines=$(wc -l < "$template")
+        list="$msg_file.list.$$"
+        tmp="$msg_file.tmp.$$"
+        trap 'rm -f "$list" "$tmp"' EXIT
+        { printf '#\n# Changed files:\n'; printf '%s\n' "$files" | sed 's/^/# - /'; } > "$list"
+        awk -v n="$lines" 'NR == FNR { l[++k] = $0; next }
+            { print } FNR == n { for (i = 1; i <= k; i++) print l[i] }' \
+            "$list" "$msg_file" > "$tmp" && mv "$tmp" "$msg_file"
+        rm -f "$list" "$tmp"
+    fi
+fi
+
+. "$(dirname "$0")/forward"

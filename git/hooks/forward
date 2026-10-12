@@ -1,0 +1,10 @@
+#!/bin/sh
+# Global core.hooksPath hides each repository's own .git/hooks. Every hook
+# in this directory ends here, so the repository's hook of the same name
+# still runs.
+hook=$(basename "$0")
+local_hook="$(git rev-parse --git-common-dir)/hooks/$hook"
+if [ -x "$local_hook" ]; then
+    exec "$local_hook" "$@"
+fi
+exit 0

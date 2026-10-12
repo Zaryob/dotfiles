@@ -37,6 +37,8 @@
 	template = ~/.gitmessage
 [core]
 	excludesFile = ~/.dotfiles/git/ignore
+	# Lists staged files in the commit editor; repositories' own hooks still run.
+	hooksPath = ~/.dotfiles/git/hooks
 	abbrev = 12
 [pretty]
 	fixes = Fixes: %h (\"%s\")
