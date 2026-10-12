@@ -1,4 +1,12 @@
-for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master `; do
-   git branch --track ${branch#remotes/origin/} $branch
+#!/bin/sh
+# Create a local tracking branch for every branch on a remote (default: origin).
+set -eu
+remote=${1:-origin}
+git for-each-ref --format='%(refname:strip=3)' "refs/remotes/$remote" |
+while IFS= read -r branch; do
+    [ "$branch" = HEAD ] && continue
+    if git show-ref --verify --quiet "refs/heads/$branch"; then
+        continue
+    fi
+    git branch --track "$branch" "$remote/$branch"
 done
-

@@ -10,7 +10,7 @@
 DOTFILES=${DOTFILES:-$HOME/.dotfiles}
 # Also needed for non-login shells (Linux terminals); safe to repeat.
 source "$DOTFILES/shell/env.sh"
-typeset -U path manpath
+typeset -U path manpath fpath
 
 #--------------------#
 # History
@@ -18,8 +18,8 @@ typeset -U path manpath
 HISTFILE=${HISTFILE:-$HOME/.zsh_history}
 HISTSIZE=50000
 SAVEHIST=50000
-setopt extended_history share_history hist_ignore_dups hist_ignore_space \
-       hist_expire_dups_first hist_verify
+setopt extended_history share_history hist_ignore_all_dups hist_ignore_space \
+       hist_reduce_blanks hist_verify
 
 setopt auto_cd interactive_comments no_beep
 
