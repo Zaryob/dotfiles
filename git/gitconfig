@@ -23,6 +23,10 @@
 	unstage = reset HEAD
 	# Optimizes git repos and removes unrelated refs
 	optimize = gc --prune=now --aggressive
+	# Compact history graph: hash, refs, subject, relative date, author.
+	lg = log --graph --format='%C(auto)%h%d %s %C(dim)(%ar) %C(blue)<%an>%C(reset)'
+	# Same, across all branches.
+	lga = lg --all
 
 [tag]
 	forceSignAnnotated = true
