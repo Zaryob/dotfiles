@@ -1,7 +1,7 @@
 [user]
 	name = Suleyman Poyraz
 	email = zaryob.dev@gmail.com
-	signingkey = 9F7CD0DC93792047
+	signingkey = DAEF6058A9D60EB608F84FE59F7CD0DC93792047
 [url "ssh://git@github.com/Zaryob"]
 	insteadOf = https://github.com/Zaryob
 [url "ssh://git@gitlab.com/Zaryob"]
@@ -14,7 +14,7 @@
 	# Cached changes
 	ccached = diff --cached
 	# Takes snapshot.
-	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+	snapshot = !git stash push -m "snapshot: $(date)" && git stash apply "stash@{0}"
 	# Lists snapshots.
 	snapshots = !git stash list --grep snapshot
 	# Uncommits last commit go back before last commit, with files in uncommitted state
@@ -24,11 +24,13 @@
 	# Optimizes git repos and removes unrelated refs
 	optimize = gc --prune=now --aggressive
 
+[tag]
+	forceSignAnnotated = true
 [commit]
 	gpgsign = true
 	template = ~/.gitmessage
 [core]
-	editor = "emacs -nw -Q"
+	excludesFile = ~/.dotfiles/git/ignore
 	abbrev = 12
 [pretty]
 	fixes = Fixes: %h (\"%s\")
@@ -37,7 +39,7 @@
 [init]
 	defaultBranch = main
 [help]
-	autocorrect = 1
+	autocorrect = prompt
 [diff]
 	tool = ediff
 
@@ -47,7 +49,7 @@
 	tool = ediff
 
 [mergetool "ediff"]
-	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+	cmd = emacs -nw \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 	trustExitCode = true
 
 [mergetool "ediffclient"]
@@ -55,11 +57,13 @@
 	trustExitCode = true
 
 [difftool "ediff"]
-	cmd = emacs -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+	cmd = emacs -nw \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 	trustExitCode = true
 
 [difftool "ediffclient"]
 	cmd = emacsclient -nw -c -a \"\"  --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
 	trustExitCode = true
 
-
+# Machine-specific overrides (optional, not tracked).
+[include]
+	path = ~/.gitconfig.local
