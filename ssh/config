@@ -1,4 +1,13 @@
+# Private hosts (LAN machines etc.) live in ~/.ssh/config.local, which is not tracked.
+Include ~/.ssh/config.local
+
 Host github.com
-Hostname ssh.github.com
-Port 443
-User git
+    HostName ssh.github.com
+    Port 443
+    User git
+
+Host *
+    IgnoreUnknown UseKeychain
+    UseKeychain yes
+    AddKeysToAgent yes
+    ServerAliveInterval 60
