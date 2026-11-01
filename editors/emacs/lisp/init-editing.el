@@ -2,25 +2,43 @@
 
 ;;; Code:
 
+(defun dotfiles-move-line (direction)
+  "Move the current line in DIRECTION (-1 or 1), keeping the column.
+Do nothing at buffer boundaries.  Preserve the final newline as written."
+  (let ((column (current-column))
+        (start (line-beginning-position))
+        (end (line-end-position)))
+    ;; Respect narrowing, including a partial first or last line.
+    (when (and (< start (point-max))
+               (if (< direction 0)
+                   (> start (point-min))
+                 (save-excursion
+                   (forward-line 1)
+                   (not (eobp)))))
+      (let* ((other-start (save-excursion
+                            (forward-line direction)
+                            (line-beginning-position)))
+             (other-end (save-excursion
+                          (goto-char other-start)
+                          (line-end-position))))
+        (atomic-change-group
+          (if (< direction 0)
+              (progn
+                (transpose-regions other-start other-end start end)
+                (goto-char other-start))
+            (transpose-regions start end other-start other-end)
+            (goto-char (+ start (- other-end other-start) 1)))
+          (move-to-column column))))))
+
 (defun dotfiles-move-line-down ()
   "Move the current line down, keeping the column."
   (interactive)
-  (let ((col (current-column)))
-    (save-excursion
-      (forward-line)
-      (transpose-lines 1))
-    (forward-line)
-    (move-to-column col)))
+  (dotfiles-move-line 1))
 
 (defun dotfiles-move-line-up ()
   "Move the current line up, keeping the column."
   (interactive)
-  (let ((col (current-column)))
-    (save-excursion
-      (transpose-lines 1)
-      (forward-line -1))
-    (forward-line -2)
-    (move-to-column col)))
+  (dotfiles-move-line -1))
 
 (keymap-global-set "C-S-d" #'kill-whole-line)
 (keymap-global-set "C-S-k" #'duplicate-dwim)

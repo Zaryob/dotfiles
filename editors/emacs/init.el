@@ -2,7 +2,7 @@
 
 ;; Author: Suleyman Poyraz <zaryob.dev@gmail.com>
 ;; URL: https://github.com/Zaryob/dotfiles
-;; Requires Emacs 31 (built-in use-package, eglot, tree-sitter modes).
+;; Requires Emacs 30+ (built-in use-package, eglot, tree-sitter modes).
 
 ;;; Commentary:
 
@@ -11,6 +11,9 @@
 ;; ignored by git.
 
 ;;; Code:
+
+(when (< emacs-major-version 30)
+  (error "This configuration requires Emacs 30 or newer"))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -36,7 +39,12 @@
 (require 'init-completion)
 (require 'init-editing)
 (require 'init-prog)
+(require 'init-cmake)
+(require 'init-cpp)
 (require 'init-vc)
+(require 'init-project)
+(require 'init-build)
+(require 'init-help)
 
 ;; Machine-specific additions, not tracked.
 (load (locate-user-emacs-file "local.el") :noerror :nomessage)

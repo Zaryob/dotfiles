@@ -35,13 +35,13 @@ To try the result in isolation, pass `--target /some/empty/dir`.
 macOS (Homebrew):
 
 ```sh
-brew install git gnupg emacs llvm fzf ripgrep
+brew install git gnupg emacs llvm cmake ninja fzf ripgrep
 ```
 
 Debian/Ubuntu:
 
 ```sh
-sudo apt install zsh git gnupg emacs clangd fzf ripgrep build-essential
+sudo apt install zsh git gnupg emacs clangd cmake ninja-build lldb gdb fzf ripgrep build-essential
 ```
 
 Language servers for Emacs:
@@ -58,7 +58,10 @@ Emacs 31 builds tree-sitter grammars on first use and asks first. This needs git
 - `editors/emacs/` contains `early-init.el`, `init.el` and `lisp/init-*.el`:
   - completion: vertico, orderless, marginalia, consult, corfu
   - languages: eglot with tree-sitter modes for C/C++, Python and Rust
+  - C++: clangd, CMake targets, CTest, snippets and Dape debugging; see the [C++ workflow and keys](editors/emacs/README.md)
   - git: magit, diff-hl
+  - projects: Projectile and Treemacs, with an `M-m` leader menu and a Magit
+    branch/commit graph; see the [project and Git keys](editors/emacs/README.md#first-project)
   - Packages, grammars and caches are written next to the configuration and ignored by git.
 
 ## Docker shortcuts
@@ -106,10 +109,19 @@ These files are read if they exist and are never tracked:
 ```sh
 sh tests/install_test.sh
 sh tests/docker_test.sh
+sh tests/emacs_test.sh
+sh tests/emacs_cpp_test.sh
+sh tests/emacs_project_test.sh
+sh tests/emacs_build_test.sh
 ```
 
 The installer test runs against a temporary directory and never touches `$HOME`.
 The Docker test checks argument forwarding and exit statuses in Bash and zsh
 using a temporary fake executable; it requires no Docker installation or daemon.
+The Emacs tests use isolated configuration state and require Emacs 30+.
+The C++ integration checks also use temporary CMake projects and require CMake
+and a C++ compiler.
+The project suite also needs the configured Emacs packages installed; it uses
+temporary projects and a temporary branching Git repository.
 
 [License](LICENSE.md)

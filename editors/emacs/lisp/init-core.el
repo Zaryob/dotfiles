@@ -46,11 +46,12 @@
 
 ;; macOS: Command is Meta, Option stays available for typing characters.
 (when (eq system-type 'darwin)
-  (setq mac-command-modifier 'meta
+  (setq dired-use-ls-dired nil
+        mac-command-modifier 'meta
         mac-option-modifier 'none
         mac-right-option-modifier 'none)
   ;; GUI Emacs started from the Dock does not see the shell's PATH.
-  (when (and (display-graphic-p) (not (getenv "DOTFILES")))
+  (when (and (or (display-graphic-p) (daemonp)) (not (getenv "DOTFILES")))
     (let ((path (shell-command-to-string
                  "$SHELL -lc 'printf %s \"$PATH\"' 2>/dev/null")))
       (unless (string-empty-p path)

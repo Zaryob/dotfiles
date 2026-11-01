@@ -6,13 +6,23 @@
         modus-themes-italic-constructs t)
 (load-theme 'modus-vivendi t)
 
-;; Use the first installed font; fonts are installed by the package manager.
-(when (display-graphic-p)
-  (when-let* ((font (seq-find (lambda (f) (find-font (font-spec :family f)))
-                              '("JetBrains Mono" "Iosevka" "Fira Code"
-                                "Menlo" "DejaVu Sans Mono"))))
-    (set-face-attribute 'default nil :family font
-                        :height (if (eq system-type 'darwin) 140 110))))
+(require 'seq)
+
+(defun dotfiles-configure-frame (frame)
+  "Apply the preferred font to graphical FRAME, including emacsclient frames."
+  (when (display-graphic-p frame)
+    (with-selected-frame frame
+      (when-let* ((font (seq-find
+                         (lambda (family) (find-font (font-spec :family family) frame))
+                         '("JetBrains Mono" "Iosevka" "Fira Code"
+                           "Menlo" "DejaVu Sans Mono"))))
+        (set-face-attribute 'default frame :family font
+                            :height (if (eq system-type 'darwin) 140 110))))))
+
+;; Daemons have no graphical frame while init.el runs.
+(add-hook 'after-make-frame-functions #'dotfiles-configure-frame)
+(dolist (frame (frame-list))
+  (dotfiles-configure-frame frame))
 
 (setopt frame-title-format '((:eval (if buffer-file-name
                                         (abbreviate-file-name buffer-file-name)
@@ -24,6 +34,16 @@
         which-key-idle-delay 0.5)
 
 (which-key-mode)
+
+;; Open files as tabs above the editor, like an IDE.
+(setopt tab-line-close-button-show 'selected
+        tab-line-new-button-show nil)
+(global-tab-line-mode)
+(with-eval-after-load 'tab-line
+  (dolist (mode '(treemacs-mode dotfiles-welcome-mode compilation-mode))
+    (add-to-list 'tab-line-exclude-modes mode)))
+(when (display-graphic-p)
+  (pixel-scroll-precision-mode))
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'hl-line-mode)
 (add-hook 'text-mode-hook #'visual-line-mode)

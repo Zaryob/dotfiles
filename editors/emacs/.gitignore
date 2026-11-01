@@ -3,4 +3,6 @@
 !/.gitignore
 !/early-init.el
 !/init.el
+!/README.md
 !/lisp/
+/lisp/*.elc

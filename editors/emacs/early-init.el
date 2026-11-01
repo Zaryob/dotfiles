@@ -1,5 +1,19 @@
 ;;; early-init.el --- Startup settings applied before the first frame -*- lexical-binding: t; -*-
 
+;; Older bundled libgccjit versions infer a nonexistent macOS 18 deployment
+;; target on Darwin 27.  Choose a valid baseline for native Lisp compilation
+;; before package activation can start workers.  Keep explicit user targets.
+(when (and (eq system-type 'darwin)
+           (version<= "25" operating-system-release)
+           (native-comp-available-p))
+  (require 'seq)
+  (defvar native-comp-driver-options '("-Wl,-w"))
+  (unless (or (getenv "MACOSX_DEPLOYMENT_TARGET")
+              (seq-some (lambda (option)
+                          (string-prefix-p "-mmacosx-version-min=" option))
+                        native-comp-driver-options))
+    (push "-mmacosx-version-min=11.0" native-comp-driver-options)))
+
 ;; Collect garbage rarely during startup; init.el restores a sane value.
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)

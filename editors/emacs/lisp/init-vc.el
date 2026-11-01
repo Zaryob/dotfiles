@@ -5,6 +5,13 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+(defun dotfiles-git-graph ()
+  "Show a colored commit graph for all local and remote refs.
+RET inspects a commit, TAB expands a section and q returns to editing."
+  (interactive)
+  (require 'magit)
+  (magit-log-all '("--graph" "--decorate" "--color" "-n256")))
+
 ;; Change markers in the fringe; hunk commands are on C-x v [ ] and C-x v *.
 (use-package diff-hl
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
