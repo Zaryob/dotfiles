@@ -24,7 +24,9 @@ sh install.sh --apply zsh bash git ssh emacs
 
 The installer defaults to a dry run and only creates symbolic links. It installs no packages and runs no network commands.
 
-Existing files are moved to `~/.dotfiles-backups/<UTC timestamp>-<pid>/` before being replaced. Files from older setups that would interfere are moved there too, with no replacement: `.zshenv`, `.gitbin`, `.config/git/ignore`, `.emacs`, `.emacs.el`, `.spacemacs`, `.spacemacs.env`. Nothing is deleted. To undo, remove the link and move the saved file back.
+Existing files are moved to `~/.dotfiles-backups/<UTC timestamp>-<pid>/` before being replaced. Files from older setups that would interfere are moved there too, with no replacement: `.gitbin`, `.config/git/ignore`, `.emacs`, `.emacs.el`, `.spacemacs`, `.spacemacs.env`. Existing `.zshenv` settings are preserved so non-interactive shells keep their environment. Nothing is deleted. To undo, remove the link and move the saved file back.
+
+Before switching an existing machine, merge its private SSH host definitions into `~/.ssh/config.local`, and retain machine-specific Git and shell settings in the local files below. Backups preserve the old files, but only these local files keep their settings active after installation.
 
 To try the result in isolation, pass `--target /some/empty/dir`.
 

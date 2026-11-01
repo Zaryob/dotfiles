@@ -24,8 +24,8 @@ while [ "$#" -gt 0 ]; do
 done
 [ -n "$components" ] || { usage; exit 2; }
 [ -d "$target" ] || { echo "Target must be an existing directory" >&2; exit 2; }
-target=$(CDPATH= cd -- "$target" && pwd -P)
-repo=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+target=$(CDPATH='' cd -- "$target" && pwd -P)
+repo=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)
 [ "$target" != "$repo" ] || { echo "Target must differ from the checkout" >&2; exit 2; }
 
 plan=".dotfiles|$repo"
@@ -44,7 +44,9 @@ for component in $components; do
             add .zprofile shell/zsh/zprofile
             add .zshrc shell/zsh/zshrc
             add .zlogout shell/zsh/zlogout
-            retire .zshenv ;;
+            # Keep non-interactive environment settings (e.g. cargo) intact.
+            # This setup only manages login and interactive startup files.
+            ;;
         git)
             add .gitconfig git/gitconfig
             add .gitmessage git/gitmessage
