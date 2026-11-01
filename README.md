@@ -53,13 +53,36 @@ Emacs 31 builds tree-sitter grammars on first use and asks first. This needs git
 ## Layout
 
 - `shell/env.sh` is shared by sh, bash and zsh. It sets up Homebrew (`/opt/homebrew`, `/usr/local` or Linuxbrew), cargo, the Android SDK, `~/.local/bin`, the git commands below, and `EDITOR` (emacsclient, falling back to vim).
-- `shell/functions.sh` holds the prompt helpers and `conda_init`. `conda_init` loads `~/miniconda3`, `~/miniforge3`, `~/anaconda3` or a Homebrew cask install, whichever exists.
+- `shell/functions.sh` holds the Docker shortcuts, prompt helpers and `conda_init`. `conda_init` loads `~/miniconda3`, `~/miniforge3`, `~/anaconda3` or a Homebrew cask install, whichever exists.
 - `git/commands/` adds `git browse`, `git license`, `git getb`, `git stats` and more. Their man pages are in `git/share/man`.
 - `editors/emacs/` contains `early-init.el`, `init.el` and `lisp/init-*.el`:
   - completion: vertico, orderless, marginalia, consult, corfu
   - languages: eglot with tree-sitter modes for C/C++, Python and Rust
   - git: magit, diff-hl
   - Packages, grammars and caches are written next to the configuration and ignored by git.
+
+## Docker shortcuts
+
+Bash and zsh load a shared `docker()` function with Git-style subcommand shortcuts:
+
+| Shortcut | Expands to |
+|----------|------------|
+| `docker cu` | `docker compose up -d` |
+| `docker cub` | `docker compose up -d --build` |
+| `docker cd` | `docker compose down` |
+| `docker cl` | `docker compose logs -f --tail=100` |
+| `docker ce` | `docker compose exec` |
+| `docker cr` | `docker compose run --rm` |
+
+Arguments after the shortcut are passed through, so `docker cl api` follows the
+`api` service logs and `docker ce api sh` opens a shell in that service. Leading
+Docker options are preserved: `docker --context remote cu api` runs
+`docker --context remote compose up -d api`. Short forms such as `-cremote` and
+grouped options such as `-Dc remote` also work.
+
+Native commands, leading help/version flags and unrecognized leading options are
+forwarded unchanged. Use `command docker` to bypass the shortcuts. They apply
+to interactive Bash and zsh sessions; they require Docker with Compose installed.
 
 ## Machine-specific settings
 
@@ -82,8 +105,11 @@ These files are read if they exist and are never tracked:
 
 ```sh
 sh tests/install_test.sh
+sh tests/docker_test.sh
 ```
 
-The test runs the installer against a temporary directory and never touches `$HOME`.
+The installer test runs against a temporary directory and never touches `$HOME`.
+The Docker test checks argument forwarding and exit statuses in Bash and zsh
+using a temporary fake executable; it requires no Docker installation or daemon.
 
 [License](LICENSE.md)
