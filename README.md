@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal configuration for zsh, bash, git, ssh and Emacs, used on macOS and Linux.
+Personal configuration for zsh, bash, git, ssh, Emacs and iTerm2, used on macOS and Linux.
 
 | Module  | Links into `$HOME` |
 |---------|--------------------|
@@ -10,6 +10,7 @@ Personal configuration for zsh, bash, git, ssh and Emacs, used on macOS and Linu
 | `git`   | `.gitconfig`, `.gitmessage` |
 | `ssh`   | `.ssh/config` |
 | `emacs` | `.emacs.d` |
+| `iterm2` (macOS) | `Library/Application Support/iTerm2/DynamicProfiles/dotfiles.json`, `.config/iterm2/themes` |
 
 Every module also links the checkout itself as `~/.dotfiles`; the shell, git and Emacs files refer to that path.
 
@@ -29,6 +30,27 @@ Existing files are moved to `~/.dotfiles-backups/<UTC timestamp>-<pid>/` before 
 Before switching an existing machine, merge its private SSH host definitions into `~/.ssh/config.local`, and retain machine-specific Git and shell settings in the local files below. Backups preserve the old files, but only these local files keep their settings active after installation.
 
 To try the result in isolation, pass `--target /some/empty/dir`.
+
+## Terminal themes and prompts
+
+```sh
+sh install.sh --dry-run zsh bash iterm2
+sh install.sh --apply zsh bash iterm2
+```
+
+iTerm2 gains **Dotfiles Zsh Night/Day** and **Dotfiles Bash Night/Day** login
+profiles with matching dark/light themes. Select them in iTerm2's Profiles menu.
+Use `iterm-profile day` / `iterm-profile night` to switch the current tab,
+or `iterm-profile` for a selector.
+Existing profiles are retained. Native `.itermcolors` presets can also be
+imported into other profiles; see [iTerm2 setup](terminal/iterm2/README.md).
+
+In either shell, use `prompt` for an interactive selector, `prompt simple` for
+one line, or `prompt extended` for two lines. The choice is remembered across
+Bash/Zsh sessions; `prompt --session simple` changes only the current session.
+Both layouts show `!` unstaged, `+` staged, `?` untracked, `✖` conflicts,
+`↓` commits to pull and `↑` commits to push. Counts use cached upstream refs
+without accessing the network. See [prompt options and examples](shell/README.md).
 
 ## Packages
 
@@ -53,7 +75,10 @@ Emacs 31 builds tree-sitter grammars on first use and asks first. This needs git
 ## Layout
 
 - `shell/env.sh` is shared by sh, bash and zsh. It sets up Homebrew (`/opt/homebrew`, `/usr/local` or Linuxbrew), cargo, the Android SDK, `~/.local/bin`, the git commands below, and `EDITOR` (emacsclient, falling back to vim).
-- `shell/functions.sh` holds the Docker shortcuts, prompt helpers and `conda_init`. `conda_init` loads `~/miniconda3`, `~/miniforge3`, `~/anaconda3` or a Homebrew cask install, whichever exists.
+- `shell/functions.sh` holds the Docker shortcuts, Git/Conda utilities and `conda_init`. `conda_init` loads `~/miniconda3`, `~/miniforge3`, `~/anaconda3` or a Homebrew cask install, whichever exists.
+- `shell/prompt.sh` is the shared Bash/Zsh renderer, Git status helper and persistent `prompt` selector.
+- `shell/iterm2.sh` switches the current tab's iTerm2 profile with `iterm-profile`.
+- `terminal/iterm2/` contains Night/Day color palettes, native themes and Bash/Zsh login profiles.
 - `git/commands/` adds `git browse`, `git license`, `git getb`, `git stats` and more. Their man pages are in `git/share/man`.
 - `editors/emacs/` contains `early-init.el`, `init.el` and `lisp/init-*.el`:
   - completion: vertico, orderless, marginalia, consult, corfu
@@ -109,6 +134,10 @@ These files are read if they exist and are never tracked:
 ```sh
 sh tests/install_test.sh
 sh tests/docker_test.sh
+sh tests/prompt_test.sh
+python3 tests/prompt_pty_test.py
+python3 tests/iterm2_test.py
+python3 tests/iterm_profile_test.py
 sh tests/emacs_test.sh
 sh tests/emacs_cpp_test.sh
 sh tests/emacs_project_test.sh

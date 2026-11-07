@@ -48,20 +48,8 @@ unset zsh_cache
 # Prompt
 #--------------------#
 source "$DOTFILES/shell/functions.sh"
-autoload -Uz colors && colors
-setopt prompt_subst
-
-prompt_git() {
-    local branch=$(git_branch)
-    [[ -n $branch ]] && print -n ":$branch"
-}
-prompt_conda() {
-    local env=$(conda_env)
-    [[ -n $env ]] && print -n "%F{blue}<%f %F{yellow}conda%f: %B%F{yellow}$env%f%b %F{blue}>%f "
-}
-# ┌─[● host]─[user]─[dir:branch]─[time]: $
-# └─╼ <conda: env> >>
-PROMPT='%F{blue}┌─[%f%B%F{yellow}● %m%f%b%F{blue}]─[%f%B%F{green}%n%f%b%F{blue}]─[%f%B%~%b$(prompt_git)%F{blue}]─%f[%B%F{yellow}%T%f%b]%(?..%F{red} %?%f): $'$'\n''%F{blue}└─╼ %f$(prompt_conda)%B%F{magenta}>>%f%b '
+source "$DOTFILES/shell/prompt.sh"
+source "$DOTFILES/shell/iterm2.sh"
 
 #--------------------#
 # Key bindings
@@ -100,5 +88,6 @@ conda_init
 if command -v fzf >/dev/null && fzf --zsh >/dev/null 2>&1; then
     source <(fzf --zsh)
 fi
+dotfiles_prompt_init
 [[ -r ~/.zshrc.local ]] && source ~/.zshrc.local
 true

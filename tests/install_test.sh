@@ -58,3 +58,27 @@ sh "$repo/install.sh" --dry-run --target "$target" emacs > "$trial/retire-dry.lo
 grep -q 'Retire:' "$trial/retire-dry.log"
 echo 'PASS: dry run, backup, idempotence, spaces, broken links, unsafe-parent rejection, preserved zshenv and retired files'
 
+# iTerm2 manages only the named profile file, retaining unrelated user profiles.
+profiles="$target/Library/Application Support/iTerm2/DynamicProfiles"
+mkdir -p "$profiles"
+printf 'old profile\n' > "$profiles/dotfiles.json"
+printf 'unrelated\n' > "$profiles/personal.json"
+sh "$repo/install.sh" --dry-run --target "$target" iterm2 > "$trial/iterm-dry.log"
+[ "$(cat "$profiles/dotfiles.json")" = 'old profile' ]
+[ ! -e "$target/.config/iterm2/themes" ]
+sh "$repo/install.sh" --apply --target "$target" iterm2 > "$trial/iterm-apply.log"
+[ -L "$profiles/dotfiles.json" ]
+[ "$(readlink "$profiles/dotfiles.json")" = "$repo/terminal/iterm2/profiles.json" ]
+[ -L "$target/.config/iterm2/themes" ]
+[ "$(cat "$profiles/personal.json")" = unrelated ]
+[ "$(cat "$target"/.dotfiles-backups/*/Library/Application\ Support/iTerm2/DynamicProfiles/dotfiles.json)" = 'old profile' ]
+sh "$repo/install.sh" --apply --target "$target" iterm2 > "$trial/iterm-repeat.log"
+if grep -q '^Back up:' "$trial/iterm-repeat.log"; then exit 1; fi
+mkdir "$trial/unsafe-home"
+ln -s "$trial/elsewhere" "$trial/unsafe-home/Library"
+if sh "$repo/install.sh" --apply --target "$trial/unsafe-home" iterm2 > "$trial/iterm-refuse.log" 2>&1; then
+    echo 'Expected iTerm2 symlink-parent rejection' >&2; exit 1
+fi
+[ ! -e "$trial/unsafe-home/.dotfiles" ]
+echo 'PASS: iTerm2 dry run, backup, idempotence, unrelated profiles and unsafe parents'
+

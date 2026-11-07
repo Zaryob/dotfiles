@@ -4,7 +4,7 @@ set -eu
 umask 077
 
 usage() {
-    echo "Usage: sh install.sh [--dry-run|--apply] [--target DIR] bash zsh git ssh emacs"
+    echo "Usage: sh install.sh [--dry-run|--apply] [--target DIR] bash zsh git ssh emacs iterm2"
     echo "Default: dry run. Select at least one component. DIR must already exist."
 }
 mode=dry-run
@@ -16,7 +16,7 @@ while [ "$#" -gt 0 ]; do
         --apply) mode=apply ;;
         --target) shift; [ "$#" -gt 0 ] || { usage; exit 2; }; target=$1 ;;
         --help|-h) usage; exit 0 ;;
-        bash|zsh|git|ssh|emacs)
+        bash|zsh|git|ssh|emacs|iterm2)
             case " $components " in *" $1 "*) ;; *) components="$components $1" ;; esac ;;
         *) echo "Unknown option or component: $1" >&2; usage; exit 2 ;;
     esac
@@ -53,6 +53,9 @@ for component in $components; do
             retire .gitbin
             retire .config/git/ignore ;;
         ssh) add .ssh/config ssh/config ;;
+        iterm2)
+            add 'Library/Application Support/iTerm2/DynamicProfiles/dotfiles.json' terminal/iterm2/profiles.json
+            add .config/iterm2/themes terminal/iterm2/themes ;;
         emacs)
             add .emacs.d editors/emacs
             # These would take precedence over, or belong to, the previous setup.
