@@ -58,6 +58,41 @@
         (setenv "PATH" path)
         (setq exec-path (append (parse-colon-path path) (list exec-directory)))))))
 
+;; Terminal Emacs has no clipboard of its own: share the macOS one, so text
+;; copied here pastes in other applications and the other way round.
+(defvar dotfiles-clipboard--last nil
+  "Text last exchanged with the system clipboard from a terminal frame.")
+
+(defun dotfiles-clipboard-copy (text)
+  "Put TEXT on the system clipboard, through pbcopy in a terminal frame."
+  (if (display-graphic-p)
+      (gui-select-text text)
+    (setq dotfiles-clipboard--last text)
+    (let ((process-connection-type nil)
+          (coding-system-for-write 'utf-8)
+          (default-directory temporary-file-directory)
+          (process-environment (cons "LC_CTYPE=UTF-8" process-environment)))
+      (with-temp-buffer
+        (insert text)
+        (call-process-region (point-min) (point-max) "pbcopy")))))
+
+(defun dotfiles-clipboard-paste ()
+  "Return the system clipboard when another application changed it."
+  (if (display-graphic-p)
+      (gui-selection-value)
+    (let* ((coding-system-for-read 'utf-8)
+           (default-directory temporary-file-directory)
+           (process-environment (cons "LC_CTYPE=UTF-8" process-environment))
+           (text (with-temp-buffer
+                   (call-process "pbpaste" nil t)
+                   (buffer-string))))
+      (unless (or (string-empty-p text) (equal text dotfiles-clipboard--last))
+        (setq dotfiles-clipboard--last text)))))
+
+(when (and (eq system-type 'darwin) (executable-find "pbcopy"))
+  (setq interprogram-cut-function #'dotfiles-clipboard-copy
+        interprogram-paste-function #'dotfiles-clipboard-paste))
+
 ;; Lets emacsclient (the $EDITOR set by the shell) reuse this session.
 (require 'server)
 (unless (or noninteractive (server-running-p))

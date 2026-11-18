@@ -10,10 +10,9 @@
 ;; A Python buffer always runs and debugs as Python.  Force a choice per
 ;; project with (dotfiles-build-system . make) in .dir-locals.el.
 ;;
-;; Keys (VSCode and CLion style):
-;;   C-S-b / C-<f9>   build          F5          debug / continue
-;;   C-<f5> / S-<f10> run            S-<f5>      stop
-;;   S-<f9>           debug          F9          toggle breakpoint
+;; Keys (bound in init-keys.el; the rest is under M-m c and M-m d):
+;;   F5   debug / continue      F7   build
+;;   F6   run                   F8   test
 ;; With a prefix argument (C-u), build asks for a target or a command.
 
 ;;; Code:
@@ -410,7 +409,7 @@ PREDICATE limits the accepted files."
                      (if detected
                          (format "%s in %s" (car detected)
                                  (abbreviate-file-name (cdr detected)))
-                       "none (C-S-b runs M-x compile)")))
+                       "none (Build runs M-x compile)")))
       (pcase-dolist (`(,name ,found ,hint)
                      `(("CMake" ,(executable-find "cmake")
                         ,(if brew "brew install cmake" "apt install cmake"))
@@ -438,33 +437,7 @@ PREDICATE limits the accepted files."
                        (or found (format "missing  ->  %s" hint)))))
       (princ "\nAfter installing a language server, reopen the file or run M-x eglot-reconnect.\n"))))
 
-;;;; Keys and windows
-
-(dolist (binding '(("C-S-b"   . dotfiles-build)
-                   ("C-<f9>"  . dotfiles-build)
-                   ("<f5>"    . dotfiles-debug-or-continue)
-                   ("C-<f5>"  . dotfiles-run)
-                   ("S-<f10>" . dotfiles-run)
-                   ("S-<f9>"  . dotfiles-debug)
-                   ("S-<f5>"  . dotfiles-stop)))
-  (keymap-global-set (car binding) (cdr binding)))
-
-(defun dotfiles-build-bind (map)
-  "Point MAP's build keys at the commands for every build system."
-  (keymap-set map "c" #'dotfiles-configure)
-  (keymap-set map "b" #'dotfiles-build)
-  (keymap-set map "t" #'dotfiles-test)
-  (keymap-set map "r" #'dotfiles-run)
-  (keymap-set map "d" #'dotfiles-debug)
-  (keymap-set map "e" #'dotfiles-doctor))
-
-(dotfiles-build-bind project-prefix-map)
-(defvar dotfiles-build-map)
-(with-eval-after-load 'init-project
-  (dotfiles-build-bind dotfiles-build-map)
-  ;; Only the leader map: C-c p x and C-c p k keep their project.el commands.
-  (keymap-set dotfiles-build-map "x" #'dotfiles-clean)
-  (keymap-set dotfiles-build-map "k" #'dotfiles-stop))
+;;;; Windows
 
 ;; Build and program output opens in a bottom panel, as in an IDE.
 (add-to-list 'display-buffer-alist

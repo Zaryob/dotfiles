@@ -1,16 +1,16 @@
-;;; init-project.el --- Spacemacs-style project navigation -*- lexical-binding: t; -*-
+;;; init-project.el --- Project navigation -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; M-m is the leader key, without changing Emacs's editing keys.
 ;; Projectile manages projects; Treemacs shows their files and Git state.
-;; C-c p keeps the existing project.el/CMake commands.
+;; The keys are under M-m p (init-keys.el); C-x p stays Emacs's own menu.
 
 ;;; Code:
 
 (require 'cl-lib)
 (require 'project)
 (require 'seq)
+(require 'subr-x)
 
 (defun dotfiles-project-visit ()
   "Open the selected project in Dired with its Treemacs sidebar."
@@ -69,8 +69,31 @@
   :custom
   (treemacs-width 32)
   (treemacs-persist-file (locate-user-emacs-file "var/treemacs-persist"))
-  (treemacs-is-never-other-window t)
+  (treemacs-is-never-other-window nil)
   :config
+  ;; Default's PNG icons have mostly empty terminal fallbacks.  Keep its
+  ;; graphical icons and supply Unicode icons that need no Nerd Font in a TTY.
+  (treemacs-create-theme "Dotfiles"
+    :extends "Default"
+    :icon-directory (treemacs-join-path treemacs-dir "icons/default")
+    :config
+    (let ((icons (treemacs-theme->tui-icons (treemacs-current-theme))))
+      (maphash
+       (lambda (extension icon)
+         (let ((name (format "%s" extension)))
+           (cond
+            ((and (or (stringp extension) (memq extension '(root-closed dir-closed)))
+                  (string-suffix-p "-closed" name))
+             (puthash extension "📁 " icons))
+            ((and (or (stringp extension) (memq extension '(root-open dir-open)))
+                  (string-suffix-p "-open" name))
+             (puthash extension "📂 " icons))
+            ((and (string-match-p "\\`[[:space:]]*\\'" icon)
+                  (or (stringp extension) (eq extension 'fallback)
+                      (string-suffix-p "-mode" name)))
+             (puthash extension "📄 " icons)))))
+       icons)))
+  (treemacs-load-theme "Dotfiles")
   (treemacs-follow-mode 1)
   (treemacs-filewatch-mode 1)
   (treemacs-git-mode 'simple))
@@ -80,59 +103,6 @@
 
 (use-package treemacs-magit
   :after (treemacs magit))
-
-(defvar dotfiles-leader-map (make-sparse-keymap "Leader"))
-(defvar dotfiles-project-map (make-sparse-keymap "Project"))
-(defvar dotfiles-git-map (make-sparse-keymap "Git"))
-(defvar dotfiles-build-map (make-sparse-keymap "Build and debug"))
-(defvar dotfiles-file-map (make-sparse-keymap "Files"))
-(defvar dotfiles-buffer-map (make-sparse-keymap "Buffers"))
-
-(keymap-global-set "M-m" dotfiles-leader-map)
-(dolist (group `(("p" "project" ,dotfiles-project-map)
-                 ("g" "git" ,dotfiles-git-map)
-                 ("c" "build/debug" ,dotfiles-build-map)
-                 ("f" "files" ,dotfiles-file-map)
-                 ("b" "buffers" ,dotfiles-buffer-map)))
-  (keymap-set dotfiles-leader-map (car group) (cons (cadr group) (caddr group))))
-(keymap-set dotfiles-leader-map "SPC" #'execute-extended-command)
-(keymap-set dotfiles-leader-map "w" (cons "windows" window-prefix-map))
-
-(keymap-set dotfiles-project-map "p" #'projectile-switch-project)
-(keymap-set dotfiles-project-map "a" #'projectile-add-and-switch-project)
-(keymap-set dotfiles-project-map "f" #'projectile-find-file)
-(keymap-set dotfiles-project-map "b" #'projectile-switch-to-buffer)
-(keymap-set dotfiles-project-map "r" #'projectile-recentf)
-(keymap-set dotfiles-project-map "s" #'dotfiles-project-search)
-(keymap-set dotfiles-project-map "t" #'dotfiles-project-tree)
-(keymap-set dotfiles-project-map "d" #'projectile-dired)
-(keymap-set dotfiles-project-map "D" #'projectile-discover-projects-in-search-path)
-(keymap-set dotfiles-project-map "x" #'projectile-remove-known-project)
-(keymap-set dotfiles-project-map "k" #'projectile-kill-buffers)
-
-(keymap-set dotfiles-git-map "s" #'magit-status)
-(keymap-set dotfiles-git-map "g" #'dotfiles-git-graph)
-(keymap-set dotfiles-git-map "l" #'dotfiles-git-graph)
-(keymap-set dotfiles-git-map "b" #'magit-show-refs-head)
-(keymap-set dotfiles-git-map "f" #'magit-log-buffer-file)
-(keymap-set dotfiles-git-map "d" #'magit-diff-unstaged)
-(keymap-set dotfiles-git-map "B" #'magit-blame-addition)
-
-(keymap-set dotfiles-build-map "c" #'dotfiles-cmake-configure)
-(keymap-set dotfiles-build-map "b" #'dotfiles-cmake-build)
-(keymap-set dotfiles-build-map "t" #'dotfiles-cmake-test)
-(keymap-set dotfiles-build-map "r" #'dotfiles-cmake-run)
-(keymap-set dotfiles-build-map "d" #'dotfiles-cpp-debug)
-(keymap-set dotfiles-build-map "s" #'dotfiles-cmake-settings)
-(keymap-set dotfiles-build-map "C" #'compile)
-
-(keymap-set dotfiles-file-map "f" #'find-file)
-(keymap-set dotfiles-file-map "s" #'save-buffer)
-(keymap-set dotfiles-file-map "r" #'consult-recent-file)
-(keymap-set dotfiles-buffer-map "b" #'consult-buffer)
-(keymap-set dotfiles-buffer-map "d" #'kill-current-buffer)
-(keymap-set dotfiles-buffer-map "n" #'next-buffer)
-(keymap-set dotfiles-buffer-map "p" #'previous-buffer)
 
 (provide 'init-project)
 ;;; init-project.el ends here

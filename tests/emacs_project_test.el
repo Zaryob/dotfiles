@@ -20,6 +20,7 @@
 (require 'init-cpp)
 (require 'init-vc)
 (require 'init-project)
+(require 'init-keys)
 
 (defun dotfiles-project-test--write (file text)
   (make-directory (file-name-directory file) t)
@@ -49,7 +50,7 @@
            (kill-buffer buffer)))
        (delete-directory trial t))))
 
-(ert-deftest dotfiles-project-leader-preserves-emacs-and-cmake-keys ()
+(ert-deftest dotfiles-project-leader-preserves-emacs-keys ()
   (dolist (entry '(("M-m p p" . projectile-switch-project)
                    ("M-m p a" . projectile-add-and-switch-project)
                    ("M-m p f" . projectile-find-file)
@@ -58,10 +59,12 @@
                    ("M-m g g" . dotfiles-git-graph)
                    ("M-m g s" . magit-status)
                    ("M-m g b" . magit-show-refs-head)
-                   ("M-m c b" . dotfiles-cmake-build)
-                   ("C-c p b" . dotfiles-cmake-build)
+                   ("M-m c b" . dotfiles-build)
+                   ("M-m d b" . dape-breakpoint-toggle)
+                   ("M-m l r" . eglot-rename)
+                   ("C-x p f" . project-find-file)
                    ("C-x C-f" . find-file)
-                   ("C-SPC" . set-mark-command)))
+                   ("C-x C-s" . save-buffer)))
     (should (eq (key-binding (kbd (car entry))) (cdr entry)))))
 
 (ert-deftest dotfiles-project-discovery-and-project-el-bridge ()
@@ -102,15 +105,39 @@
       (should (derived-mode-p 'dired-mode))
       (should (equal default-directory first))
       (should (eq (treemacs-current-visibility) 'visible))
+      (let ((editor-window (selected-window))
+            (tree-window (get-buffer-window (treemacs-get-local-buffer))))
+        (call-interactively (key-binding (kbd "C-x o")))
+        (should (eq (selected-window) tree-window))
+        (call-interactively (key-binding (kbd "C-x o")))
+        (should (eq (selected-window) editor-window)))
       (projectile-add-and-switch-project second)
       (should (equal default-directory second))
       (with-current-buffer (treemacs-get-local-buffer)
         (should (string-match-p "first" (buffer-string)))
-        (should (string-match-p "second" (buffer-string))))
+        (should (string-match-p "second" (buffer-string)))
+        (should (string-match-p "📂 " (buffer-string)))
+        (should (string-match-p "📄 .*source\\.txt" (buffer-string))))
       (dotfiles-project-tree)
       (should-not (eq (treemacs-current-visibility) 'visible))
       (dotfiles-project-tree)
       (should (eq (treemacs-current-visibility) 'visible)))))
+
+(ert-deftest dotfiles-project-icons-preserve-graphical-theme ()
+  "Supply terminal icons without replacing Default's graphical images."
+  (require 'treemacs)
+  (let ((default-theme (treemacs--find-theme "Default"))
+        (theme (treemacs-current-theme)))
+    (should (equal (treemacs-theme->name theme) "Dotfiles"))
+    (maphash (lambda (extension icon)
+               (should (equal-including-properties
+                        icon (gethash extension (treemacs-theme->gui-icons theme)))))
+             (treemacs-theme->gui-icons default-theme))
+    (with-temp-buffer
+      (treemacs--select-icon-set)
+      (dolist (extension '(root-open root-closed dir-open dir-closed
+                          "src-open" "src-closed" fallback "py" "el"))
+        (should (string-match-p "[^[:space:]]" (gethash extension treemacs-icons)))))))
 
 (ert-deftest dotfiles-git-graph-shows-branches-and-merge ()
   "Render a real branching repository through Magit, without changing it."

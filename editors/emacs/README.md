@@ -43,7 +43,7 @@ sudo apt install emacs git build-essential cmake ninja-build clangd lldb gdb rip
 
 Python debugging and tests need `debugpy` and `pytest` in the project's Python
 (`python -m pip install debugpy pytest`). The debugger offers to install debugpy
-when it is missing. `C-c p e` lists every tool with its install command.
+when it is missing. `M-m c e` lists every tool with its install command.
 
 Use an Emacs build with tree-sitter support, version 30 or newer. Install a recent
 LLVM/LLDB package if your distribution does not provide `lldb-dap`. Versioned
@@ -61,126 +61,122 @@ initial window; macOS daemon sessions also import the login shell's PATH.
 
 ## Start here
 
+Every key below works in a terminal. Meta (`M-`) is the **left Option** key in
+iTerm2 (the right one still types `@`, `#`, `{`), Alt on Linux and Command in the
+macOS app. Pressing `Esc` first always works too.
+
 Emacs opens on a welcome screen with buttons for projects, recent files, the
 command palette and the cheatsheet. Three keys are enough to begin:
 
-- **`C-S-p`** (Ctrl+Shift+P): the command palette, as in VSCode. Type part of a
-  name, such as `break` or `rename`; each command shows its shortcut, so the
-  keys come with use. In a terminal, use `M-m SPC`. Any `M-x` command name also
-  runs from here.
-- **`C-c ?`**: cheatsheet with the first keys to learn and every palette command
-  that has a shortcut. Click a name to run it.
-- **`C-g`**: cancel whatever is happening.
+- **`M-m`**: the menu. Everything this configuration adds is behind it. Press
+  it and the groups below are listed on screen; press a group's letter and its
+  commands are listed.
+- **`M-m M-m`** (hold Option, tap `m` twice): the command palette. Type part of
+  a name, such as `break` or `rename`; each command shows its shortcut, so the
+  keys come with use. Any `M-x` command name also runs from here.
+- **`C-g`**: cancel whatever is happening, including after `C-x p`, `C-x w`
+  or any `M-m` menu prefix.
 
-Right-click in code for Run, Debug, Toggle Breakpoint, Rename, Quick Fix and
-Format. With text selected, `C-c`, `C-x` and `C-v` copy, cut and paste (CUA);
-without a selection they remain Emacs prefixes. `C-z` / `C-S-z` undo and redo.
-Add `(cua-mode -1)` to `local.el` for the classic Emacs keys.
+`M-m ?` opens a cheatsheet; press `RET` or click on a name to run it.
 
-Open files appear as tabs above the editor. Errors and warnings appear at the
+Emacs's own keys are untouched: `C-x C-f` opens a file, `C-x C-s` saves, `C-x b`
+switches buffers, `C-x p` is the built-in project menu and `C-h k` explains a
+key. With text selected, `C-c`, `C-x` and `C-v` copy, cut and paste (CUA) and
+`C-z` / `M-z` undo and redo; add `(cua-mode -1)` to `local.el` for the classic
+keys.
+
+In a terminal on macOS, copy and paste use the system clipboard, so text moves
+between Emacs and other applications. The mouse works: click to place the
+cursor or press a button, scroll, and right-click in code for Run, Debug,
+Breakpoint, Rename, Quick Fix and Format. Hold Option while dragging to select
+text with iTerm2 itself.
+
+## Keys
+
+Every key below is defined in one file, `lisp/init-keys.el`.
+
+| Menu | Group | Keys |
+| --- | --- | --- |
+| `M-m M-m` | Palette | Find any command by name |
+| `M-m ?` | Cheatsheet | |
+| `M-m p` | Project | `p` switch, `a` add a folder, `f` find file, `s` search, `t` tree, `b` buffers, `r` recent, `d` Dired, `D` rescan, `x` forget, `k` close its buffers |
+| `M-m g` | Git | `s` status (also `C-x g`), `g` commit graph, `b` branches and tags, `f` file history, `d` unstaged diff, `B` blame |
+| `M-m c` | Build | `c` configure, `b` build, `B` build a chosen target, `t` test, `r` run, `q` run this file alone, `x` clean, `k` stop, `s` CMake build directory and type, `e` check installed tools, `C` custom command, `l` repeat last |
+| `M-m d` | Debug | `d` start or continue, `b` breakpoint, `n` step over, `i` step in, `o` step out, `c` continue, `r` restart, `q` quit, `w` watch, `v` variables and stack, `D` custom Dape configuration |
+| `M-m e` | Edit | `p` / `n` move the line up / down, `d` duplicate, `k` delete the line, `m` add a cursor at the next match, `u` remove it, `a` cursors on all matches, `l` a cursor on each selected line, `r` redo |
+| `M-m l` | Code | `r` rename, `a` quick fix, `f` format, `o` organize imports, `d` documentation, `i` inlay hints, `h` header/source |
+| `M-m f` | Files | `f` open, `s` save, `r` recent |
+| `M-m b` | Buffers | `b` switch, `d` close, `n` / `p` next / previous |
+| `M-m w` | Windows | Emacs's `C-x w` menu |
+
+After `M-m e p`, `n`, `d`, `m` or `u`, the last letter alone repeats: `M-m e d d d`
+duplicates a line three times.
+
+Direct keys, for what you press all day:
+
+| Key | Action |
+| --- | --- |
+| `F5` / `F6` / `F7` / `F8` | Debug or continue / run / build / test |
+| `F9` | Toggle breakpoint |
+| `F10` / `F11` / `F12` | Step over / into / out |
+| `M-<up>` / `M-<down>` | Move the line up / down |
+| `C-z` / `M-z` | Undo / redo |
+| `M-.` / `M-,` / `M-?` | Go to definition / back / find references |
+| `M-s l` / `M-s r` | Search this buffer / the project with ripgrep |
+| `M-g i` / `M-g f` | Go to a symbol / a problem in this file |
+| `M-g n` / `M-g p` | Next / previous build error |
+
+On a Mac laptop the function keys need `Fn` unless "Use F1, F2, etc. keys as
+standard function keys" is on, and macOS takes `F11` for Show Desktop by
+default; every one of them is also under `M-m c` or `M-m d`.
+No Vim/modal editing package is enabled.
+
+## Projects
+
+`M-m p a` adds a project directory and opens it with the Treemacs sidebar. Use a
+Git repository, a CMake project, or a directory containing an empty `.projectile`
+marker. Projects directly under `~/Development`, `~/Projects` and `~/projects` are
+discovered on their own. In the tree, `TAB` expands a directory, `RET` opens a
+file and `?` shows help; it follows the current file and marks Git changes.
+Use `C-x o` to move between the sidebar and the editor.
+Graphical Emacs uses Treemacs's image icons. Terminal Emacs uses Unicode folder
+and file icons, without requiring a Nerd Font.
+
+Open files and Welcome appear as tabs above the editor. `M-m b n` / `M-m b p`
+or `C-x <right>` / `C-x <left>` cycle through them in their visible order,
+wrapping from the last tab to the first and back. Errors and warnings appear at the
 end of their line; build and program output opens in a bottom panel.
 
-## Everyday editing
+In the commit graph (`M-m g g`), `RET` opens a commit, `+` shows more than the
+first 256 and `q` goes back. Remote refs reflect the last fetch.
 
-- `C-x C-f`: open a file; `C-x b`: find an open buffer or recent file.
-- `M-s l`: search the current buffer; `M-s r`: search with ripgrep.
-- `C-x g`: open Magit; `C-c c`: compile; `C-c C`: repeat compilation.
-- `C-S-j` / `C-S-l`: move a line down/up, preserving its column and final newline.
-- `C-S-k`: duplicate; `C-S-d`: delete the whole line.
-- `C-h k`: explain a key; `C-h v`: inspect an option. Pause after a prefix to see
-  available keys through Which Key.
+## Build, run, test and debug
 
-Personal overrides belong in `~/.emacs.d/local.el`, which loads last. Restart
-Emacs after changing startup settings.
-
-## First project
-
-The Spacemacs-style leader is **`M-m`**, keeping ordinary Emacs editing keys.
-On this macOS configuration, Meta is Command, so press Command+M, release it,
-then the remaining keys. On Linux/terminal Emacs, use Alt+M (or `Esc m`).
-Pause after the leader or a group key to see Which Key's available commands.
-
-- `M-m p a`: choose a new project directory, remember it, and open Dired plus
-  the Treemacs sidebar. Use a Git repository, a CMake project, or a directory
-  containing an empty `.projectile` marker.
-- `M-m p p`: switch to a known project. Projects directly under `~/Development`,
-  `~/Projects` and `~/projects` are discovered when those directories exist.
-  `M-m p D` rescans these locations; `M-m p x` forgets a project without deleting
-  its files.
-- `M-m p f`: find a project file; `M-m p b`: switch among its open buffers;
-  `M-m p r`: recent project files; `M-m p s`: search the entire project.
-- `M-m p t`: show/hide the tree. In Treemacs, `TAB` expands a directory, `RET`
-  opens a file, and `?` shows help. Multiple projects can stay in the sidebar.
-
-The tree follows the current file, watches filesystem changes, and marks Git
-changes. Magit operations refresh its Git status. Projectile also makes non-VC
-projects available to Emacs's built-in project system and Eglot.
-
-## Git visualizer
-
-- `M-m g g` (or `M-m g l`): colored commit graph across all local and remote
-  refs, including branch labels and merges. The initial view shows 256 commits;
-  `+` shows more. Remote refs reflect the last fetch.
-- `RET` on a commit opens its changes; `q` returns to the previous view.
-- `M-m g s` or `C-x g`: Magit status, staging, commits and other Git operations.
-- `M-m g b`: compare branches and tags; `M-m g f`: current file's history;
-  `M-m g d`: unstaged diff; `M-m g B`: blame the current file.
-
-Other leader groups are `M-m f` for files, `M-m b` for buffers, `M-m w` for
-windows (the built-in `C-x w` menu), and `M-m c` for the existing CMake commands:
-`c` configure, `b` build, `t` test, `r` run, `d` debug and `s` build settings.
-`M-m SPC` opens the command palette and `M-m ?` the cheatsheet; `M-m c x` cleans
-and `M-m c k` stops a running build. No Vim/modal editing package is enabled.
-The existing `C-c p` and `C-c d` shortcuts remain available.
-
-## C++ project workflow
-
-1. Open a C++ file in a project containing `CMakeLists.txt`, or use
-   `C-c p p` to switch to a known project.
-2. Press `C-c p c` to configure. The defaults use `build/`, a Debug build and Ninja
-   when available. Configuration enables `CMAKE_EXPORT_COMPILE_COMMANDS` and
-   requests CMake's File API metadata for target discovery.
-3. Press `C-c p b` to build. Follow compiler errors with `M-g n` / `M-g p`, or
-   `C-x \`` / `M-x previous-error`.
-4. Press `C-c p t` to build and run CTest, `C-c p r` to build and run an executable, or
-   `C-c p d` / `F5` to build and debug one. Choose a target when prompted and enter
-   program arguments, using quotes around arguments containing spaces.
-
-Build, run and debug commands use the configured build directory. Executable
-selection comes from CMake's File API. Build, test, run and debug configure first
-when needed. Run and debug wait for a successful build before launching the
-chosen target; programs start with the project root as their working directory.
-
-clangd starts automatically in C/C++ buffers when installed. It needs the correct
-include paths, definitions and C++ standard from `compile_commands.json` to give
-accurate results. Configuration links the build's database into the project root
-when safe; existing user-owned files are preserved. CMake exports the database
-with Ninja and Makefile generators. Other generators, including Xcode, do not
-export it. See [clangd project setup](https://clangd.llvm.org/installation#project-setup)
-and [CMake's export option](https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html).
-
-## Make and Python projects
-
-The build keys detect the project's build system from the nearest
-`CMakeLists.txt`, then `Makefile` (`GNUmakefile`, `makefile`), then
+The same keys work in every project. The build system is detected from the
+nearest `CMakeLists.txt`, then `Makefile` (`GNUmakefile`, `makefile`), then
 `pyproject.toml`, `setup.py` or `setup.cfg`:
 
-| Action | Keys | CMake | Make | Python |
+| Action | Key | CMake | Make | Python |
 | --- | --- | --- | --- | --- |
-| Build | `C-S-b`, `C-F9`, `C-c p b` | `cmake --build` | `make -k -jN` | `pip install -e .` |
-| Build (choose) | `C-u C-S-b` | target name | Makefile target | `setup.py build_ext --inplace`, `setup.py build`, `python -m build` |
-| Run | `C-F5`, `S-F10`, `C-c p r` | executable target | chosen program, after `make` | current `.py` file |
-| Test | `C-c p t` | CTest | `make test`, `check` or `tests` | pytest, else unittest |
-| Debug | `F5`, `S-F9`, `C-c p d` | lldb-dap/GDB | lldb-dap/GDB, after `make` | debugpy |
-| Configure | `C-c p c` | `cmake -S -B` | `./configure` (or `autogen.sh`) | create `.venv` and `pip install -e .` |
+| Configure | `M-m c c` | `cmake -S -B` | `./configure` (or `autogen.sh`) | create `.venv` and `pip install -e .` |
+| Build | `F7` | `cmake --build` | `make -k -jN` | `pip install -e .` |
+| Build (choose) | `M-m c B` | target name | Makefile target | `setup.py build_ext --inplace`, `setup.py build`, `python -m build` |
+| Run | `F6` | executable target | chosen program, after `make` | current `.py` file |
+| Test | `F8` | CTest | `make test`, `check` or `tests` | pytest, else unittest |
+| Debug | `F5` | lldb-dap/GDB | lldb-dap/GDB, after `make` | debugpy |
 | Clean | `M-m c x` | `clean` target | `make clean` | `setup.py clean --all` |
-| Stop | `S-F5`, `M-m c k` | debugger, else the running build or program | | |
+| Stop | `M-m c k` | debugger, else the running build or program | | |
+
+CMake defaults to `build/`, a Debug build and Ninja when available. Build, test,
+run and debug configure first when needed; run and debug wait for a successful
+build, ask for a target and program arguments, and start in the project root.
+Executable targets come from CMake's File API.
 
 A Python buffer always runs and debugs as Python, even beside a Makefile. Python
 commands use the project's `.venv`, `venv` or `env` first, then `$VIRTUAL_ENV`,
 then `python3`. Make projects ask for the program to run or debug once and offer
 it again next time. Build programs with debug symbols (`-g`) for breakpoints.
-Without any build file, `C-S-b` runs `M-x compile`.
+Without any build file, `F7` runs `M-x compile`.
 
 To force one build system for a project, add it to `.dir-locals.el`:
 
@@ -188,72 +184,22 @@ To force one build system for a project, add it to `.dir-locals.el`:
 ((nil . ((dotfiles-build-system . make))))
 ```
 
-## Keys
+clangd starts automatically in C/C++ buffers when installed, with background
+indexing and clang-tidy checks. It needs `compile_commands.json` for accurate
+results; configuring links the build's database into the project root when safe
+and preserves existing user-owned files. CMake exports it with Ninja and Makefile
+generators only. Formatting and lint rules use the project's `.clang-format` and
+`.clang-tidy`; nothing is formatted on save unless you enable it below. See
+[clangd project setup](https://clangd.llvm.org/installation#project-setup).
 
-`C-c p` extends Emacs's built-in project menu:
-
-| Key | Action |
-| --- | --- |
-| `C-c p p` | Switch project |
-| `C-c p f` | Find project file |
-| `C-c p g` | Search project with ripgrep |
-| `C-c p D` | Browse the project root in Dired |
-| `C-c p c` | Configure (CMake, `./configure` or a Python virtualenv) |
-| `C-c p b` | Build; `C-u C-c p b` selects a target or command |
-| `C-c p t` | Build and run the tests |
-| `C-c p r` | Build and run a program |
-| `C-c p d` | Build and debug a program |
-| `C-c p s` | Choose build directory and configuration for this session |
-| `C-c p h` | Switch between source and header |
-| `C-c p e` | Report installed tools, install commands and the build system |
-
-Language features:
-
-| Key | Action |
-| --- | --- |
-| `M-.` / `M-,` | Go to definition / return |
-| `M-?` | Find references |
-| `C-M-i` | Complete at point |
-| `C-c l r` | Rename symbol across the project |
-| `C-c l a` | Apply a code action or fix |
-| `C-c l f` | Format buffer or selected region |
-| `C-c l o` | Organize imports, when supported by the server |
-| `C-c l d` | Show documentation in an Eldoc buffer |
-| `C-c l i` | Toggle inlay hints |
-| `M-x flymake-show-project-diagnostics` | Show diagnostics across open project buffers |
-
-clangd runs with background indexing and clang-tidy checks. Formatting and lint
-rules use the project's `.clang-format` and `.clang-tidy`. Emacs does not replace
-those files or force formatting on save. See [clangd configuration](https://clangd.llvm.org/config).
-
-C/C++ snippets come from YASnippet and `yasnippet-snippets`. Use `TAB` to expand
-a snippet, or `M-x yas-expand` when completion takes precedence. Browse snippets
-with `M-x yas-insert-snippet`.
-
-Debugging:
-
-| Key | Action |
-| --- | --- |
-| `F5` / `S-F9` | Start debugging (CMake, Make or Python), or continue the active session |
-| `S-F5` / `C-c d q` | Quit debugging; `S-F5` also stops a running build or program |
-| `F9` / `C-c d b` | Toggle breakpoint |
-| `F10` / `C-c d n` | Step over |
-| `F11` / `C-c d i` | Step into |
-| `S-F11` / `C-c d o` | Step out |
-| `C-c d c` | Continue |
-| `C-c d r` | Restart session |
-| `C-c d w` | Add a watch expression |
-| `C-c d v` | Show debugger information buffers |
-| `C-c d d` | Launch Dape manually, including custom/attach configurations |
-
-Dape displays stack frames, local variables, watches and a debugger REPL. Build
-with debug symbols, normally `Debug`, so stepping and breakpoints can map back to
-the source. For other adapters, attach or remote sessions, use `M-x dape` and a
-custom launch configuration; see the [Dape documentation](https://github.com/svaante/dape).
+C/C++ snippets come from YASnippet: `TAB` expands one, `M-x yas-insert-snippet`
+browses them. Dape shows stack frames, locals, watches and a debugger REPL; for
+attach or remote sessions use `M-m d D` with a custom configuration, as in the
+[Dape documentation](https://github.com/svaante/dape).
 
 ## Project settings
 
-`C-c p s` changes the build directory and configuration for the current session.
+`M-m c s` changes the build directory and configuration for the current session.
 To persist them and add configure arguments, put a `.dir-locals.el` in the
 project root:
 
@@ -299,17 +245,17 @@ before choosing it.
   avoid bundled libgccjit inferring `-mmacosx-version-min=18.0` on Darwin 27.
   The setting is applied in `early-init.el` before packages start compiling.
   Explicit driver targets and `MACOSX_DEPLOYMENT_TARGET` remain respected.
-- Run `C-c p e` first to inspect tool discovery and the active build directory.
+- Run `M-m c e` first to inspect tool discovery and the active build directory.
 - For missing headers or incorrect diagnostics, configure successfully and check
   the project's `compile_commands.json`. After changing toolchains or clangd
   settings, use `M-x eglot-reconnect`.
 - If no executable is offered, check that CMake has an `add_executable` target and
   rerun configure to refresh its File API reply.
 - If the selected generator differs from an existing CMake cache, choose another
-  build directory with `C-c p s` before configuring.
+  build directory with `M-m c s` before configuring.
 - For a missing adapter, install `lldb-dap` or a DAP-enabled GDB 14.1+; a debugger
   CLI alone does not provide the protocol Dape needs.
-- Non-CMake projects can still use clangd, `C-c c` (`compile`), `C-c C`
+- Non-CMake projects can still use clangd, `M-m c C` (`compile`), `M-m c l`
   (`recompile`) and manual Dape configurations. Supply a compilation database for
   the project's build system.
 

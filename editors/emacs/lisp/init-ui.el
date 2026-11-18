@@ -31,19 +31,28 @@
         column-number-mode t
         size-indication-mode t
         show-paren-context-when-offscreen 'overlay
-        which-key-idle-delay 0.5)
+        which-key-idle-delay 0.3)
 
 (which-key-mode)
 
 ;; Open files as tabs above the editor, like an IDE.
+(require 'tab-line)
 (setopt tab-line-close-button-show 'selected
-        tab-line-new-button-show nil)
-(global-tab-line-mode)
-(with-eval-after-load 'tab-line
-  (dolist (mode '(treemacs-mode dotfiles-welcome-mode compilation-mode))
-    (add-to-list 'tab-line-exclude-modes mode)))
+        tab-line-new-button-show nil
+        tab-line-tabs-function #'tab-line-tabs-fixed-window-buffers
+        tab-line-switch-cycling t)
+;; Welcome participates in the same visible tab order as open files.
+;; Remove an old exclusion too, so reloading this module repairs existing setups.
+(setq tab-line-exclude-modes (delq 'dotfiles-welcome-mode tab-line-exclude-modes))
+(dolist (mode '(treemacs-mode compilation-mode))
+  (add-to-list 'tab-line-exclude-modes mode))
+(global-tab-line-mode 1)
 (when (display-graphic-p)
   (pixel-scroll-precision-mode))
+;; In a terminal the mouse clicks, scrolls and opens the right-click menu.
+;; Hold Option in iTerm2 to select text with the terminal itself instead.
+(unless noninteractive
+  (xterm-mouse-mode 1))
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'hl-line-mode)
 (add-hook 'text-mode-hook #'visual-line-mode)

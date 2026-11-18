@@ -26,6 +26,7 @@
 (require 'init-cpp)
 (require 'init-build)
 (require 'init-help)
+(require 'init-keys)
 
 (defvar dape-configs)
 
@@ -165,22 +166,33 @@
     ;; Dape's own configuration is left untouched.
     (should (equal (plist-get (alist-get 'debugpy dape-configs) 'command) "python"))))
 
-(ert-deftest dotfiles-build-keys-match-vscode-and-clion ()
+(ert-deftest dotfiles-build-keys-are-direct-or-under-the-leader ()
   (with-temp-buffer
-    (dolist (entry '(("C-S-b" . dotfiles-build) ("C-<f9>" . dotfiles-build)
-                     ("<f5>" . dotfiles-debug-or-continue) ("C-<f5>" . dotfiles-run)
-                     ("S-<f10>" . dotfiles-run) ("S-<f9>" . dotfiles-debug)
-                     ("S-<f5>" . dotfiles-stop) ("C-c p b" . dotfiles-build)
-                     ("C-c p t" . dotfiles-test) ("C-c p d" . dotfiles-debug)
-                     ("C-c p e" . dotfiles-doctor) ("C-c p k" . project-kill-buffers)
-                     ("C-S-p" . dotfiles-command-palette) ("C-c ?" . dotfiles-cheatsheet)))
-      (should (eq (key-binding (kbd (car entry))) (cdr entry))))))
+    (dolist (entry '(("<f5>" . dotfiles-debug-or-continue) ("<f6>" . dotfiles-run)
+                     ("<f7>" . dotfiles-build) ("<f8>" . dotfiles-test)
+                     ("<f9>" . dape-breakpoint-toggle) ("<f10>" . dape-next)
+                     ("<f11>" . dape-step-in) ("<f12>" . dape-step-out)
+                     ("M-m c k" . dotfiles-stop) ("M-m e d" . duplicate-dwim)
+                     ("M-<up>" . dotfiles-move-line-up) ("M-z" . undo-redo)
+                     ("M-m c b" . dotfiles-build) ("M-m c t" . dotfiles-test)
+                     ("M-m c x" . dotfiles-clean) ("M-m c e" . dotfiles-doctor)
+                     ("M-m d d" . dotfiles-debug-or-continue)
+                     ("M-m M-m" . dotfiles-command-palette)
+                     ("M-m ?" . dotfiles-cheatsheet)))
+      (should (eq (key-binding (kbd (car entry))) (cdr entry))))
+    ;; One way to each command: the aliases and C-c prefixes are gone.
+    (dolist (key '("C-<f9>" "S-<f9>" "C-c p" "C-c d" "C-c l" "C-c ?"
+                   ;; Chords a terminal cannot send are not used at all.
+                   "C-S-p" "C-S-b" "C-S-j" "C-S-k" "C-<f5>" "S-<f5>" "C->"))
+      (should-not (key-binding (kbd key))))
+    ;; S-<f10> is Emacs's own context menu again, not a second Run key.
+    (should (eq (key-binding (kbd "S-<f10>")) 'context-menu-open))))
 
 (ert-deftest dotfiles-palette-shows-keys-and-runs-commands ()
   (let* ((entries (dotfiles-palette--entries))
          (build (assoc "Build: Build project" entries)))
     (should (eq (nth 1 build) 'dotfiles-build))
-    (should (member (nth 2 build) '("C-S-b" "C-<f9>" "C-c p b")))
+    (should (equal (nth 2 build) "<f7>"))
     (should (seq-every-p (lambda (entry) (fboundp (nth 1 entry))) entries))
     (let (ran)
       (cl-letf (((symbol-function 'completing-read)
@@ -214,7 +226,7 @@
   (save-window-excursion
     (dotfiles-cheatsheet)
     (with-current-buffer "*Cheatsheet*"
-      (should (string-match-p "C-S-b +Build project" (buffer-string)))
+      (should (string-match-p "<f7> +Build project" (buffer-string)))
       (should (string-match-p "C-g +Cancel" (buffer-string))))))
 
 ;;; emacs_build_test.el ends here

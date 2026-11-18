@@ -86,7 +86,7 @@ Emacs 31 builds tree-sitter grammars on first use and asks first. This needs git
   - C++: clangd, CMake targets, CTest, snippets and Dape debugging; see the [C++ workflow and keys](editors/emacs/README.md)
   - git: magit, diff-hl
   - projects: Projectile and Treemacs, with an `M-m` leader menu and a Magit
-    branch/commit graph; see the [project and Git keys](editors/emacs/README.md#first-project)
+    branch/commit graph; see the [project and Git keys](editors/emacs/README.md#keys)
   - Packages, grammars and caches are written next to the configuration and ignored by git.
 
 ## Docker shortcuts

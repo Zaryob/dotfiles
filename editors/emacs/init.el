@@ -45,6 +45,7 @@
 (require 'init-project)
 (require 'init-build)
 (require 'init-help)
+(require 'init-keys)
 
 ;; Machine-specific additions, not tracked.
 (load (locate-user-emacs-file "local.el") :noerror :nomessage)

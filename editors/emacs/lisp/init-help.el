@@ -3,13 +3,12 @@
 ;;; Commentary:
 
 ;; For learning Emacs without memorizing it:
-;;   C-S-p / M-m SPC   VSCode-style command palette: every feature by name,
+;;   M-m M-m           VSCode-style command palette: every feature by name,
 ;;                     with its shortcut shown, so the keys come with use
-;;   C-c ?             cheatsheet, built from the same list (always current)
+;;   M-m ?             cheatsheet, built from the same list (always current)
 ;;   right click       Run, Debug, Breakpoint, Rename... at the clicked spot
-;; The welcome screen opens when Emacs starts without a file.  Copy, cut,
-;; paste and undo use C-c, C-x, C-v and C-z while text is selected (CUA);
-;; put (cua-mode -1) in local.el to keep the classic Emacs keys.
+;; The welcome screen opens when Emacs starts without a file.  The keys
+;; themselves are bound in init-keys.el.
 
 ;;; Code:
 
@@ -183,10 +182,11 @@ name typed directly also runs."
 
 (defconst dotfiles-cheatsheet-basics
   '(("C-g" "Cancel whatever is happening (press it when stuck)")
-    ("C-S-p" "Command palette: search every feature by name")
+    ("M-m" "Menu: every group of commands, listed on screen")
+    ("M-m M-m" "Command palette: search every feature by name")
     ("C-x C-f" "Open a file")
     ("C-x C-s" "Save")
-    ("C-z / C-S-z" "Undo / redo")
+    ("C-z / M-z" "Undo / redo")
     ("C-c C-x C-v" "Copy, cut, paste while text is selected")
     ("C-x b" "Switch between open files")
     ("C-x k" "Close the file")
@@ -205,8 +205,12 @@ name typed directly also runs."
       (with-current-buffer standard-output
         (insert (propertize "Emacs cheatsheet" 'face 'bold) "\n"
                 "C is Ctrl.  M is "
-                (if (eq system-type 'darwin) "Cmd" "Alt")
-                ".  C-S-p means Ctrl+Shift+P.  Click a name to run it.\n\n"
+                (cond ((display-graphic-p)
+                       (if (eq system-type 'darwin) "Cmd" "Alt"))
+                      ((eq system-type 'darwin) "the left Option key")
+                      (t "Alt"))
+                ", or press Esc first.  M-m M-m means hold it and tap m twice.\n"
+                "Click a name, or press RET on it, to run it.\n\n"
                 (propertize "First steps" 'face 'bold) "\n")
         (pcase-dolist (`(,key ,description) dotfiles-cheatsheet-basics)
           (insert (format "  %-16s " (propertize key 'face 'help-key-binding))
@@ -223,7 +227,7 @@ name typed directly also runs."
                                   'follow-link t
                                   'help-echo (symbol-name command))
               (insert "\n"))))
-        (insert "\nCommands without a key are in the palette (C-S-p).\n")))))
+        (insert "\nCommands without a key are in the palette (M-m M-m).\n")))))
 
 ;;;; Welcome screen
 
@@ -287,11 +291,11 @@ name typed directly also runs."
       (dotfiles-welcome--list "Recent files" (bound-and-true-p recentf-list))
       (insert "\n" (propertize "Everyday keys" 'face 'bold) "\n")
       (pcase-dolist (`(,key ,description)
-                     '(("C-S-p" "Command palette (M-m SPC in a terminal)")
-                       ("C-S-b" "Build      C-<f5>  Run      C-c p t  Test")
-                       ("F5" "Debug / continue   F9 breakpoint   F10 / F11 step")
+                     '(("M-m" "Menu: wait a moment and it lists every group")
+                       ("M-m M-m" "Command palette: find any command by name")
+                       ("F5-F8" "Debug, run, build, test")
+                       ("F9-F12" "Breakpoint, step over, step into, step out")
                        ("M-." "Go to definition   M-, back   M-? usages")
-                       ("M-m" "Leader menu: wait a moment and it lists the keys")
                        ("C-g" "Cancel anything")))
         (insert (format "  %-8s " (propertize key 'face 'help-key-binding))
                 description "\n"))
@@ -334,24 +338,6 @@ name typed directly also runs."
 (unless noninteractive
   (context-menu-mode 1))
 (add-hook 'context-menu-functions #'dotfiles-context-menu 90)
-
-;;;; Keys
-
-(cua-mode 1)
-(setopt cua-keep-region-after-copy t)
-
-(keymap-global-set "C-S-p" #'dotfiles-command-palette)
-(keymap-global-set "C-S-z" #'undo-redo)
-(keymap-global-set "C-c ?" #'dotfiles-cheatsheet)
-(defvar dotfiles-leader-map)
-(with-eval-after-load 'init-project
-  (keymap-set dotfiles-leader-map "SPC" #'dotfiles-command-palette)
-  (keymap-set dotfiles-leader-map "?" #'dotfiles-cheatsheet))
-
-(with-eval-after-load 'which-key
-  (which-key-add-key-based-replacements
-    "C-c p" "project/build" "C-c d" "debugger" "C-c l" "code"
-    "M-m" "leader"))
 
 (provide 'init-help)
 ;;; init-help.el ends here

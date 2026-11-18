@@ -1,4 +1,4 @@
-;;; init-editing.el --- Editing commands and key bindings -*- lexical-binding: t; -*-
+;;; init-editing.el --- Editing commands -*- lexical-binding: t; -*-
 
 ;;; Code:
 
@@ -40,19 +40,10 @@ Do nothing at buffer boundaries.  Preserve the final newline as written."
   (interactive)
   (dotfiles-move-line -1))
 
-(keymap-global-set "C-S-d" #'kill-whole-line)
-(keymap-global-set "C-S-k" #'duplicate-dwim)
-(keymap-global-set "C-S-j" #'dotfiles-move-line-down)
-(keymap-global-set "C-S-l" #'dotfiles-move-line-up)
-
+;; Keys are in init-keys.el: M-<up> / M-<down> and the M-m e group.
 (use-package multiple-cursors
-  :bind (("C-S-c C-S-c"   . mc/edit-lines)
-         ("C->"           . mc/mark-next-like-this)
-         ("C-<"           . mc/mark-previous-like-this)
-         ("C-M->"         . mc/unmark-next-like-this)
-         ("C-M-<"         . mc/unmark-previous-like-this)
-         ("C-c C-<"       . mc/mark-all-like-this)
-         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+  :commands (mc/edit-lines mc/mark-next-like-this mc/mark-previous-like-this
+             mc/unmark-next-like-this mc/mark-all-like-this))
 
 (provide 'init-editing)
 ;;; init-editing.el ends here

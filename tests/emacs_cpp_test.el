@@ -25,6 +25,7 @@
 
 (require 'init-cmake)
 (require 'init-cpp)
+(require 'init-keys)
 
 (defvar dape-configs)
 
@@ -234,19 +235,23 @@
       (with-current-buffer (get-buffer "*cmake-run*")
         (should (string-match-p "cpp-fixture-new:round trip" (buffer-string)))))))
 
-(ert-deftest dotfiles-cpp-project-menu-is-globally-bound ()
-  "The documented project shortcuts reach their commands from a new buffer."
+(ert-deftest dotfiles-cpp-leader-is-globally-bound ()
+  "The documented leader shortcuts reach their commands from a new buffer."
   (with-temp-buffer
-    (dolist (binding '(("c" . dotfiles-cmake-configure)
-                       ("b" . dotfiles-cmake-build)
-                       ("t" . dotfiles-cmake-test)
-                       ("r" . dotfiles-cmake-run)
-                       ("d" . dotfiles-cpp-debug)
-                       ("s" . dotfiles-cmake-settings)
-                       ("h" . dotfiles-cpp-switch-source-header)
-                       ("e" . dotfiles-cpp-environment)))
-      (should (eq (key-binding (kbd (concat "C-c p " (car binding))))
-                  (cdr binding))))))
+    (dolist (binding '(("c c" . dotfiles-configure)
+                       ("c b" . dotfiles-build)
+                       ("c t" . dotfiles-test)
+                       ("c r" . dotfiles-run)
+                       ("c s" . dotfiles-cmake-settings)
+                       ("d d" . dotfiles-debug-or-continue)
+                       ("d b" . dape-breakpoint-toggle)
+                       ("l h" . dotfiles-cpp-switch-source-header)))
+      (should (eq (key-binding (kbd (concat "M-m " (car binding))))
+                  (cdr binding))))
+    ;; The old C-c prefixes are gone; C-x p is Emacs's own project menu.
+    (should-not (key-binding (kbd "C-c p")))
+    (should-not (key-binding (kbd "C-c d")))
+    (should (eq (key-binding (kbd "C-x p f")) 'project-find-file))))
 
 (ert-deftest dotfiles-cpp-failed-build-never-runs-callback ()
   "A failed rebuild cannot run a stale executable through its callback."

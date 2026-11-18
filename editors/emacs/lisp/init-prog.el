@@ -105,13 +105,6 @@
   :ensure nil
   :hook ((c-ts-mode c++-ts-mode c-or-c++-ts-mode python-ts-mode rust-ts-mode
           c-mode c++-mode python-mode) . dotfiles-eglot-maybe)
-  :bind (:map eglot-mode-map
-              ("C-c l r" . eglot-rename)
-              ("C-c l a" . eglot-code-actions)
-              ("C-c l f" . eglot-format)
-              ("C-c l d" . eldoc-doc-buffer)
-              ("C-c l i" . eglot-inlay-hints-mode)
-              ("C-c l o" . eglot-code-action-organize-imports))
   :custom
   (eglot-autoshutdown t)
   (eglot-events-buffer-config '(:size 0)))
@@ -120,11 +113,9 @@
 (setopt flymake-show-diagnostics-at-end-of-line 'short)
 
 (setopt compilation-scroll-output 'first-error)
-(keymap-global-set "C-c c" #'compile)
-(keymap-global-set "C-c C" #'recompile)
 
 (use-package quickrun
-  :bind ("C-c r" . quickrun))
+  :commands quickrun)
 
 (provide 'init-prog)
 ;;; init-prog.el ends here

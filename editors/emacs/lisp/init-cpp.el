@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 
-;; C-c p is the project menu; C-c d is the debugger menu.
+;; Keys are in init-keys.el: M-m c builds, M-m d debugs, M-m l edits code.
 ;; CMake targets come from init-cmake, rather than guessing binary names.
 ;; Project .clang-format and .clang-tidy files remain authoritative.
 
@@ -172,35 +172,12 @@
           (let ((executable (dotfiles-cmake-executable (car target))))
             (dape (dotfiles-cpp-debug-config (cdr executable) root args)))))))))
 
-(defun dotfiles-cpp-debug-or-continue ()
-  "Continue an active Dape session, or build and debug a CMake target."
-  (interactive)
-  (if (and (featurep 'dape) (dape--live-connection 'last t))
-      (call-interactively #'dape-continue)
-    (dotfiles-cpp-debug)))
-
 (use-package dape
   :commands (dape dape-continue dape-next dape-step-in dape-step-out
              dape-restart dape-quit dape-breakpoint-toggle dape-watch-dwim
              dape-info)
   :custom (dape-buffer-window-arrangement 'right)
-  :init (repeat-mode 1)
-  :bind (("<f5>" . dotfiles-cpp-debug-or-continue)
-         ("S-<f5>" . dape-quit)
-         ("<f9>" . dape-breakpoint-toggle)
-         ("<f10>" . dape-next)
-         ("<f11>" . dape-step-in)
-         ("S-<f11>" . dape-step-out)
-         ("C-c d d" . dape)
-         ("C-c d b" . dape-breakpoint-toggle)
-         ("C-c d c" . dape-continue)
-         ("C-c d n" . dape-next)
-         ("C-c d i" . dape-step-in)
-         ("C-c d o" . dape-step-out)
-         ("C-c d r" . dape-restart)
-         ("C-c d q" . dape-quit)
-         ("C-c d w" . dape-watch-dwim)
-         ("C-c d v" . dape-info)))
+  :init (repeat-mode 1))
 
 (defun dotfiles-cpp-environment ()
   "Show C++ tool availability and the current CMake project settings."
@@ -219,20 +196,8 @@
       (when root
         (princ (format "\nCMake source: %s\nBuild: %s\n"
                        root (dotfiles-cmake-build-dir root))))
-      (princ "\nC-c p: project/build/run/test.  C-c d: debugger.\n")
-      (princ "C-c l: rename/actions/format/docs.  M-.: definition; M-?: references.\n"))))
-
-(keymap-global-set "C-c p" project-prefix-map)
-(keymap-set project-prefix-map "c" #'dotfiles-cmake-configure)
-(keymap-set project-prefix-map "b" #'dotfiles-cmake-build)
-(keymap-set project-prefix-map "t" #'dotfiles-cmake-test)
-(keymap-set project-prefix-map "r" #'dotfiles-cmake-run)
-(keymap-set project-prefix-map "d" #'dotfiles-cpp-debug)
-(keymap-set project-prefix-map "s" #'dotfiles-cmake-settings)
-(keymap-set project-prefix-map "h" #'dotfiles-cpp-switch-source-header)
-(keymap-set project-prefix-map "e" #'dotfiles-cpp-environment)
-(keymap-set project-prefix-map "g" #'consult-ripgrep)
-(keymap-global-set "C-c l h" #'dotfiles-cpp-switch-source-header)
+      (princ "\nM-m c: build/run/test.  M-m d: debugger.\n")
+      (princ "M-m l: rename/actions/format/docs.  M-.: definition; M-?: references.\n"))))
 
 (provide 'init-cpp)
 ;;; init-cpp.el ends here
